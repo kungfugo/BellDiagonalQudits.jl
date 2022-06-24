@@ -1,22 +1,26 @@
-using MagicSimplex
+include("src/MagicSimplex.jl")
+
+using .MagicSimplex
+using JLD
+using LazySets
 
 # Load exemplary data for analysis 
-myKernel = load("MagicSimplex/Data/standardKernelVPt3.jld", "sepHull");
-myEWs = load("MagicSimplex/Data/boundedCoordEWs.jld", "boundedCoordEWs");
-myWeylOpBasis = load("MagicSimplex/Data/bipartiteWeylOpBasis3.jld", "bipartiteWeylOpBasis");
+myKernel = load("Data/standardKernelVPt3.jld", "sepHull");
+myEWs = load("Data/boundedCoordEWs.jld", "boundedCoordEWs");
+myWeylOpBasis = load("Data/bipartiteWeylOpBasis3.jld", "bipartiteWeylOpBasis");
 
 # Create basis 
 myBasis = createStandardIndexBasis(3, 10);
 myBasisDict = MagicSimplex.createDictionaryFromBaxsis(myBasis);
 
-# Create random states
-myCoordStates = createRandomCoordStates(100, 3, "enclosurePolytope");
-
 # Symmetries 
-mySyms = generateAllSymmetries(myBasis, 3)
+mySyms = generateAllSymmetries(myBasis, 3);
 
 # Load MUBs 
 myMubs = MagicSimplex.createStandardMub(3);
+
+# Create random states
+myCoordStates = createRandomCoordStates(100, 3, "enclosurePolytope");
 
 # Specify what to analyse
 myAnaSpec = AnalysisSpecification(
@@ -53,3 +57,5 @@ end
 
 myAnalysedStates = map(x -> f(x), myCoordStates)
 
+# Classify analysed states 
+classifyAnalyzedStates!(myAnalysedStates)
