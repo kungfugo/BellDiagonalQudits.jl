@@ -7,11 +7,11 @@ using Permutations: Permutation
 using LazySets
 
 export
-    CoordState, StandardBasis, DensityState, BoundedCoordEW, AnalysisSpecification, eClassConflictException, AnalysedCoordState, 
+    CoordState, StandardBasis, DensityState, BoundedCoordEW, AnalysisSpecification, eClassConflictException, AnalysedCoordState,
     createRandomCoordStates, createStandardIndexBasis, createDensityState,
     generateAllSymmetries, getSymCoords,
     analyseCoordState, symAnalyseCoordState, classifyAnalyzedStates!,
-    createDictionaryFromBaxsis, createStandardMub
+    createDictionaryFromBasis, createStandardMub
 
 include("structs.jl")
 include("Utils/utils.jl")

@@ -11,7 +11,7 @@ myWeylOpBasis = load("Data/bipartiteWeylOpBasis3.jld", "bipartiteWeylOpBasis");
 
 # Create basis 
 myBasis = createStandardIndexBasis(3, 10);
-myBasisDict = MagicSimplex.createDictionaryFromBaxsis(myBasis);
+myBasisDict = MagicSimplex.createDictionaryFromBasis(myBasis);
 
 # Symmetries 
 mySyms = generateAllSymmetries(myBasis, 3);

@@ -35,7 +35,7 @@ function isPPT(ρ, d, precision)
 
 end
 
-function createDictionaryFromBaxsis(stdBasis::StandardBasis)
+function createDictionaryFromBasis(stdBasis::StandardBasis)
 
     basisDict = Dict()
     for i in stdBasis.basis

@@ -1,6 +1,6 @@
 function getPermutationFromTranslation(translation::Tuple{Int,Int}, stdBasis::StandardBasis, d)
 
-    myDicts = createDictionaryFromBaxsis(stdBasis)
+    myDicts = createDictionaryFromBasis(stdBasis)
     dict = myDicts[1] #keys are tuples 
     reverseDict = myDicts[2] #keys are indices
 
@@ -26,7 +26,7 @@ end
 function getPermutationFromMomentumInversion(stdBasis::StandardBasis, d)
 
     #load dictionary
-    myDicts = createDictionaryFromBaxsis(stdBasis)
+    myDicts = createDictionaryFromBasis(stdBasis)
     dict = myDicts[1] #keys are tuples 
     reverseDict = myDicts[2] #keys are indices
 
@@ -51,7 +51,7 @@ end
 function getPermutationFromQuarterRotation(stdBasis::StandardBasis, d)
 
     #load dictionary
-    myDicts = createDictionaryFromBaxsis(stdBasis)
+    myDicts = createDictionaryFromBasis(stdBasis)
     dict = myDicts[1] #keys are tuples 
     reverseDict = myDicts[2] #keys are indices
 
@@ -76,7 +76,7 @@ end
 function getPermutationFromVerticalShear(stdBasis::StandardBasis, d)
 
     #load dictionary
-    myDicts = createDictionaryFromBaxsis(stdBasis)
+    myDicts = createDictionaryFromBasis(stdBasis)
     dict = myDicts[1] #keys are tuples 
     reverseDict = myDicts[2] #keys are indices
 
