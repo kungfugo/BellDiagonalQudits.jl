@@ -1,4 +1,4 @@
-module MagicSimplex
+module BellDiagonalQudits
 
 using LinearAlgebra: eigvals, I, Hermitian, tr, dot
 using QuantumInformation: proj, ket, ketbra, max_entangled, ⊗, reshuffle, norm_trace, ppt
