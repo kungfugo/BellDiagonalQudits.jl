@@ -1,6 +1,14 @@
-function createRandomCoordStates(nSamples, d, object="magicSimplex", precision=10, roundToSteps::Int=0, nTriesMax=10000000)::Array{CoordState}
-    # Creates an array of uniformly distributed random CoordStates
-    # 'object' parameter allows the specification 'enclosurePolytope' to restrict created statesto the enclosure polytope
+"""
+    createRandomCoordStates(nSamples, d, object="magicSimplex", precision=10, roundToSteps::Int=0, nTriesMax=10000000)
+
+Return an array of `nSamples` `d^2` dimensional CoordStates. 
+
+Use the `object` to specify the coordinate ranges to [0,1] for 'magicSimplex' or [0, 1/d] for `enclosurePolytope`. 
+If `roundToSteps` > 0, round the coordinates to the vertices that divide the range in `roundToSteps`` equally sized sections.
+Be aware that the resulting distribution of points is generally not uniformly distributed.
+"""
+function createRandomCoordStates(nSamples, d, object="magicSimplex", precision=10, roundToSteps::Int=0)::Array{CoordState}
+
     productParams = Array{CoordState}(undef, 0)
     nFound = 0
 
@@ -13,7 +21,7 @@ function createRandomCoordStates(nSamples, d, object="magicSimplex", precision=1
 
             # If wanted, move random point to nearest step-point
             if roundToSteps > 0
-                c = round.(roundToSteps * c) * 1 // roundToSteps
+                c = round.(roundToSteps * c) // roundToSteps
             end
 
             c = round.(c, digits=precision)
@@ -34,7 +42,7 @@ function createRandomCoordStates(nSamples, d, object="magicSimplex", precision=1
             c = vec(rand(Uniform(0, 1 / d), 1, (d^2 - 1)))
 
             if roundToSteps > 0
-                c = round.(roundToSteps * d * c) * 1 // (roundToSteps * d)
+                c = round.(roundToSteps * d * c) // (roundToSteps * d)
             end
 
             c = round.(c, digits=precision)
@@ -132,7 +140,7 @@ function createDensityState(coordState::CoordState, indexBasis::StandardBasis)::
     basisOps = map(x -> x[3], indexBasis.basis)
     densityState = DensityState(
         coordState.coords,
-        Hermitian(myMulti(coordState.coords, basisOps)),
+        Hermitian(genericVectorProduct(coordState.coords, basisOps)),
         coordState.eClass)
 
     return densityState
