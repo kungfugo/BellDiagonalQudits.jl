@@ -5,7 +5,7 @@ Return an array of `nSamples` `d^2` dimensional CoordStates.
 
 Use the `object` to specify the coordinate ranges to [0,1] for 'magicSimplex' or [0, 1/d] for `enclosurePolytope`. 
 If `roundToSteps` > 0, round the coordinates to the vertices that divide the range in `roundToSteps`` equally sized sections.
-Be aware that the resulting distribution of points is generally not uniformly distributed.
+Be aware that the resulting distribution of points is generally not uniform.
 """
 function createRandomCoordStates(nSamples, d, object="magicSimplex", precision=10, roundToSteps::Int=0)::Array{CoordState}
 
@@ -62,19 +62,28 @@ function createRandomCoordStates(nSamples, d, object="magicSimplex", precision=1
 
 end
 
+"""
+    createBipartiteMaxEntangled(d)
+
+Return maximally entangled pure state of a bipartite system of dimension `d`^2
+"""
 function createBipartiteMaxEntangled(d)
-    # Creates maximally entangled pure state of a bipartite system of dimension d*d
+
     maxE = proj(max_entangled(d * d))
     return maxE
 
 end
 
+"""
+    weylOperator(d, k, l)
+
+Return the (`d`,`d`)-dimensional matrix representation of Weyl operator with the indices `k` and `l`.
+"""
 function weylOperator(d, k, l)
-    # calculated the (d,d) dimensional matrix representation of Weyl operator
+
     weylKetBra = zeros(Complex{Float64}, d, d)
 
     for j in (0:d-1)
-        #convention: ket(j+1,d) is j-th basis element \ket{j}
         weylKetBra = weylKetBra + exp((2 / d * π * im) * j * k) * ketbra(j + 1, mod(j + l, d) + 1, d, d)
     end
 
@@ -82,18 +91,26 @@ function weylOperator(d, k, l)
 
 end
 
+"""
+    getIntertwiner(d, k, l)
+
+Return the tensor product of the (`k`,`l`)-th Weyl operator and unity of dimension `d`.
+"""
 function getIntertwiner(d, k, l)
     w = weylOperator(d, k, l)
     Id = I(d)
     return w ⊗ Id
 end
 
+"""
+    weylTrf(d, ρ, k, l)
+
+Apply and return the (`k`,`l`)-th Weyl transformation of dimension `d` to the density matrix `ρ`.`
+"""
 function weylTrf(d, ρ, k, l)
 
-    if size(ρ)[1] != d * d
-        throw("ρ is not a product state of bipartite system of sub-systems with
-        equal dimension")
-    end
+    @assert size(ρ)[1] == d * d && size(ρ)[2] == d * d
+
     W = getIntertwiner(d, k, l)
 
     ρTrf = W * ρ * W'
@@ -102,6 +119,11 @@ function weylTrf(d, ρ, k, l)
 
 end
 
+"""
+    createBasisStateOperators(d, bellStateOperator, precision)
+
+Use `bellStateOperator` of dimension `d` to create Bell basis and return with corresponding flat and product indices.
+"""
 function createBasisStateOperators(d, bellStateOperator, precision)
 
     mIt = Iterators.product(fill(0:(d-1), 2)...)
@@ -128,27 +150,42 @@ function createBasisStateOperators(d, bellStateOperator, precision)
     return basisStates
 end
 
+"""
+    createStandardIndexBasis(d, precision)
+
+Return indexed Bell basis as type `StandardBasis` (see 'BellDiagonalQudits/src/structs.jl') with precision `precision` for `d` dimensions.
+"""
 function createStandardIndexBasis(d, precision)::StandardBasis
     maxEntangled = createBipartiteMaxEntangled(d)
     standardBasis = StandardBasis(createBasisStateOperators(d, maxEntangled, precision))
     return standardBasis
 end
 
-#Create state including its density matrix 
+"""
+    createDensityState(coordState::CoordState, indexBasis::StandardBasis)
+
+Return DensityState (see 'BellDiagonalQudits/src/structs.jl') containing the density matrix in computational basis based on `coordState` coordinates in Bell `indexBais`.
+"""
 function createDensityState(coordState::CoordState, indexBasis::StandardBasis)::DensityState
 
     basisOps = map(x -> x[3], indexBasis.basis)
     densityState = DensityState(
         coordState.coords,
         Hermitian(genericVectorProduct(coordState.coords, basisOps)),
-        coordState.eClass)
+        coordState.eClass
+    )
 
     return densityState
 
 end
 
-# Weyl Basis for the d*d - dim Matrix space
+"""
+    createWeylOperatorBasis(d)
+
+Return vector of length `d`^2, containing the Weyl operator basis for the (`d`,`d`) matrix space. 
+"""
 function createWeylOperatorBasis(d)::Vector{Array{Complex{Float64},2}}
+
     weylOperatorBasis = []
     for i in (0:(d-1))
         for j in (0:(d-1))
@@ -160,7 +197,11 @@ function createWeylOperatorBasis(d)::Vector{Array{Complex{Float64},2}}
 
 end
 
-# Tensor product Weyl basis for the d^2*d^2 - dim Matrix space
+"""
+    createBipartiteWeylOpereatorBasis(d)
+
+Return vector of length `d`^4, containing the product basis of two Weyl operator bases as basis for the (`d`2,`d`2) matrix space. 
+"""
 function createBipartiteWeylOpereatorBasis(d)::Vector{Array{Complex{Float64},2}}
 
     weylOperatorBasis = createWeylOperatorBasis(d)
