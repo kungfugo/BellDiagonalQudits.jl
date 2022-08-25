@@ -1,3 +1,8 @@
+"""
+kernelCheck(coordState::CoordState, kernelPolytope::Union{HPolytope{Float64,Array{Float64,1}},VPolytope{Float64,Array{Float64,1}}})
+
+Return `true` if the Eclidean coordinates of the coordState are contained in the `kernelPolytope` represented in V- or H-representation.
+"""
 function kernelCheck(coordState::CoordState, kernelPolytope::Union{HPolytope{Float64,Array{Float64,1}},VPolytope{Float64,Array{Float64,1}}})::Bool
 
     if coordState.coords ∈ kernelPolytope
@@ -8,9 +13,14 @@ function kernelCheck(coordState::CoordState, kernelPolytope::Union{HPolytope{Flo
 
 end
 
-function pptCheck(coordState::CoordState, indexBasis::StandardBasis, precision=10)::Bool
+"""
+    pptCheck(coordState::CoordState, standardBasis::StandardBasis, precision=10)
 
-    densityState = createDensityState(coordState, indexBasis)
+Return true if the `coordState` defined via the `standardBasis` has positive partial transposition up to the given `precision`.
+"""
+function pptCheck(coordState::CoordState, standardBasis::StandardBasis, precision=10)::Bool
+
+    densityState = createDensityState(coordState, standardBasis)
     ρ = densityState.densityMatrix
     d = Int(sqrt(size(ρ, 1)))
 
@@ -18,9 +28,14 @@ function pptCheck(coordState::CoordState, indexBasis::StandardBasis, precision=1
 
 end
 
-function realignmentCheck(coordState::CoordState, indexBasis::StandardBasis, precision=10)::Bool
+"""
+    realignmentCheck(coordState::CoordState, standardBasis::StandardBasis, precision=10)
 
-    densityState = createDensityState(coordState, indexBasis)
+Return true if the realigned `coordState` defined via the `standardBasis` has trace norm > 1 up to the given `precision`.
+"""
+function realignmentCheck(coordState::CoordState, standardBasis::StandardBasis, precision=10)::Bool
+
+    densityState = createDensityState(coordState, standardBasis)
     ρ = densityState.densityMatrix
 
     r_ρ = reshuffle(ρ)
@@ -29,10 +44,15 @@ function realignmentCheck(coordState::CoordState, indexBasis::StandardBasis, pre
 
 end
 
-function numericEwCheck(coordState::CoordState, boundedEWs::Array{BoundedCoordEW}, relUncertainity::Float64)::Bool
+"""
+    numericEwCheck(coordState::CoordState, boundedEWs::Array{BoundedCoordEW}, relUncertainity::Float64)
 
-    # check if trace is not in interval for SEP-states.
-    # The trace reduces to the scalar product of coords
+Return true if any entanglement witness in the vector of `boundedEWs` detects the density matrix `ρ` as entangled.
+
+An EW of `boundedEWs` detects `ρ`, if the scalar product of their shared property `coords` violates either the `uppperBound` or `lowerBound` property. 
+If a `relUncertainity` is given, the violation relative to `upperBound - lowerBound` exceeds the relUncertainity. 
+"""
+function numericEwCheck(coordState::CoordState, boundedEWs::Array{BoundedCoordEW}, relUncertainity=0.0)::Bool
 
     anyEntanglementFound = false
 

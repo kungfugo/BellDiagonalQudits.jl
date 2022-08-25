@@ -1,32 +1,8 @@
-# Implementing analyses related to the 'concurrence' as entanglement releated function.
-function createProjectorOperator(d)
+"""
+    getConcurrenceQP(coords, d, dictionaries)
 
-    A = proj(0 * ket(1, d^4))
-
-    for j in 1:d
-        for i in 1:(j-1)
-            for l in 1:d
-                for k in 1:(l-1)
-
-                    A += proj(
-                        ket(i, d) ⊗ ket(k, d) ⊗ ket(j, d) ⊗ ket(l, d)
-                        -
-                        ket(j, d) ⊗ ket(k, d) ⊗ ket(i, d) ⊗ ket(l, d)
-                        -
-                        ket(i, d) ⊗ ket(l, d) ⊗ ket(j, d) ⊗ ket(k, d)
-                        +
-                        ket(j, d) ⊗ ket(l, d) ⊗ ket(i, d) ⊗ ket(k, d)
-                    )
-                end
-            end
-        end
-    end
-
-    return 4 * A
-
-end
-
-##Explicit formula
+Return quasi-pure approximation of the concurrence for a state represented by `coords` with respect to a Standarbasis and corresponding `dictionaries` in `d` dimensions.
+"""
 function getConcurrenceQP(coords, d, dictionaries)::Float64
 
     S = Float64[]

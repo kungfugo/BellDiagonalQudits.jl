@@ -162,13 +162,13 @@ function createStandardIndexBasis(d, precision)::StandardBasis
 end
 
 """
-    createDensityState(coordState::CoordState, indexBasis::StandardBasis)
+    createDensityState(coordState::CoordState, standardBasis::StandardBasis)
 
 Return DensityState (see 'BellDiagonalQudits/src/structs.jl') containing the density matrix in computational basis based on `coordState` coordinates in Bell `indexBais`.
 """
-function createDensityState(coordState::CoordState, indexBasis::StandardBasis)::DensityState
+function createDensityState(coordState::CoordState, standardBasis::StandardBasis)::DensityState
 
-    basisOps = map(x -> x[3], indexBasis.basis)
+    basisOps = map(x -> x[3], standardBasis.basis)
     densityState = DensityState(
         coordState.coords,
         Hermitian(genericVectorProduct(coordState.coords, basisOps)),

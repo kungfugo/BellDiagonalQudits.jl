@@ -1,45 +1,106 @@
-# defining mubs
+"""
+    createStandardMub(d)
 
+Return vector of mutually unbiased bases for dimensions `d` three or four.
+"""
 function createStandardMub(d)::Vector{Vector{Vector{ComplexF64}}}
-    if d != 3
-        throw("Only d=3 supported a this time.")
-    end
 
-    #There are 4 mutually unbiased Bases. 
     mubSet = Vector{Vector{ComplexF64}}[]
 
-    w = exp(2 // 3 * π * im)
-    B1 = [
-        ket(1, 3),
-        ket(2, 3),
-        ket(3, 3)
-    ]
-    B2 = [
-        1 / sqrt(3) * (ket(1, 3) + ket(2, 3) + ket(3, 3)),
-        1 / sqrt(3) * (ket(1, 3) + w * ket(2, 3) + w^2 * ket(3, 3)),
-        1 / sqrt(3) * (ket(1, 3) + w^2 * ket(2, 3) + w * ket(3, 3))
-    ]
-    B3 = [
-        1 / sqrt(3) * (ket(1, 3) + w * ket(2, 3) + w * ket(3, 3)),
-        1 / sqrt(3) * (ket(1, 3) + w^2 * ket(2, 3) + ket(3, 3)),
-        1 / sqrt(3) * (ket(1, 3) + ket(2, 3) + w^2 * ket(3, 3))
-    ]
-    B4 = [
-        1 / sqrt(3) * (ket(1, 3) + w^2 * ket(2, 3) + w^2 * ket(3, 3)),
-        1 / sqrt(3) * (ket(1, 3) + ket(2, 3) + w * ket(3, 3)),
-        1 / sqrt(3) * (ket(1, 3) + w * ket(2, 3) + ket(3, 3))
-    ]
+    if d == 3
+        #There are 4 mutually unbiased Bases. 
+        mubSet = Vector{Vector{ComplexF64}}[]
 
-    push!(mubSet, B1)
-    push!(mubSet, B2)
-    push!(mubSet, B3)
-    push!(mubSet, B4)
+        w = exp(2 // 3 * π * im)
+        B1 = [
+            ket(1, 3),
+            ket(2, 3),
+            ket(3, 3)
+        ]
+        B2 = [
+            1 / sqrt(3) * (ket(1, 3) + ket(2, 3) + ket(3, 3)),
+            1 / sqrt(3) * (ket(1, 3) + w * ket(2, 3) + w^2 * ket(3, 3)),
+            1 / sqrt(3) * (ket(1, 3) + w^2 * ket(2, 3) + w * ket(3, 3))
+        ]
+        B3 = [
+            1 / sqrt(3) * (ket(1, 3) + w * ket(2, 3) + w * ket(3, 3)),
+            1 / sqrt(3) * (ket(1, 3) + w^2 * ket(2, 3) + ket(3, 3)),
+            1 / sqrt(3) * (ket(1, 3) + ket(2, 3) + w^2 * ket(3, 3))
+        ]
+        B4 = [
+            1 / sqrt(3) * (ket(1, 3) + w^2 * ket(2, 3) + w^2 * ket(3, 3)),
+            1 / sqrt(3) * (ket(1, 3) + ket(2, 3) + w * ket(3, 3)),
+            1 / sqrt(3) * (ket(1, 3) + w * ket(2, 3) + ket(3, 3))
+        ]
+
+        push!(mubSet, B1)
+        push!(mubSet, B2)
+        push!(mubSet, B3)
+        push!(mubSet, B4)
+
+    elseif d == 4
+
+        B1 = [
+            ket(1, 4),
+            ket(2, 4),
+            ket(3, 4),
+            ket(4, 4)
+        ]
+        B2 = [
+            1 / 2 * (ket(1, 4) + ket(2, 4) + ket(3, 4) + ket(4, 4)),
+            1 / 2 * (ket(1, 4) + ket(2, 4) - ket(3, 4) - ket(4, 4)),
+            1 / 2 * (ket(1, 4) - ket(2, 4) - ket(3, 4) + ket(4, 4)),
+            1 / 2 * (ket(1, 4) - ket(2, 4) + ket(3, 4) - ket(4, 4))
+        ]
+        B3 = [
+            1 / 2 * (ket(1, 4) - im * ket(2, 4) - im * ket(3, 4) - ket(4, 4)),
+            1 / 2 * (ket(1, 4) - im * ket(2, 4) + im * ket(3, 4) + ket(4, 4)),
+            1 / 2 * (ket(1, 4) + im * ket(2, 4) + im * ket(3, 4) - ket(4, 4)),
+            1 / 2 * (ket(1, 4) + im * ket(2, 4) - im * ket(3, 4) + ket(4, 4))
+        ]
+        B4 = [
+            1 / 2 * (ket(1, 4) - ket(2, 4) - im * ket(3, 4) - im * ket(4, 4)),
+            1 / 2 * (ket(1, 4) - ket(2, 4) + im * ket(3, 4) + im * ket(4, 4)),
+            1 / 2 * (ket(1, 4) + ket(2, 4) + im * ket(3, 4) - im * ket(4, 4)),
+            1 / 2 * (ket(1, 4) + ket(2, 4) - im * ket(3, 4) + im * ket(4, 4))
+        ]
+        B5 = [
+            1 / 2 * (ket(1, 4) - im * ket(2, 4) - ket(3, 4) - im * ket(4, 4)),
+            1 / 2 * (ket(1, 4) - im * ket(2, 4) + ket(3, 4) + im * ket(4, 4)),
+            1 / 2 * (ket(1, 4) + im * ket(2, 4) + ket(3, 4) - im * ket(4, 4)),
+            1 / 2 * (ket(1, 4) + im * ket(2, 4) - ket(3, 4) + im * ket(4, 4))
+        ]
+
+        push!(mubSet, B1)
+        push!(mubSet, B2)
+        push!(mubSet, B3)
+        push!(mubSet, B4)
+        push!(mubSet, B5)
+
+    else
+        throw("Only d=3 and d=4 are supported")
+    end
 
     return (mubSet)
 
 end
 
-function calculateCorrelation(d, mubSet::Vector{Vector{Vector{ComplexF64}}}, ρ)
+"""
+    calculateCorrelation(d, mubSet::Vector{Vector{Vector{ComplexF64}}}, ρ, s=-1)
+
+Based on complete `mubSet`, return sum of mutual predictibilities, shifted by `s`,  for density matrix `ρ` in `d` dimensions. 
+"""
+function calculateCorrelation(d, mubSet::Vector{Vector{Vector{ComplexF64}}}, ρ, s=-1)
+
+    if s == -1
+        if d == 3
+            s = 2
+        elseif d == 4
+            s = 3
+        else
+            s = 0
+        end
+    end
 
     C = 0
     for k in 1:length(mubSet)
@@ -49,7 +110,7 @@ function calculateCorrelation(d, mubSet::Vector{Vector{Vector{ComplexF64}}}, ρ)
             for i = 1:d
                 C += tr(
                     Hermitian(proj(
-                        B[i] ⊗ conj(B[mod((i - 1) + 2, d)+1])
+                        B[i] ⊗ B[mod((i - 1) + s, d)+1]
                     ) * ρ)
                 )
             end
@@ -63,5 +124,7 @@ function calculateCorrelation(d, mubSet::Vector{Vector{Vector{ComplexF64}}}, ρ)
             end
         end
     end
+
     return (C)
+
 end
