@@ -1,3 +1,8 @@
+"""
+    getPermutationFromTranslation(translation::Tuple{Int,Int}, stdBasis::StandardBasis, d)
+
+Return `Permutation` (`Permutations.jl`) of translation for `d`*`d` dimensional vector relating flat indeces and double indeices via `standardBasis`.
+"""
 function getPermutationFromTranslation(translation::Tuple{Int,Int}, stdBasis::StandardBasis, d)
 
     myDicts = createDictionaryFromBasis(stdBasis)
@@ -23,6 +28,11 @@ function getPermutationFromTranslation(translation::Tuple{Int,Int}, stdBasis::St
 
 end
 
+"""
+    getPermutationFromMomentumInversion(stdBasis::StandardBasis, d)
+
+Return `Permutation` (`Permutations.jl`) of momentum inversion for `d`*`d` dimensional vector relating flat indeces and double indeices via `standardBasis`.
+"""
 function getPermutationFromMomentumInversion(stdBasis::StandardBasis, d)
 
     #load dictionary
@@ -48,6 +58,11 @@ function getPermutationFromMomentumInversion(stdBasis::StandardBasis, d)
 
 end
 
+"""
+    getPermutationFromQuarterRotation(stdBasis::StandardBasis, d)
+
+Return `Permutation` (`Permutations.jl`) of qurater rotation for `d`*`d` dimensional vector relating flat indeces and double indeices via `standardBasis`.
+"""
 function getPermutationFromQuarterRotation(stdBasis::StandardBasis, d)
 
     #load dictionary
@@ -73,6 +88,11 @@ function getPermutationFromQuarterRotation(stdBasis::StandardBasis, d)
 
 end
 
+"""
+    getPermutationFromVerticalShear(stdBasis::StandardBasis, d)
+
+Return `Permutation` (`Permutations.jl`) of vertical shear for `d`*`d` dimensional vector relating flat indeces and double indeices via `standardBasis`.
+"""
 function getPermutationFromVerticalShear(stdBasis::StandardBasis, d)
 
     #load dictionary
@@ -98,6 +118,11 @@ function getPermutationFromVerticalShear(stdBasis::StandardBasis, d)
 
 end
 
+"""
+    generateAllSymmetries(stdBasis::StandardBasis, d, orderLimit=0)
+
+Return array of `Permutations` (`Permutations.jl`) of all symmetries up to order `orderLimit` in `d` dimensions via the generators represented in `standardBasis`.
+"""
 function generateAllSymmetries(stdBasis::StandardBasis, d, orderLimit=0)::Array{Permutation}
 
     allSymmetries = Permutation[]
@@ -143,7 +168,12 @@ function generateAllSymmetries(stdBasis::StandardBasis, d, orderLimit=0)::Array{
 
 end
 
-function getSymCoords(coords::Array{Float64,1}, symPermutations::Array{Permutation})::Array{Array{Float64,1}}
+"""
+    getSymCoords(coords::Array{Float64,1}, symPermutations::Array{Permutation})
+
+Return array of symmetric coordinates of given `coords` applied to `symPermutations`.
+"""
+function getSymCoords(coords::Array{Float64,1}, symPermutations::Array{Permutation})
 
     symCoords = map(x -> Matrix(x) * coords, symPermutations)
     return symCoords

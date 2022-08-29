@@ -20,8 +20,6 @@ end
     genericVectorProduct(A,B)
 
 For any vectors of equal length, return the sum of all products of elements with the same index.
-
-Return ``\sum_i A[i]*B[i]``.
 """
 function genericVectorProduct(A, B)
 
@@ -105,4 +103,41 @@ function δ_mod(n, m, x)::Int8
     else
         return 0
     end
+end
+
+"""
+    mapIndicesToNormCoord(indices, D)
+
+Return `D` element normalized coordinate vector with equal nonzero values at given `indices`.
+"""
+function mapIndicesToNormCoord(indices, D)
+
+    c = zeros(D)
+    for i in indices
+        c[i] = 1 / length(indices)
+    end
+
+    return c
+
+end
+
+"""
+    getProperDivisors(k:Int)
+
+Return vector of proper divisors of `k`.
+"""
+function getProperDivisors(k::Int)
+
+    divisors = Array{Int,1}(undef, 0)
+
+    for j in (2:floor(sqrt(k)))
+        if k % j == 0
+            push!(divisors, j)
+            if j != sqrt(k)
+                push!(divisors, k / j)
+            end
+        end
+    end
+
+    return divisors
 end

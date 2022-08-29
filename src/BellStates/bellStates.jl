@@ -217,3 +217,107 @@ function createBipartiteWeylOpereatorBasis(d)::Vector{Array{Complex{Float64},2}}
     return bipartiteWeylOperatorBasis
 
 end
+
+
+"""
+    createDimElementSubLattices(d)
+
+Return all sublattices with `d` elements represented as vector of tuples in the `d`*`d` elements discrete phase space induced by Weyl operators.
+"""
+function createDimElementSubLattices(d)
+
+    propDivs = getProperDivisors(d)
+
+    allLattices = Array{Array{Tuple{Int,Int},1},1}(undef, 0)
+
+    allPoints = Iterators.product(fill(0:(d-1), 2)...)
+
+    for point in allPoints
+
+        px = point[1]
+        py = point[2]
+
+        # Get horizontal line through point
+        sSubLattice = Array{Tuple{Int,Int},1}(undef, 0)
+        for s in (0:(d-1))
+            sPoint = ((px + s) % d, py)
+            push!(sSubLattice, sPoint)
+        end
+        push!(allLattices, sSubLattice)
+
+        # Get vertical and diagonal lines through point
+        for k in (0:(d-1))
+            kSubLattice = Array{Tuple{Int,Int},1}(undef, 0)
+            for s in (0:(d-1))
+                ksPoint = ((px + k * s) % d, (py + s) % d)
+                push!(kSubLattice, ksPoint)
+            end
+            push!(allLattices, kSubLattice)
+        end
+
+        # Get sublattices including point
+        for b in propDivs
+            for x in (0:b-1)
+                xbSubLattice = Array{Tuple{Int,Int},1}(undef, 0)
+                for u in (0:(d/b-1))
+                    for v in (0:(b-1))
+                        xuvbPoint = ((px + u * b + x * b) % d, (py + v * d / b) % d)
+                        push!(xbSubLattice, xuvbPoint)
+                    end
+                end
+                push!(allLattices, xbSubLattice)
+            end
+        end
+
+    end
+
+    # remove duplicates
+    allLattices = unique(sort.(allLattices))
+    return allLattices
+
+end
+
+"""
+    createIndexSubLatticeState(standardBasis::StandardBasis, subLattice)
+
+Return collection of `standardBasis` elements contributing to the state corresponding to the `sublattice`, coordinates in Bell basis and density matrix in computational basis.
+"""
+# Create a maximally mixed state of basis states related to sublattice
+function createIndexSubLatticeState(standardBasis::StandardBasis, subLattice)
+
+    lengthSub = length(subLattice)
+
+    subBasisStates = Array{
+        Tuple{
+            Int,
+            Array{Complex{Float64},2}
+        },
+        1}(undef, 0)
+
+    #Go through all points and select for each the index and basis state
+    for point in subLattice
+
+        # find basis state that belongs to the given element of the sublattice
+        foundIndex = findfirst(x -> x[2] == point, standardBasis.basis)
+        push!(subBasisStates, (foundIndex, standardBasis.basis[foundIndex][3]))
+
+    end
+
+    indices = Array{Int,1}(undef, 0)
+    subLatticeState = zeros(Complex{Float64}, size(standardBasis.basis[1][3]))
+
+    # Collect indices and add basis state
+    for state in subBasisStates
+        push!(indices, state[1])
+        subLatticeState = subLatticeState + state[2]
+    end
+
+    #Get corresponding coordinates
+    coordinates = mapIndicesToNormCoord(indices, length(standardBasis.basis))
+
+    # Collection of indices of basis elements which are equally mixed
+    indexSubLatticeState = [indices, coordinates, 1 / lengthSub * subLatticeState]
+
+    return indexSubLatticeState
+
+end

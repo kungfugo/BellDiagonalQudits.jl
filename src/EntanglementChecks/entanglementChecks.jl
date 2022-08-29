@@ -50,7 +50,7 @@ end
 Return true if any entanglement witness in the vector of `boundedEWs` detects the density matrix `ρ` as entangled.
 
 An EW of `boundedEWs` detects `ρ`, if the scalar product of their shared property `coords` violates either the `uppperBound` or `lowerBound` property. 
-If a `relUncertainity` is given, the violation relative to `upperBound - lowerBound` exceeds the relUncertainity. 
+If a `relUncertainity` is given, the violation relative to `upperBound - lowerBound` needs to exceed the relUncertainity. 
 """
 function numericEwCheck(coordState::CoordState, boundedEWs::Array{BoundedCoordEW}, relUncertainity=0.0)::Bool
 
@@ -78,6 +78,11 @@ function numericEwCheck(coordState::CoordState, boundedEWs::Array{BoundedCoordEW
 
 end
 
+"""
+    concurrenceQpCheck(coordState::CoordState, d, dictionaries, precision=10)
+
+Return `true` if the quasi-pure concurrence (see `concurrence.jl`) is positive for a `coordState` and given basis `dictionaries`.
+"""
 function concurrenceQpCheck(coordState::CoordState, d, dictionaries, precision=10)::Bool
 
     coords = coordState.coords
@@ -89,6 +94,11 @@ function concurrenceQpCheck(coordState::CoordState, d, dictionaries, precision=1
 
 end
 
+"""
+    mubCheck(coordState::CoordState, d, stdBasis::StandardBasis, mubSet::Vector{Vector{Vector{ComplexF64}}})
+
+Return `true` if the sum of mutual predictibilities for a `mubSet` (see `mub.jl`) of dimension `d` exceeds 2 for a `coordState` and given  `standardBasis`.
+"""
 function mubCheck(coordState::CoordState, d, stdBasis::StandardBasis, mubSet::Vector{Vector{Vector{ComplexF64}}})::Bool
 
     ρ = createDensityState(coordState, stdBasis).densityMatrix
@@ -101,6 +111,11 @@ function mubCheck(coordState::CoordState, d, stdBasis::StandardBasis, mubSet::Ve
 
 end
 
+"""
+    spinRepCheck(coordState::CoordState, stdBasis::StandardBasis, bipartiteWeylBasis::Vector{Array{Complex{Float64},2}}, precision=10)
+
+Return `true` and detects a `coordState` for a `standardBasis` as separbale if its coefficiencts in the `bipartiteWeylBasis` have 1-norm <= 2 in `precision`.
+"""
 function spinRepCheck(coordState::CoordState, stdBasis::StandardBasis, bipartiteWeylBasis::Vector{Array{Complex{Float64},2}}, precision=10)
 
     ρ = createDensityState(coordState, stdBasis).densityMatrix
@@ -111,7 +126,23 @@ function spinRepCheck(coordState::CoordState, stdBasis::StandardBasis, bipartite
     return (round(sum(absCoeffs), digits=precision) <= 2)
 
 end
+"""
+    analyseCoordState(
+        d,
+        coordState::CoordState,
+        anaSpec::AnalysisSpecification,
+        stdBasis::StandardBasis=missing,
+        kernelPolytope::Union{HPolytope{Float64,Array{Float64,1}},VPolytope{Float64,Array{Float64,1}},Missing}=missing,
+        bipartiteWeylBasis::Union{Vector{Array{Complex{Float64},2}},Missing}=missing,
+        dictionaries::Union{Any,Missing}=missing,
+        mubSet::Union{Vector{Vector{Vector{ComplexF64}}},Missing}=missing,
+        boundedEWs::Union{Array{BoundedCoordEW},Missing}=missing,
+        precision=10,
+        relUncertainity=0.0
+    )
 
+Return an `AnalysedCoordState` (see `BellDiagonalQudits/structs.jl`) for a `coordState` in `d` dimensions based on the given `anaSpec` and corresponding analysis objects.
+"""
 function analyseCoordState(
     d,
     coordState::CoordState,
@@ -176,6 +207,24 @@ function analyseCoordState(
 
 end
 
+"""
+    symAnalyseCoordState(
+        d,
+        coordState::CoordState,
+        symmetries::Array{Permutation},
+        anaSpec::AnalysisSpecification,
+        stdBasis::StandardBasis=missing,
+        kernelPolytope::Union{HPolytope{Float64,Array{Float64,1}},VPolytope{Float64,Array{Float64,1}},Missing}=missing,
+        bipartiteWeylBasis::Union{Vector{Array{Complex{Float64},2}},Missing}=missing,
+        dictionaries::Union{Any,Missing}=missing,
+        mubSet::Union{Vector{Vector{Vector{ComplexF64}}},Missing}=missing,
+        boundedCoordEWs::Union{Array{BoundedCoordEW},Missing}=missing,
+        precision=10,
+        relUncertainity=0.0
+    )
+
+Return an `AnalysedCoordState` (see `BellDiagonalQudits/structs.jl`) for a `coordState` in `d` dimensions based on the given `anaSpec` and corresponding analysis objects and symmetry analysis.
+"""
 function symAnalyseCoordState(
     d,
     coordState::CoordState,
@@ -354,7 +403,11 @@ function symAnalyseCoordState(
     return anaSymCoordState
 
 end
+"""
+    classifyEntanglement(analysedCoordState)
 
+Return entanglement class of `analisedCoordState`.
+"""
 function classifyEntanglement(analysedCoordState)
 
     class = "UNKNOWN"
@@ -400,8 +453,14 @@ function classifyEntanglement(analysedCoordState)
 
 end
 
-function classifyAnalyzedStates!(anaCoordStates::Array{AnalysedCoordState})
-    for anaCoordState in anaCoordStates
+
+"""
+    classifyAnalyzedStates!(anaCoordStates::Array{AnalysedCoordState})
+
+Set entanglement class for array of `analysedCoordStates`.
+"""
+function classifyAnalyzedStates!(analysedCoordStates::Array{AnalysedCoordState})
+    for anaCoordState in analysedCoordStates
 
         derivedClass = classifyEntanglement(anaCoordState)
         if derivedClass != "UNKNOWN"
@@ -415,5 +474,5 @@ function classifyAnalyzedStates!(anaCoordStates::Array{AnalysedCoordState})
         end
     end
 
-    return anaCoordStates
+    return analysedCoordStates
 end
