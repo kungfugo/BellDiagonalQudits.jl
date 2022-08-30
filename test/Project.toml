@@ -1,4 +1,5 @@
 [deps]
 JLD = "4138dd39-2aa7-5051-a626-17a0bb65d9c8"
 LazySets = "b4f0291d-fe17-52bc-9479-3d1a343d9043"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"

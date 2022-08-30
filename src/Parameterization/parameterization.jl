@@ -1,0 +1,83 @@
+"""
+    createRedParamMatrixFromVector(x, d)
+
+Return parameter matrix for pure state parameterization from parameter vector `x` of length 2*(`d`-1).
+"""
+function createRedParamMatrixFromVector(x, d)
+
+    if length(x) != (2 * (d - 1))
+        throw("Param vector and dimension mismatch")
+    end
+
+    λ = zeros(d, d)
+    k = 0
+
+    #fill first row with first elements of x
+    for n in 2:d
+        k = k + 1
+        λ[1, n] = x[k]
+    end
+
+    # fill first column with second half elements of x
+    for n in 2:d
+        k = k + 1
+        λ[n, 1] = x[k]
+    end
+
+    return λ
+
+end
+
+
+"""
+    compParUnitary(λ, d)
+
+Return `d` dimensional unitary from parameter matrix `λ`.
+"""
+function compParUnitary(λ, d)
+
+    # create onb
+    P = Array{
+        Array{Complex{Float64},2},
+        1}(undef, 0)
+
+    for i in (1:d)
+        b_i = proj(ket(i, d))
+        push!(P, b_i)
+    end
+
+    σ = Array{Array{Complex{Float64},2},2}(undef, d, d)
+
+
+    # define factor 1 for global phases 
+    R = I(d)
+    for l in 1:d
+        R = R * exp(im * P[l] * λ[l, l])
+    end
+
+    # define factor 2 for rotations and relative phases
+    L = I(d)
+    for m in (1:d-1)
+        for n in (m+1:d)
+            σ[m, n] = -im * ketbra(m, n, d, d) + im * ketbra(n, m, d, d)
+            L = L * exp(im * P[n] * λ[n, m]) * exp(im * σ[m, n] * λ[m, n])
+        end
+    end
+
+    U_C = L * R
+
+    return U_C
+
+end
+
+"""
+    getCompRedParUnitaryFromVector(x, d)
+
+Return unitatry matrix U of dimension `d` and rank 1 from parmater vector `x` with 2*(`d`-1) elements. It can be used to create a pure state via U\\ket(1,d).
+"""
+function getCompRedParUnitaryFromVector(x, d)
+    λ = createRedParamMatrixFromVector(x, d)
+    U = compParUnitary(λ, d)
+    return U
+end
+

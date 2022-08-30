@@ -13,6 +13,20 @@ mutable struct DensityState
     eClass::String
 end;
 
+mutable struct EntanglementWitness
+    coords::Array{Float64,1}
+    operatorMatrix::Hermitian{Complex{Float64},Array{Complex{Float64},2}}
+end;
+
+mutable struct BoundedEW
+    coords::Array{Float64,1}
+    upperBound::Float64
+    lowerBound::Float64
+    maximizingDensityMatrix::Hermitian{Complex{Float64},Array{Complex{Float64},2}}
+    minimizingDensityMatrix::Hermitian{Complex{Float64},Array{Complex{Float64},2}}
+    checkedIterations::Int64
+end;
+
 mutable struct BoundedCoordEW
     coords::Array{Float64,1}
     upperBound::Float64

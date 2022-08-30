@@ -44,3 +44,30 @@ function createKernelPolytope(d, standardBasis::StandardBasis)
     return createKernelHPolytope(vertexCoords)
 
 end
+
+"""
+    extendSepVPolytopeBySepStates(
+        sepPolytope::VPolytope{Float64,Array{Float64,1}},
+        sepDensityStates::Array{DensityState},
+        precision::Integer
+    )
+
+Return an extended VPolytope of separable states based on given `sepPolytope` and new separable `sepDensityStates`.
+"""
+function extendSepVPolytopeBySepStates(
+    sepPolytope::VPolytope{Float64,Array{Float64,1}},
+    sepDensityStates::Array{DensityState},
+    precision::Integer
+)::VPolytope{Float64,Array{Float64,1}}
+
+    existingVertices = vertices_list(sepPolytope)
+
+    newVertices = unique(map(x -> roundDigits(abs.(x.coords), precision), sepDensityStates))
+
+    combinedVertices = [existingVertices; newVertices]
+
+    uniqueVertices = unique(map(x -> roundDigits(abs.(x), precision), combinedVertices))
+
+    return VPolytope(uniqueVertices)
+
+end
