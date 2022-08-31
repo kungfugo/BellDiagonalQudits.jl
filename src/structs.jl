@@ -1,23 +1,57 @@
+"""
+Represents a Bell basis related to Weyl operators.
+
+- basis: Array with elements containing Bell basis density matrices, Weyl- and flat indices.
+"""
 struct StandardBasis
     basis::Array{Tuple{Int64,Tuple{Int64,Int64},Array{Complex{Float64},2}},1}
 end;
 
+"""
+Represents a Bell diagonal state represented in Bell basis.
+
+- coords: Coordinates in Bell basis 
+- eClass: Entanglement class of the represented state
+"""
 mutable struct CoordState
     coords::Array{Float64,1}
     eClass::String
 end;
 
+"""
+Represents a Bell diagonal state.
+
+- coords: Coordinates in Bell basis 
+- densityMatrix: Hermitian density matrix in computational basis
+- eClass: Entanglement class of the represented state
+"""
 mutable struct DensityState
     coords::Array{Float64,1}
     densityMatrix::Hermitian{Complex{Float64},Array{Complex{Float64},2}}
     eClass::String
 end;
 
+"""
+Represents an operator to detect Bell diagonal entangled states.
+
+- coords: Coordinates in Bell basis
+- operatorMatrix: Hermitian matrix representing the linear operator in computational basis.
+"""
 mutable struct EntanglementWitness
     coords::Array{Float64,1}
     operatorMatrix::Hermitian{Complex{Float64},Array{Complex{Float64},2}}
 end;
 
+"""
+Represents an entanglement witness ``W`` with extrema and extremizers to detect entangled Bell diagonal states.
+
+- coords: Coordinates in Bell basis
+- upperBound: Upper bound of ``tr W \\rho`` satisfied by all separable states ``\\rho``. Violation detects entanglement
+- lowerBound: Lower bound of ``tr W \\rho`` satisfied by all separable states ``\\rho``. Violation detects entanglement
+- maximizingDensityMatrix: Density matrix of separable state ``\\rho`` in computational basis maximizing ``tr W \\rho``
+- minimizingDensityMatrix: Density matrix of separable state ``\\rho`` in computational basis minimizing ``tr W \\rho``
+- checkedIterations: Number of iterations used in the optimization of bounds
+"""
 mutable struct BoundedEW
     coords::Array{Float64,1}
     upperBound::Float64
@@ -27,6 +61,14 @@ mutable struct BoundedEW
     checkedIterations::Int64
 end;
 
+"""
+Represents an entanglement witness ``W`` with extrema to detect entangled Bell diagonal states.
+
+- coords: Coordinates in Bell basis
+- upperBound: Upper bound of ``tr W \\rho`` satisfied by all separable states ``\\rho``. Violation detects entanglement
+- lowerBound: Lower bound of ``tr W \\rho`` satisfied by all separable states ``\\rho``. Violation detects entanglement
+- checkedIterations: Number of iterations used in the optimization of bounds
+"""
 mutable struct BoundedCoordEW
     coords::Array{Float64,1}
     upperBound::Float64
@@ -34,6 +76,17 @@ mutable struct BoundedCoordEW
     checkedIterations::Int64
 end;
 
+"""
+Specification which entanglement checks to use.
+
+- kernelCheck
+- spinrepCheck
+- pptCheck
+- realignmentCheck 
+- mubCheck 
+- numericEwCheck
+- useSymmetries
+"""
 mutable struct AnalysisSpecification
     kernelCheck::Bool
     spinrepCheck::Bool
@@ -45,6 +98,18 @@ mutable struct AnalysisSpecification
     useSymmetries::Bool
 end
 
+"""
+Representing an entanglement analyzed Bell diagonal state.
+
+- coordState: The analyzed `CoordState`
+- kernel: `true` if kernel check successful, else `false`. `missing` if entanglement check not applied.
+- spinrep: `true` if spinrep check successful, else `false`. `missing` if entanglement check not applied.
+- ppt: `true` if ppt check successful, else `false`. `missing` if entanglement check not applied.
+- realign: `true` if realignment check successful, else `false`. `missing` if entanglement check not applied.
+- concurrence: `true` if concurrence check successful, else `false`. `missing` if entanglement check not applied.
+- mub: `true` if mub check successful, else `false`. `missing` if entanglement check not applied.
+- numericEW: `true` if numericEW check successful, else `false`. `missing` if entanglement check not applied.
+"""
 mutable struct AnalysedCoordState
     coordState::CoordState
     kernel::Union{Missing,Bool}
@@ -56,6 +121,12 @@ mutable struct AnalysedCoordState
     numericEW::Union{Missing,Bool}
 end;
 
+"""
+Exception for conflicts in analysis results.
+
+- state: The `AnalysedCoordState` for which a conflict occured
+
+"""
 struct eClassConflictException <: Exception
     state::AnalysedCoordState
 end;
