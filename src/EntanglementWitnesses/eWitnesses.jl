@@ -1,7 +1,7 @@
 """
     createRandomWitnesses(standardBasis::StandardBasis, n)
 
-Return array of `n` uniformly random `EntanglementWitness` (see `BellDiagonalQudits/structs.jl`) represented in `standardBasis`.
+Return array of `n` uniformly distributed random `EntanglementWitness` represented in Bell basis `standardBasis`.
 """
 function createRandomWitnesses(standardBasis::StandardBasis, n)::Array{EntanglementWitness}
 
@@ -20,11 +20,10 @@ end
 """
     createHalfSphericWitnesses(standardBasis::StandardBasis, n)
 
-Return array of `n` uniformly random `EntanglementWitness` (see `BellDiagonalQudits/structs.jl`) on unit sphere represented in `standardBasis`.
+Return array of `n` uniformly distributed random `EntanglementWitness` on unit sphere represented in Bell basis `standardBasis`.
 """
 function createHalfSphericWitnesses(standardBasis::StandardBasis, n)::Array{EntanglementWitness}
 
-    #Gaussian vectors with unit length in upper half plane are on unit sphere
     basisOps = map(x -> x[3], standardBasis.basis)
     D = length(basisOps)
 
@@ -52,7 +51,7 @@ end
 """
     getDirectFunctionsForWitTraceOptimization(wit::EntanglementWitness, d)
 
-Return function and its negative that calculates trace of the given `wit` multiplied by a parameterized seperable state in `d` dimensions.
+Return the function and its negative that calculates ``tr \\rho`` `wit.coords`, the trace of the given witness `wit` multiplied by a parameterized seperable state ``\\rho`` in `d` dimensions.
 """
 function getDirectFunctionsForWitTraceOptimization(wit::EntanglementWitness, d)
 
@@ -83,7 +82,7 @@ end
 """
     getWitnessExtrema(d, wit::EntanglementWitness, iterations, method, useConstrainedOpt=false)
 
-Return optimization (see optimization.jl) results for lower and upper bound of `d` dimensional EntanglementWitness `wit` using `iterations` iterations and `method`.
+Return optimization (see optimization.jl) results for lower and upper bound of `d` dimensional EntanglementWitness `wit` using `iterations` runs and Optim.jl optimization method `method`.
 """
 function getWitnessExtrema(
     d,
@@ -110,7 +109,7 @@ end
 """
     getBoundedEW(d, wit::EntanglementWitness, iterations, method=Optim.NelderMead, useConstrainedOpt=false)
 
-Return BoundedEW in `d` dimensions based on EntanglementWitness `wit` and optimization of lower and upper bound.
+Return BoundedEW in `d` dimensions based on EntanglementWitness `wit` and `iterations` optimization runs of lower and upper bound for separable states.
 """
 function getBoundedEW(
     d,
@@ -168,9 +167,9 @@ end
         useConstrainedOpt=false
     )
 
-Return array `n` BoundedEW with `standardBasis` coordinates uniformly distributed in [-1, 1] if `sphericalOnly` is false or uniformly distributed on sphere otherwise.
+Return array of `n` `BoundedEW` with ``d^2`` `standardBasis` coordinates uniformly distributed in [-1, 1] if `sphericalOnly` is false or uniformly distributed on unit sphere otherwise.
 
-Use `iterations` runs to improve optimizatio with `method` impmlemented in Optim.jl.
+Use `iterations` runs to improve optimizatio with Optim.jl optimization method `method`.
 """
 function createRandomBoundedWits(
     d,
@@ -202,7 +201,7 @@ end
 """
     getBoundedCoordEw(bEw::BoundedEW)::BoundedCoordEW
 
-Map BoundedEW  `bEw` to corresponding BoundedCoordEW.
+Map BoundedEW `bEw` to corresponding `BoundedCoordEW`.
 """
 function getBoundedCoordEw(bEw::BoundedEW)::BoundedCoordEW
 

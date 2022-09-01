@@ -88,7 +88,7 @@ end
 """
     calculateCorrelation(d, mubSet::Vector{Vector{Vector{ComplexF64}}}, ρ, s=-1)
 
-Based on complete `mubSet`, return sum of mutual predictibilities, shifted by `s`,  for density matrix `ρ` in `d` dimensions. 
+Based on complete set of mutually unbiased bases `mubSet`, return sum of mutual predictibilities, shifted by `s`, for density matrix `ρ` in `d` dimensions. 
 """
 function calculateCorrelation(d, mubSet::Vector{Vector{Vector{ComplexF64}}}, ρ, s=-1)
 

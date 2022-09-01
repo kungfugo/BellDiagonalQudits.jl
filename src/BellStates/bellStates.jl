@@ -3,8 +3,6 @@
 
 Return an array of `nSamples` `` d^2 `` dimensional CoordStates. 
 
-
-
 Use the `object` to specify the coordinate ranges to [0,1] for 'magicSimplex' or [0, 1/d] for 'enclosurePolytope'. 
 If `roundToSteps` > 0, round the coordinates to the vertices that divide the range in `roundToSteps`` equally sized sections.
 Be aware that the resulting distribution of points is generally not uniform.
@@ -67,7 +65,7 @@ end
 """
     createBipartiteMaxEntangled(d)
 
-Return maximally entangled pure state of a bipartite system of dimension `d`^2
+Return maximally entangled pure state of a bipartite system of dimension ``d^2``.
 """
 function createBipartiteMaxEntangled(d)
 
@@ -79,7 +77,7 @@ end
 """
     weylOperator(d, k, l)
 
-Return the (`d`,`d`)-dimensional matrix representation of Weyl operator with the indices `k` and `l`.
+Return the ``(d,d)``- dimensional matrix representation of Weyl operator ``W_{k,l}``.
 """
 function weylOperator(d, k, l)
 
@@ -96,7 +94,7 @@ end
 """
     getIntertwiner(d, k, l)
 
-Return the tensor product of the (`k`,`l`)-th Weyl operator and unity of dimension `d`.
+Return the tensor product ``W_{k,l} \\otimes \\mathbb{1}_d``.
 """
 function getIntertwiner(d, k, l)
     w = weylOperator(d, k, l)
@@ -107,7 +105,7 @@ end
 """
     weylTrf(d, ρ, k, l)
 
-Apply and return the (`k`,`l`)-th Weyl transformation of dimension `d` to the density matrix `ρ`.`
+Apply the ``(k,l)``-th Weyl transformation of dimension `d` to the density matrix `ρ`. Return ``W_{k,l} \\rho W_{k,l}^\\dagger``.
 """
 function weylTrf(d, ρ, k, l)
 
@@ -124,7 +122,7 @@ end
 """
     createBasisStateOperators(d, bellStateOperator, precision)
 
-Use `bellStateOperator` of dimension `d` to create Bell basis and return with corresponding flat and product indices.
+Use maximally entangled Bell state `bellStateOperator` of dimension `d` to create Bell basis and return with corresponding flat and Weyl indices.
 """
 function createBasisStateOperators(d, bellStateOperator, precision)
 
@@ -155,7 +153,7 @@ end
 """
     createStandardIndexBasis(d, precision)
 
-Return indexed Bell basis as type `StandardBasis` (see 'BellDiagonalQudits/src/structs.jl') with precision `precision` for `d` dimensions.
+Return indexed Bell basis for `d` dimensions as `StandardBasis` rounded to `precision` digits.
 """
 function createStandardIndexBasis(d, precision)::StandardBasis
     maxEntangled = createBipartiteMaxEntangled(d)
@@ -166,7 +164,7 @@ end
 """
     createDensityState(coordState::CoordState, standardBasis::StandardBasis)
 
-Return DensityState (see 'BellDiagonalQudits/src/structs.jl') containing the density matrix in computational basis based on `coordState` coordinates in Bell `indexBais`.
+Return `DensityState`` containing the density matrix in computational basis based on `coordState` coordinates in Bell `standardBasis`.
 """
 function createDensityState(coordState::CoordState, standardBasis::StandardBasis)::DensityState
 
@@ -184,7 +182,7 @@ end
 """
     createWeylOperatorBasis(d)
 
-Return vector of length `d`^2, containing the Weyl operator basis for the (`d`,`d`) matrix space. 
+Return vector of length ``d^2``, containing the Weyl operator basis for the ``(d,d)`` dimensionalmatrix space. 
 """
 function createWeylOperatorBasis(d)::Vector{Array{Complex{Float64},2}}
 
@@ -202,7 +200,7 @@ end
 """
     createBipartiteWeylOpereatorBasis(d)
 
-Return vector of length `d`^4, containing the product basis of two Weyl operator bases as basis for the (`d`2,`d`2) matrix space. 
+Return vector of length ``d^4``, containing the product basis of two Weyl operator bases as basis for the ``(d^2,d^2)`` matrix space. 
 """
 function createBipartiteWeylOpereatorBasis(d)::Vector{Array{Complex{Float64},2}}
 
@@ -224,7 +222,7 @@ end
 """
     createDimElementSubLattices(d)
 
-Return all sublattices with `d` elements represented as vector of tuples in the `d`*`d` elements discrete phase space induced by Weyl operators.
+Return all sublattices with `d` elements represented as vector of tuples in the ``d^2`` elements discrete phase space induced by Weyl operators.
 """
 function createDimElementSubLattices(d)
 
@@ -284,7 +282,6 @@ end
 
 Return collection of `standardBasis` elements contributing to the state corresponding to the `sublattice`, coordinates in Bell basis and density matrix in computational basis.
 """
-# Create a maximally mixed state of basis states related to sublattice
 function createIndexSubLatticeState(standardBasis::StandardBasis, subLattice)
 
     lengthSub = length(subLattice)

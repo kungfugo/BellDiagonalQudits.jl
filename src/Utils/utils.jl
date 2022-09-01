@@ -1,7 +1,7 @@
 """
     isPositiveSemiDefinite(M, precision)
 
-Return `true`` if the smallest eingenvalue of matrix `M` rounded to precision `precision` is not negative.
+Return `true` if the smallest eingenvalue of matrix `M` rounded to precision `precision` is not negative.
 """
 function isPositiveSemiDefinite(M, precision)
 
@@ -19,7 +19,7 @@ end
 """
     genericVectorProduct(A,B)
 
-For any vectors of equal length, return the sum of all products of elements with the same index.
+For any vectors of equal length, return ``\\sum_i A[i]B[i]``, the sum of all products of elements with the same index.
 """
 function genericVectorProduct(A, B)
 
@@ -48,7 +48,7 @@ end
 """
     isPPTP(ρ, d, precision)
 
-Return `true` if the partial transposition of the Hermitian matrix based on the upper triangular of `ρ` is positive semi-definite within `precision` digits.
+Return `true` if the partial transposition of the Hermitian matrix based on the upper triangular of `ρ` is positive semi-definite in `precision`.
 """
 function isPPT(ρ, d, precision)
 
@@ -62,7 +62,7 @@ end
 """
     createDictionaryFromBasis(stdBasis)
 
-Return vector containing a dictionarie and it's inverse, relating the d^2 flat indices to the double indices of a d-element `StandardBasis`.
+Return vector containing a dictionary and it's inverse, relating the ``d^2`` flat indices to the double indices of `stdBasis`.
 """
 function createDictionaryFromBasis(stdBasis::StandardBasis)
 

@@ -1,9 +1,9 @@
 """
     directOptimization(f, negf, method, d, iterations, constrainedOpt=false)
 
-Return total (minimum, minimizer) and (maximum, maximizer) of `iterations` runs of function `f` and its negative `negf`over the set of separale states using optimization `method`.
+Return total (minimum, minimizer) and (maximum, maximizer) of `iterations` optimization runs of function `f` and its negative `negf` over the set of separale states using Optim.jl optimization mehtod `method`.
 
-Optim.jl is used for optimazation based on `parameterization.jl`, so `f` and `negf` are defined for 2*`(d`-1) parameters. Supported methods include `NelderMead`, `LBFGS` and `NewtonTrustRegion`.
+Optim.jl is used for optimazation based on `parameterization.jl`, so `f` and `negf` are defined for ``2(d-1)`` parameters. Supported methods include `NelderMead`, `LBFGS` and `NewtonTrustRegion`.
 """
 function directOptimization(f, negf, method, d, iterations, constrainedOpt=false)
 

@@ -1,7 +1,7 @@
 """
     createRedParamMatrixFromVector(x, d)
 
-Return parameter matrix for pure state parameterization from parameter vector `x` of length 2*(`d`-1).
+Return parameter matrix for pure state parameterization from parameter vector `x` of length ``2(d-1)``.
 """
 function createRedParamMatrixFromVector(x, d)
 
@@ -32,7 +32,7 @@ end
 """
     compParUnitary(λ, d)
 
-Return `d` dimensional unitary from parameter matrix `λ`.
+Return `d` dimensional prameterized unitary matrix from parameter matrix `λ`.
 """
 function compParUnitary(λ, d)
 
@@ -73,11 +73,12 @@ end
 """
     getCompRedParUnitaryFromVector(x, d)
 
-Return unitatry matrix U of dimension `d` and rank 1 from parmater vector `x` with 2*(`d`-1) elements. It can be used to create a pure state via U\\ket(1,d).
+Return parameterized unitatry matrix U of dimension `d` and rank 1 from parameter vector `x` with ``2(d-1)`` elements. 
+
+Using the first basis state of the computational basis with density matrix ``e_1``, any pure state ``\\rho`` can be generated as ``\\rho = U e_1 U^\\dagger``.
 """
 function getCompRedParUnitaryFromVector(x, d)
     λ = createRedParamMatrixFromVector(x, d)
     U = compParUnitary(λ, d)
     return U
 end
-

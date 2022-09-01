@@ -1,7 +1,7 @@
 """
 kernelCheck(coordState::CoordState, kernelPolytope::Union{HPolytope{Float64,Array{Float64,1}},VPolytope{Float64,Array{Float64,1}}})
 
-Return `true` if the Eclidean coordinates of the coordState are contained in the `kernelPolytope` represented in V- or H-representation.
+Return `true` if the Euclidean coordinates of the `coordState`` are contained in the `kernelPolytope` represented in V- or H-representation.
 """
 function kernelCheck(coordState::CoordState, kernelPolytope::Union{HPolytope{Float64,Array{Float64,1}},VPolytope{Float64,Array{Float64,1}}})::Bool
 
@@ -16,7 +16,7 @@ end
 """
     pptCheck(coordState::CoordState, standardBasis::StandardBasis, precision=10)
 
-Return true if the `coordState` defined via the `standardBasis` has positive partial transposition up to the given `precision`.
+Return `true`` if the `coordState` defined via the `standardBasis` has positive partial transposition in the given `precision`.
 """
 function pptCheck(coordState::CoordState, standardBasis::StandardBasis, precision=10)::Bool
 
@@ -31,7 +31,7 @@ end
 """
     realignmentCheck(coordState::CoordState, standardBasis::StandardBasis, precision=10)
 
-Return true if the realigned `coordState` defined via the `standardBasis` has trace norm > 1 up to the given `precision`.
+Return `true`` if the realigned `coordState` defined via the `standardBasis` has trace norm ``> 1`` in the given `precision`.
 """
 function realignmentCheck(coordState::CoordState, standardBasis::StandardBasis, precision=10)::Bool
 
@@ -47,10 +47,10 @@ end
 """
     numericEwCheck(coordState::CoordState, boundedEWs::Array{BoundedCoordEW}, relUncertainity::Float64)
 
-Return true if any entanglement witness in the vector of `boundedEWs` detects the density matrix `ρ` as entangled.
+Return `true` if any entanglement witness of `boundedEWs` detects the density matrix `ρ` as entangled.
 
-An EW of `boundedEWs` detects `ρ`, if the scalar product of their shared property `coords` violates either the `uppperBound` or `lowerBound` property. 
-If a `relUncertainity` is given, the violation relative to `upperBound - lowerBound` needs to exceed the relUncertainity. 
+An entanglement witness ``E`` of `boundedEWs` detects `ρ`, if the scalar product ``\\rho``.`coords` ``\\cdot E``.`coords` is not in [`lowerBound`, `upperBound`].
+If a `relUncertainity` is given, the violation relative to `upperBound-lowerBound` needs to exceed `relUncertainity`` to detect entanglement. 
 """
 function numericEwCheck(coordState::CoordState, boundedEWs::Array{BoundedCoordEW}, relUncertainity=0.0)::Bool
 
@@ -81,7 +81,7 @@ end
 """
     concurrenceQpCheck(coordState::CoordState, d, dictionaries, precision=10)
 
-Return `true` if the quasi-pure concurrence (see `concurrence.jl`) is positive for a `coordState` and given basis `dictionaries`.
+Return `true` if the quasi-pure concurrence (see `concurrence.jl`) is positive for a `coordState` and given basis `dictionaries` in the given `precision`.
 """
 function concurrenceQpCheck(coordState::CoordState, d, dictionaries, precision=10)::Bool
 
@@ -97,7 +97,7 @@ end
 """
     mubCheck(coordState::CoordState, d, stdBasis::StandardBasis, mubSet::Vector{Vector{Vector{ComplexF64}}})
 
-Return `true` if the sum of mutual predictibilities for a `mubSet` (see `mub.jl`) of dimension `d` exceeds 2 for a `coordState` and given  `standardBasis`.
+Return `true` if the sum of mutual predictibilities for a `mubSet` (see `mub.jl`) of dimension `d` exceeds ``2`` for a `coordState` and given `standardBasis`.
 """
 function mubCheck(coordState::CoordState, d, stdBasis::StandardBasis, mubSet::Vector{Vector{Vector{ComplexF64}}})::Bool
 
@@ -114,7 +114,7 @@ end
 """
     spinRepCheck(coordState::CoordState, stdBasis::StandardBasis, bipartiteWeylBasis::Vector{Array{Complex{Float64},2}}, precision=10)
 
-Return `true` and detects a `coordState` for a `standardBasis` as separbale if its coefficiencts in the `bipartiteWeylBasis` have 1-norm <= 2 in `precision`.
+Return `true` and detects a `coordState` for a `standardBasis` as separbale, if its coefficiencts in the `bipartiteWeylBasis` have 1-norm smaller than ``2`` in given `precision`.
 """
 function spinRepCheck(coordState::CoordState, stdBasis::StandardBasis, bipartiteWeylBasis::Vector{Array{Complex{Float64},2}}, precision=10)
 
@@ -141,7 +141,10 @@ end
         relUncertainity=0.0
     )
 
-Return an `AnalysedCoordState` (see `BellDiagonalQudits/structs.jl`) for a `coordState` in `d` dimensions based on the given `anaSpec` and corresponding analysis objects.
+Return an `AnalysedCoordState` for a `coordState` in `d` dimensions based on the given `anaSpec` and corresponding analysis objects.
+
+If an entanglement check should not be carried out or if an analysis object in not passed as variable, the corresponding property in `anaSpec` needs to be `false`. 
+In this case, return the corresponding property of the `AnalysedCoordState` as `missing`.
 """
 function analyseCoordState(
     d,
@@ -223,7 +226,10 @@ end
         relUncertainity=0.0
     )
 
-Return an `AnalysedCoordState` (see `BellDiagonalQudits/structs.jl`) for a `coordState` in `d` dimensions based on the given `anaSpec` and corresponding analysis objects and symmetry analysis.
+Return an `AnalysedCoordState` for a `coordState` in `d` dimensions based on the given `anaSpec` and corresponding analysis objects and symmetry analysis.
+
+If an entanglement check should not be carried out or if an analysis object in not passed as variable, the corresponding property in `anaSpec` needs to be `false`. 
+In this case, return the corresponding property of the `AnalysedCoordState` as `missing`.
 """
 function symAnalyseCoordState(
     d,
@@ -406,7 +412,9 @@ end
 """
     classifyEntanglement(analysedCoordState)
 
-Return entanglement class of `analisedCoordState`.
+Return entanglement class of `analysedCoordState`. 
+
+Entanglement class can be "UNKNWON", "PPT_UNKNOWN" for PPT states that can be separable or entangled, "SEP" for separable states, "BOUND" for PPT/bound entangled states or "NPT" for NPT/free entangled states.
 """
 function classifyEntanglement(analysedCoordState)
 

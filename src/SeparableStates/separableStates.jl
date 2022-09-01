@@ -1,7 +1,7 @@
 """
     createKernelVertexStates(d, standardBasis::StandardBasis)
 
-Return array containing collections of corresponding `standardBasis` indices, coordinates and density matrix for all `d` element sublattices in discrete phase space.
+Return array containing collections of corresponding `standardBasis` indices, coordinates and density matrices for all `d` element sublattices in discrete phase space.
 """
 function createKernelVertexStates(d, standardBasis::StandardBasis)
 
@@ -14,7 +14,7 @@ end
 """
     createKernelHPolytope(vertexCoordinates)
 
-Return LazySets: HPolytope defined by `vertexCoordinates`.
+Return LazySets.HPolytope representation of polytope defined by `vertexCoordinates`.
 """
 function createKernelHPolytope(vertexCoordinates)
 
@@ -30,7 +30,7 @@ end
 """
     createKernelPolytope(d, standardBasis::StandardBasis)
 
-Return LazySets: HPolytope corresponding the kernel polytope for dimension `d`.
+Return LazySets.HPolytope representation of the kernel polytope for dimension `d` and Bell basis `standardBasis`.
 """
 function createKernelPolytope(d, standardBasis::StandardBasis)
 
@@ -52,7 +52,7 @@ end
         precision::Integer
     )
 
-Return an extended VPolytope of separable states based on given `sepPolytope` and new separable `sepDensityStates`.
+Return an extended Lazysets.VPolytope representation of polytope of separable states based on given polytope `sepPolytope` and new separable `sepDensityStates` as new vertices.
 """
 function extendSepVPolytopeBySepStates(
     sepPolytope::VPolytope{Float64,Array{Float64,1}},

@@ -8,10 +8,10 @@ struct StandardBasis
 end;
 
 """
-Represents a Bell diagonal state represented in Bell basis.
+Represents a Bell diagonal state in Bell basis.
 
-- coords: Coordinates in Bell basis 
-- eClass: Entanglement class of the represented state
+- coords: Coordinates in Bell basis. 
+- eClass: Entanglement class of the represented state.
 """
 mutable struct CoordState
     coords::Array{Float64,1}
@@ -21,9 +21,9 @@ end;
 """
 Represents a Bell diagonal state.
 
-- coords: Coordinates in Bell basis 
-- densityMatrix: Hermitian density matrix in computational basis
-- eClass: Entanglement class of the represented state
+- coords: Coordinates in Bell basis.
+- densityMatrix: Hermitian density matrix in computational basis.
+- eClass: Entanglement class of the represented state.
 """
 mutable struct DensityState
     coords::Array{Float64,1}
@@ -45,12 +45,12 @@ end;
 """
 Represents an entanglement witness ``W`` with extrema and extremizers to detect entangled Bell diagonal states.
 
-- coords: Coordinates in Bell basis
-- upperBound: Upper bound of ``tr W \\rho`` satisfied by all separable states ``\\rho``. Violation detects entanglement
-- lowerBound: Lower bound of ``tr W \\rho`` satisfied by all separable states ``\\rho``. Violation detects entanglement
-- maximizingDensityMatrix: Density matrix of separable state ``\\rho`` in computational basis maximizing ``tr W \\rho``
-- minimizingDensityMatrix: Density matrix of separable state ``\\rho`` in computational basis minimizing ``tr W \\rho``
-- checkedIterations: Number of iterations used in the optimization of bounds
+- coords: Coordinates in Bell basis.
+- upperBound: Upper bound of ``tr W \\rho`` satisfied by all separable states ``\\rho``. Violation detects entanglement.
+- lowerBound: Lower bound of ``tr W \\rho`` satisfied by all separable states ``\\rho``. Violation detects entanglement.
+- maximizingDensityMatrix: Density matrix of separable state ``\\rho`` in computational basis, maximizing ``tr W \\rho``.
+- minimizingDensityMatrix: Density matrix of separable state ``\\rho`` in computational basis. minimizing ``tr W \\rho``.
+- checkedIterations: Number of iterations used in the optimization of bounds.
 """
 mutable struct BoundedEW
     coords::Array{Float64,1}
@@ -64,10 +64,10 @@ end;
 """
 Represents an entanglement witness ``W`` with extrema to detect entangled Bell diagonal states.
 
-- coords: Coordinates in Bell basis
-- upperBound: Upper bound of ``tr W \\rho`` satisfied by all separable states ``\\rho``. Violation detects entanglement
-- lowerBound: Lower bound of ``tr W \\rho`` satisfied by all separable states ``\\rho``. Violation detects entanglement
-- checkedIterations: Number of iterations used in the optimization of bounds
+- coords: Coordinates in Bell basis.
+- upperBound: Upper bound of ``tr W \\rho`` satisfied by all separable states ``\\rho``. Violation detects entanglement.
+- lowerBound: Lower bound of ``tr W \\rho`` satisfied by all separable states ``\\rho``. Violation detects entanglement.
+- checkedIterations: Number of iterations used in the optimization of bounds.
 """
 mutable struct BoundedCoordEW
     coords::Array{Float64,1}
@@ -124,7 +124,7 @@ end;
 """
 Exception for conflicts in analysis results.
 
-- state: The `AnalysedCoordState` for which a conflict occured
+- state: The `AnalysedCoordState` for which a conflict occurs.
 
 """
 struct eClassConflictException <: Exception

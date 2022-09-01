@@ -1,7 +1,7 @@
 """
     getConcurrenceQP(coords, d, dictionaries)
 
-Return quasi-pure approximation of the concurrence for a state represented by `coords` with respect to a Standarbasis and corresponding `dictionaries` in `d` dimensions.
+Return quasi-pure approximation of the concurrence for a Bell diagonal state represented by coordinates `coords` with respect to a `StandardBasis` and corresponding `dictionaries` in `d` dimensions.
 """
 function getConcurrenceQP(coords, d, dictionaries)::Float64
 
