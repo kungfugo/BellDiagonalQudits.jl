@@ -11,8 +11,7 @@ makedocs(
         "Manual" => "manual.md",
         "Library" => "library.md"
     ])
-#=
-    deploydocs(;
+
+deploydocs(;
     repo="github.com/kungfugo/BellDiagonalQudits.jl"
 )
-=#
