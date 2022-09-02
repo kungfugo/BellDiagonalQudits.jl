@@ -1,10 +1,20 @@
-# BellDiagonalQudits
+# BellDiagonalQudits.jl
 
-Module contains functions used to generate the results of "Almost complete solution for the NP-hard separability problem of Bell diagonal qutrits" (https://arxiv.org/abs/2205.11405)
+*Generate and analyze Bell diagonal Qudits with Julia*
 
-DISCLAIMER: This is NOT a completed package but a collection of open access functions under development. It not recommended to use these functions, but to wait for the release of the currently developed official package.
+A package for generation and entanglement classification of Bell diagonal quantum states. 
 
-How to use:
-- Install Julia Version 1.6.3 
-- Install all required dependencies in the module definition in 'BellDiagonalQudits/src/BellDiagonalQudits.jl'
-- See 'BellDiagonalQudits/example.jl' for an example how to use the module
+Bell diagonal states are generated as mixtures maximally entangled Bell states, which are related by Weyl transformations. The special propterties of these states, e.g. symmetries, allow efficient methods to be leveraged for the detection of entanglement, including its generally hard to detect form of PPT/bound entanglement.
+
+This package provides methods to sample states, to numerically generate entanglement witnesses and to apply and extend further criteria to detect entanglement or separability in general dimension. For a precise description of implemented methods and related research results see [1] and [2] and the references therein.
+
+## Package Features
+- Create mixtures of maximally entangled Bell states based on Weyl transformations in any dimension
+- Classify Bell diagonal states as separable, PPT/bound entangled or NPT/free entangled
+- Generate numerical entanglement witnesses for Bell diagonal states
+- Generate entanglement conserving symmetries and use them for entanglement classification
+
+## References 
+[1] Popp, C., Hiesmayr, B.C., *Almost complete solution for the NP-hard separability problem of Bell diagonal qutrits*, Sci Rep 12, 12472 (2022), [https://doi.org/10.1038/s41598-022-16225-z](https://doi.org/10.1038/s41598-022-16225-z)
+
+[2] Baumgartner, B., Hiesmayr, B.C., Narrenhofer, H. *A special simplex in the state space for entangled qudits*, J. Phys. A Math.  Theor. 40, 7919 (2007), [https://doi.org/10.1088/1751-8113/40/28/s03] (https://doi.org/10.1088/1751-8113/40/28/s03)
