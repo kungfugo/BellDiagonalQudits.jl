@@ -36,7 +36,6 @@ function createHalfSphericWitnesses(standardBasis::StandardBasis, n)::Array{Enta
         end
 
         push!(randomParams, randomVector)
-
     end
 
     wits = Array{EntanglementWitness}(undef, 0)
