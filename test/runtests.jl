@@ -30,7 +30,6 @@ testAnaSpecSym = AnalysisSpecification(true, true, true, true, true, true, true,
     @test length(vertices_list(tovrep(testStandardKernel3))) == 12
     @test length(vertices_list(testExtKernel3)) == 13
 
-
     # BellDiagonalQudits/src/Symmetries
     @test length(testSyms3) == 432
     @test getSymCoords(
