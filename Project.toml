@@ -14,7 +14,7 @@ QuantumInformation = "3c0b384b-479c-5684-b2ef-9d7a46dd931e"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [compat]
-julia = "1.6.3"
+julia = "1.8"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
