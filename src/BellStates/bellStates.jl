@@ -69,8 +69,7 @@ Return maximally entangled pure state of a bipartite system of dimension ``d^2``
 """
 function createBipartiteMaxEntangled(d)
 
-    maxE = proj(max_entangled(d * d))
-    return maxE
+    return proj(max_entangled(d * d))
 
 end
 
