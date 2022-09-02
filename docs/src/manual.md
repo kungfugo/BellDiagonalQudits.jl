@@ -12,7 +12,7 @@ julia> using BellDiagonalQudits
 ```
 
 ## State generation
-First, create a basis of maximally entangled Bell states in `d` dimensions, indexed by the corresponding Weyl operator and sample some random states represented by ``d^2`` coordinates in the "enclosurePolytope", which is known to contain all PPT states.
+Create a basis of maximally entangled Bell states in `d` dimensions, indexed by the corresponding Weyl operator and sample some random states represented by ``d^2`` coordinates in the "enclosurePolytope", which is known to contain all PPT states.
 
 \
 **Bell basis generation**
@@ -20,14 +20,14 @@ First, create a basis of maximally entangled Bell states in `d` dimensions, inde
 Create a basis and a dictionary to relate the ``d^2`` coordinates of a Bell diagonal state to the double indices ``(k,l)`` of the corresponding Weyl operator ``W_{k,l}``. 
 
 ```julia   
-myBasis = createStandardIndexBasis(d)
+myBasis = createStandardIndexBasis(d,10)
 myBasisDict = createDictionaryFromBasis(myBasis)
 ```
 
 \
 **State sampling**
 
-Create representations of quantum states by specifying the coordinates of the state in the created Bell basis.
+Create uniformly distributed random representations of quantum states by specifying the coordinates of the state in the created Bell basis.
 
 ```julia   
 myCoordStates = createRandomCoordStates(100, d, "enclosurePolytope")
@@ -45,13 +45,13 @@ Now create the analysis objects required for the entanglement classification.
 \
 **Separable kernel polytope**
 
-The kernel polytope is known to contain only points that relate separable states via their Bell coordinates.
+The kernel polytope is known to contain only Bell coordinates that relate to separable states.
 
 ```julia       
 mySepKernel = createKernelPolytope(d, myBasis)
 ```
 
-If additional separable `DensityState`s `newSepDensityStates` are known, the kernel polytope can be exteded to improve the kernel check for separability.
+If additional separable states `newSepDensityStates` are known, the kernel polytope can be exteded to improve the kernel check for separability.
 
 ```julia   
 myExtendedKernel = extendSepVPolytopeBySepStates(tovrep(mySepKernel), newSepDensityStates)
@@ -60,7 +60,7 @@ myExtendedKernel = extendSepVPolytopeBySepStates(tovrep(mySepKernel), newSepDens
 \
 **Weyl operator basis**
 
-Use the Weyl operators to construct a basis of the space of `(d^2,d^2)` matrices.
+Use the Weyl operators to construct a basis of the space of ``(d^2,d^2)`` matrices.
 
 ```julia   
 myWeylOperatorBasis = createBipartiteWeylOpereatorBasis(d)    
@@ -68,7 +68,7 @@ myWeylOperatorBasis = createBipartiteWeylOpereatorBasis(d)
 \
 **Mutually unbiased bases (MUBs)**
 
-Create the standard MUBS generated via the Weyl operators.
+Create the MUBS using the Weyl operators to construct them from the computational basis.
 
 ```julia   
 myMub = createStandardMub(d)
@@ -80,13 +80,13 @@ myMub = createStandardMub(d)
 Generate entanglement class conserving symmetries represented as permutations of state coordinates in the Bell basis.
 
 ```julia   
-mySyms = generateAllSymmetries(myBasis)
+mySyms = generateAllSymmetries(myBasis, d)
 ```
 
 \
 **Entanglement witnesses**
 
-Generate `n` numerical entanglement witnesses by numerical optimization over the set of separable states. Use `iterations` runs to improve the determined upper and lower bounds. Other optimization methods than `NelderMead` can be used.
+Generate `n` numerical entanglement witnesses by numerical optimization over the set of separable states. Use `iterations` runs to improve the determined upper and lower bounds. Other optimization methods than the default `NelderMead` can be used.
 
 ```julia   
 myOptimizedEWs = createRandomBoundedWits(
@@ -94,9 +94,8 @@ myOptimizedEWs = createRandomBoundedWits(
     myBasis,
     n,
     true,
-    50,
-    NelderMead
-)
+    50
+    )
 ```
 Represent entanglement witnesses via their coordinates in Bell Basis.
 
@@ -107,7 +106,7 @@ myOptimizedCoodEWs = map(x->getBoundedCoordEw(x), myOptimizedEWs)
 
 **Analysis specification**
 
-Specify which entanglement checks to use. See properties of type `AnalysisSpecification`.
+Specify, which entanglement checks to use. See properties of type `AnalysisSpecification`.
  ```julia   
 myAnaSpec = AnalysisSpecification(
     true,
@@ -124,7 +123,7 @@ myAnaSpec = AnalysisSpecification(
 \
 **Apply analysis to all generated states**
 
-If `useSymmetries == false` in the analysis specification `myAnaSpec` use `analyseCoordState`, else use `symAnalyseCoordState`.
+If `useSymmetries == false` in the analysis specification `myAnaSpec` use `analyseCoordState`, else use `symAnalyseCoordState` to include the symmetry analysis.
 ```julia   
 f(x) = analyseCoordState(
     d,
@@ -144,5 +143,9 @@ f(x) = analyseCoordState(
 Finally use analysis results to set `CoordState.eClass` to assign the entanglement class to the states.
 
 ```julia
-classifyAnalyzedStates!(myAnalysedStates)
+classifyAnalyzedStates!(myAnalysedCoordStates)
+```
+Identify e.g. bound entangled states as 
+```julia
+myBoundStates = filter(x->x.coordState.eClass == "BOUND", myAnalysedCoordStates)
 ```
