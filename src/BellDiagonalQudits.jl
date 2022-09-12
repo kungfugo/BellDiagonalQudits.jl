@@ -10,7 +10,7 @@ using Optim
 
 export
     CoordState, StandardBasis, DensityState, BoundedCoordEW, AnalysisSpecification, eClassConflictException, AnalysedCoordState,
-    createRandomCoordStates, createStandardIndexBasis, createDensityState, createBipartiteWeylOpereatorBasis,
+    uniformBellSampler, createRandomCoordStates, createStandardIndexBasis, createDensityState, createBipartiteWeylOpereatorBasis,
     createKernelPolytope, extendSepVPolytopeBySepStates,
     createRandomBoundedWits, getBoundedCoordEw,
     generateAllSymmetries, getSymCoords,

@@ -30,7 +30,7 @@ myBasisDict = createDictionaryFromBasis(myBasis)
 Create uniformly distributed random representations of quantum states by specifying the coordinates of the state in the created Bell basis.
 
 ```julia   
-myCoordStates = createRandomCoordStates(100, d, "enclosurePolytope")
+myCoordStates = uniformBellSampler(100, d, "enclosurePolytope")
 ```
 
 Create `DensityState`s including the density matrix represented in the computational basis.
