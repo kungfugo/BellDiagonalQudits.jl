@@ -1,4 +1,36 @@
 """
+    uniformBellSampler(n, d, object="magicSimplex", precision=10)
+
+Create array of `n` uniformly distributed ``d^2`` Bell diagonal states represented as `CoordState` rounded to ``precision`` digits. 
+
+Use `object="enclosurePolytope"` to create CoordStates in the enclosure polytope, having all ``coords \leq 1/d``.
+"""
+function uniformBellSampler(n, d, object="magicSimplex", precision=10)
+
+    productParams = Array{CoordState}(undef, 0)
+    nFound = 0
+
+    while nFound < n
+
+        u = zeros(d^2 + 1)
+        u[2:(d^2)] = sort(vec(rand(Uniform(0, 1), 1, (d^2 - 1))))
+        u[d^2+1] = 1
+
+        coords = round.(diff(u), digits=precision)
+
+        if object != "enclosurePolytope" || all(x -> x <= 1 / d, coords)
+            push!(productParams, CoordState(coords, "UNKNOWN"))
+            nFound += 1
+        end
+
+    end
+
+    return productParams
+
+end
+
+
+"""
     createRandomCoordStates(nSamples, d, object="magicSimplex", precision=10, roundToSteps::Int=0, nTriesMax=10000000)
 
 Return an array of `nSamples` `` d^2 `` dimensional CoordStates. 
