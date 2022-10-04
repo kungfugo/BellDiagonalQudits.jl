@@ -22,15 +22,15 @@ bibliography: paper.bib
 # Summary
 
 In the field of quantum information and technology, entanglement of quantum
-states called qudits is regarded as ressource for quantum and classical
+states called qudits is regarded as resource for quantum and classical
 information processing tasks and allows the use of algorithms with better
 performance than any classical algorithm for certain applications like
 superdense coding, teleportation or computing. Despite its theoretical and
-practial relevance, there is now general method to determine whether a given
+practical relevance, there is no general method to determine whether a given
 quantum state is entangled or not due to a special and hard to detect form of
 entanglement called bound entanglement. Bipartite Bell states are maximally
 entangled states of two qudits and are of high relevance for application in
-quantum technologies. Mixtures of those states can be entangled, including it's
+quantum technologies. Mixtures of those states can be entangled, including its
 bound form, or separable. Leveraging their special properties, Bell states can
 be numerically generated and analyzed for their entanglement properties by
 various methods implemented in this Julia package.
@@ -46,27 +46,27 @@ entanglement or separability. Leveraging geometric properties of a certain class
 of mixed Bell states that are related by Weyl transformations,
 `BellDiagonalQudits` combines known analytical results [@baumgartner] and
 numerical methods for quantum state representation and analysis. It leverages
-and depends on the Julia packages `QuantumInformation`, convex sets of
-`LazySets` [@lazysets] and optimization of `Optim` [@optim].
+and depends on the Julia package `QuantumInformation`, the convex sets of
+`LazySets` [@lazysets] and the optimization methods of `Optim` [@optim].
 
 `BellDiagonalQudits` was designed to be used by researchers in quantum science
 and quantum information theory. It has already been used in multiple scientific
 publications [@PoppACS; @PoppBoundEntComparison] in the context of entanglement
 classification and detection of bipartite qudits in dimension three and
 four. The combination of efficient state generation via random sampling or
-determenistic procedures and implementation of both frequently used and
+deterministic procedures and implementation of both frequently used and
 specialized entanglement and separability detectors supports the research of
 entanglement in several ways. From a general point of view, entangled Bell
-states are well accessible for powerfull methods of entanglement and
+states are well accessible for powerful methods of entanglement and
 separability detection, leveraging their symmetries and geometric properties. It
 was shown in [@PoppACS; @PoppBoundEntComparison; @hiesmayr] that a significant
-share of the analyzed group of mixed Bell states related by Weyl transformations
-are bound entangled, offering a systematic way to generate and investigatie
+share of the group of mixed Bell states related by Weyl transformations
+are bound entangled, offering a systematic way to generate and investigate
 those states with respect to the separability problem in different
 dimensions. In addition to general methods applicable to any Bell diagonal state,
 `BellDiagonalQudits` provides features to generate the special symmetries of Bell
 states that are related via Weyl transformations. These symmetries are leveraged
-for entanglement classification and the numerical generation of specialized
+for improved entanglement classification and the numerical generation of specialized
 entanglement witnesses in any dimension. Furthermore, the implemented methods
 of `BellDiagonalQudits` can be used in various quantum information processing
 tasks involving Bell diagonal states in any dimension like Quantum Key Distribution
@@ -79,7 +79,7 @@ states in the context of quantum channels, entanglement measures or entropy.
 The methods of `BellDiagonalQudits` to generate and analyze Bell diagonal states
 in general dimension are based on analytical properties summarized in
 [@baumgartner]. Extensions of those methods and efficient implementation in
-`BellDiagonaQudits` enabled the detailed analysis [@PoppACS] of Bell diagonal
+`BellDiagonalQudits` enabled the detailed analysis [@PoppACS] of Bell diagonal
 qudits in three dimensions (qutrits), providing an operational solution to the
 separability problem for those states. Additionally the relative shares of
 separable and (bound) entangled states were precisely determined among the Bell
@@ -95,7 +95,7 @@ documentation is available at [Link
 documentation](https://kungfugo.github.io/BellDiagonalQudits.jl/dev/) and
 provides examples of usage.
 
-# Acknowledgements
+# Acknowledgments
 
 I acknowledge support from Beatrix C. Hiesmayr for review and validation of
 implemented methods.
