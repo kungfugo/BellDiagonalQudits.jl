@@ -1,4 +1,5 @@
---- title: 'BellDiagonalQudits: A package for entanglement analyses of mixed
+--- 
+title: 'BellDiagonalQudits: A package for entanglement analyses of mixed
 maximally entangled qudits' tags:
 
 - Julia
@@ -14,7 +15,9 @@ maximally entangled qudits' tags:
 - name: Faculty of Physics, University of Vienna, Währingerstrasse 17, 1090,
   Vienna, Austria index: 1
 
-date: 20 September 2022 bibliography: paper.bib ---
+date: 20 September 2022 
+bibliography: paper.bib 
+---
 
 # Summary
 
@@ -60,12 +63,16 @@ was shown in [@PoppACS; @PoppBoundEntComparison; @hiesmayr] that a significant
 share of the analyzed group of mixed Bell states related by Weyl transformations
 are bound entangled, offering a systematic way to generate and investigatie
 those states with respect to the separability problem in different
-dimensions. Furthermore, the implemented methods of `BellDiagonalQudits` can be
-used in various quantum information processing tasks involving Bell diagonal
-states in any dimension like Quantum Key Distribution or entanglement
-verification. `BellDiagonalQudits` uses and integrates well with the general
-interface of `QuantumInformation` allowing the investigation of Bell states in
-the context of quantum channels, entanglement measures or entropy.
+dimensions. In addition to general methods applicable to any Bell diagonal states,
+`BellDiagonalQudits` provides features to generate the special symmetries of Bell
+states that are related via Weyl transformations. These symmetries are leveraged
+for entanglement classification and the numerical generation of specialized
+entanglement witnesses in any dimension. Furthermore, the implemented methods
+of `BellDiagonalQudits` can be used in various quantum information processing
+tasks involving Bell diagonal states in any dimension like Quantum Key Distribution
+or entanglement verification. `BellDiagonalQudits` uses and integrates well with
+the general interface of `QuantumInformation` allowing the investigation of Bell
+states in the context of quantum channels, entanglement measures or entropy.
 
 # Relation to research projects
 
