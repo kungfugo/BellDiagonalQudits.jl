@@ -1,22 +1,22 @@
---- 
-title: 'BellDiagonalQudits: A package for entanglement analyses of mixed
-maximally entangled qudits' tags:
-
-- Julia
-- quantum information
-- quantum physics
-- entanglement
-- separability problem
-- Bell states
-  authors:
-- name: Christopher Popp orcid: 0000-0002-2352-3731 equal-contrib: true
-  affiliation: 1
-  affiliations:
-- name: Faculty of Physics, University of Vienna, Währingerstrasse 17, 1090,
-  Vienna, Austria index: 1
-
-date: 20 September 2022 
-bibliography: paper.bib 
+---
+title: "BellDiagonalQudits: A package for entanglement analyses of mixed maximally entangled qudits"
+tags:
+  - Julia
+  - quantum information
+  - quantum physics
+  - entanglement
+  - separability problem
+  - Bell states
+authors:
+  - name: Christopher Popp
+    orcid: 0000-0002-2352-3731
+    equal-contrib: true
+    affiliation: 1
+affiliations:
+  - name: Faculty of Physics, University of Vienna, Währingerstrasse 17, 1090, Vienna Austria
+    index: 1
+date: 20 September 2022
+bibliography: paper.bib
 ---
 
 # Summary
