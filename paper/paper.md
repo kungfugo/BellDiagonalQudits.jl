@@ -63,7 +63,7 @@ was shown in [@PoppACS; @PoppBoundEntComparison; @hiesmayr] that a significant
 share of the analyzed group of mixed Bell states related by Weyl transformations
 are bound entangled, offering a systematic way to generate and investigatie
 those states with respect to the separability problem in different
-dimensions. In addition to general methods applicable to any Bell diagonal states,
+dimensions. In addition to general methods applicable to any Bell diagonal state,
 `BellDiagonalQudits` provides features to generate the special symmetries of Bell
 states that are related via Weyl transformations. These symmetries are leveraged
 for entanglement classification and the numerical generation of specialized
