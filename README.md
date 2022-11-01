@@ -15,6 +15,10 @@ This package provides methods to sample states, to numerically generate entangle
 - Generate numerical entanglement witnesses for Bell diagonal states
 - Generate entanglement conserving symmetries and use them for entanglement classification
 
+## Documentation
+
+Documentation is available at [https://kungfugo.github.io/BellDiagonalQudits.jl/dev/](https://kungfugo.github.io/BellDiagonalQudits.jl/dev/)
+
 ## References
 
 [1] Popp, C., Hiesmayr, B.C., _Almost complete solution for the NP-hard separability problem of Bell diagonal qutrits_, Sci Rep 12, 12472 (2022), [https://doi.org/10.1038/s41598-022-16225-z](https://doi.org/10.1038/s41598-022-16225-z)
