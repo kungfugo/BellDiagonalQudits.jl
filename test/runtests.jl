@@ -4,11 +4,14 @@ using LazySets: tovrep, vertices_list
 using LinearAlgebra: Diagonal
 
 testStandardBasis3 = createStandardIndexBasis(3, 10)
+testStandardBasis4 = createStandardIndexBasis(4, 10)
 testStandardKernel3 = createKernelPolytope(3, testStandardBasis3)
+testStandardKernel4 = createKernelPolytope(4, testStandardBasis4)
 testExtKernel3 = extendSepVPolytopeBySepStates(tovrep(testStandardKernel3), [createDensityState(CoordState(1 / 9 * ones(9), "SEP"), testStandardBasis3)], 10)
 testBipartiteWeylBasis3 = createBipartiteWeylOpereatorBasis(3)
 testDictionaries3 = createDictionaryFromBasis(testStandardBasis3)
 testMub3 = createStandardMub(3)
+testMub4 = createStandardMub(4)
 testRandomCoordWits = map(x -> getBoundedCoordEw(x), createRandomBoundedWits(3, testStandardBasis3, 2, true, 20))
 testSyms3 = generateAllSymmetries(testStandardBasis3, 3)
 testAnaSpec = AnalysisSpecification(true, true, true, true, true, true, true, false)
@@ -17,6 +20,8 @@ testAnaSpecSym = AnalysisSpecification(true, true, true, true, true, true, true,
 @testset "BellDiagonalQudits.jl" begin
 
     # BellDiagonalQudits/src/BellStates
+    @test length(uniformBellSampler(10, 3)) == 10
+    @test length(uniformBellSampler(10, 3, "enclosurePolytope")) == 10
     @test length(createRandomCoordStates(10, 3, "magicSimplex")) == 10
     @test length(createStandardIndexBasis(4, 10).basis) == 16
     @test testDictionaries3[1][2, 1] == 6
@@ -28,6 +33,7 @@ testAnaSpecSym = AnalysisSpecification(true, true, true, true, true, true, true,
 
     # BellDiagonalQudits/src/SeparableStates
     @test length(vertices_list(tovrep(testStandardKernel3))) == 12
+    @test length(vertices_list(tovrep(testStandardKernel4))) == 24
     @test length(vertices_list(testExtKernel3)) == 13
 
     # BellDiagonalQudits/src/Symmetries
@@ -41,6 +47,7 @@ testAnaSpecSym = AnalysisSpecification(true, true, true, true, true, true, true,
     ]
 
     # BellDiagonalQudits/src/EntanglementChecks
+    @test length(testMub4) == 5
     @test all(
         map(
             i -> getfield(
