@@ -15,6 +15,20 @@ This package provides methods to sample states, to numerically generate entangle
 - Generate numerical entanglement witnesses for Bell diagonal states
 - Generate entanglement conserving symmetries and use them for entanglement classification
 
+## Installation
+
+BellDiagonalQudits can be installed using the Julia package manager. From the Julia REPL, type `]` to enter the Pkg REPL mode and run
+
+```
+pkg> add BellDiagonalQudits
+```
+
+The package can be loaded via
+
+```julia
+julia> using BellDiagonalQudits
+```
+
 ## Documentation
 
 Documentation is available at [https://kungfugo.github.io/BellDiagonalQudits.jl/dev/](https://kungfugo.github.io/BellDiagonalQudits.jl/dev/)
