@@ -6,6 +6,7 @@
 [ci-url]: https://github.com/kungfugo/BellDiagonalQudits.jl/actions/workflows/CI.yml
 [cov-img]: http://codecov.io/github/kungfugo/BellDiagonalQudits.jl/coverage.svg
 [cov-url]: https://codecov.io/github/kungfugo/BellDiagonalQudits.jl
+[docs-dev-img]: https://img.shields.io/badge/docs-dev-blue.svg
 [docs-dev-url]: https://kungfugo.github.io/BellDiagonalQudits.jl/dev/
 
 # BellDiagonalQudits.jl
