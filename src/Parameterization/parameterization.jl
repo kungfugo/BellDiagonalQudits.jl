@@ -1,9 +1,9 @@
 """
-    createRedParamMatrixFromVector(x, d)
+    create_red_parmatrix_from_parvector(x, d)
 
 Return parameter matrix for pure state parameterization from parameter vector `x` of length ``2(d-1)``.
 """
-function createRedParamMatrixFromVector(x, d)
+function create_red_parmatrix_from_parvector(x, d)
 
     if length(x) != (2 * (d - 1))
         throw("Param vector and dimension mismatch")
@@ -30,11 +30,11 @@ end
 
 
 """
-    compParUnitary(λ, d)
+    create_comppar_unitary(λ, d)
 
 Return `d` dimensional prameterized unitary matrix from parameter matrix `λ`.
 """
-function compParUnitary(λ, d)
+function create_comppar_unitary(λ, d)
 
     # create onb
     P = Array{
@@ -71,14 +71,14 @@ function compParUnitary(λ, d)
 end
 
 """
-    getCompRedParUnitaryFromVector(x, d)
+    get_comppar_unitary_from_parvector(x, d)
 
 Return parameterized unitatry matrix U of dimension `d` and rank 1 from parameter vector `x` with ``2(d-1)`` elements. 
 
 Using the first basis state of the computational basis with density matrix ``e_1``, any pure state ``\\rho`` can be generated as ``\\rho = U e_1 U^\\dagger``.
 """
-function getCompRedParUnitaryFromVector(x, d)
-    λ = createRedParamMatrixFromVector(x, d)
-    U = compParUnitary(λ, d)
+function get_comppar_unitary_from_parvector(x, d)
+    λ = create_red_parmatrix_from_parvector(x, d)
+    U = create_comppar_unitary(λ, d)
     return U
 end

@@ -1,9 +1,9 @@
 """
-kernelCheck(coordState::CoordState, kernelPolytope::Union{HPolytope{Float64,Array{Float64,1}},VPolytope{Float64,Array{Float64,1}}})
+kernel_check(coordState::CoordState, kernelPolytope::Union{HPolytope{Float64,Array{Float64,1}},VPolytope{Float64,Array{Float64,1}}})
 
 Return `true` if the Euclidean coordinates of the `coordState`` are contained in the `kernelPolytope` represented in V- or H-representation.
 """
-function kernelCheck(coordState::CoordState, kernelPolytope::Union{HPolytope{Float64,Array{Float64,1}},VPolytope{Float64,Array{Float64,1}}})::Bool
+function kernel_check(coordState::CoordState, kernelPolytope::Union{HPolytope{Float64,Array{Float64,1}},VPolytope{Float64,Array{Float64,1}}})::Bool
 
     if coordState.coords ∈ kernelPolytope
         return true
@@ -14,28 +14,28 @@ function kernelCheck(coordState::CoordState, kernelPolytope::Union{HPolytope{Flo
 end
 
 """
-    pptCheck(coordState::CoordState, standardBasis::StandardBasis, precision=10)
+    ppt_check(coordState::CoordState, standardBasis::StandardBasis, precision=10)
 
 Return `true`` if the `coordState` defined via the `standardBasis` has positive partial transposition in the given `precision`.
 """
-function pptCheck(coordState::CoordState, standardBasis::StandardBasis, precision=10)::Bool
+function ppt_check(coordState::CoordState, standardBasis::StandardBasis, precision=10)::Bool
 
-    densityState = createDensityState(coordState, standardBasis)
+    densityState = create_densitystate(coordState, standardBasis)
     ρ = densityState.densityMatrix
     d = Int(sqrt(size(ρ, 1)))
 
-    return isPPT(ρ, d, precision)
+    return isppt(ρ, d, precision)
 
 end
 
 """
-    realignmentCheck(coordState::CoordState, standardBasis::StandardBasis, precision=10)
+    realignment_check(coordState::CoordState, standardBasis::StandardBasis, precision=10)
 
 Return `true`` if the realigned `coordState` defined via the `standardBasis` has trace norm ``> 1`` in the given `precision`.
 """
-function realignmentCheck(coordState::CoordState, standardBasis::StandardBasis, precision=10)::Bool
+function realignment_check(coordState::CoordState, standardBasis::StandardBasis, precision=10)::Bool
 
-    densityState = createDensityState(coordState, standardBasis)
+    densityState = create_densitystate(coordState, standardBasis)
     ρ = densityState.densityMatrix
 
     r_ρ = reshuffle(ρ)
@@ -45,14 +45,14 @@ function realignmentCheck(coordState::CoordState, standardBasis::StandardBasis, 
 end
 
 """
-    numericEwCheck(coordState::CoordState, boundedEWs::Array{BoundedCoordEW}, relUncertainity::Float64)
+    numeric_ew_check(coordState::CoordState, boundedEWs::Array{BoundedCoordEW}, relUncertainity::Float64)
 
 Return `true` if any entanglement witness of `boundedEWs` detects the density matrix `ρ` as entangled.
 
 An entanglement witness ``E`` of `boundedEWs` detects `ρ`, if the scalar product ``\\rho``.`coords` ``\\cdot E``.`coords` is not in [`lowerBound`, `upperBound`].
 If a `relUncertainity` is given, the violation relative to `upperBound-lowerBound` needs to exceed `relUncertainity`` to detect entanglement. 
 """
-function numericEwCheck(coordState::CoordState, boundedEWs::Array{BoundedCoordEW}, relUncertainity=0.0)::Bool
+function numeric_ew_check(coordState::CoordState, boundedEWs::Array{BoundedCoordEW}, relUncertainity=0.0)::Bool
 
     anyEntanglementFound = false
 
@@ -79,14 +79,14 @@ function numericEwCheck(coordState::CoordState, boundedEWs::Array{BoundedCoordEW
 end
 
 """
-    concurrenceQpCheck(coordState::CoordState, d, dictionaries, precision=10)
+    concurrence_qp_check(coordState::CoordState, d, dictionaries, precision=10)
 
 Return `true` if the quasi-pure concurrence (see `concurrence.jl`) is positive for a `coordState` and given basis `dictionaries` in the given `precision`.
 """
-function concurrenceQpCheck(coordState::CoordState, d, dictionaries, precision=10)::Bool
+function concurrence_qp_check(coordState::CoordState, d, dictionaries, precision=10)::Bool
 
     coords = coordState.coords
-    if round(getConcurrenceQP(coords, d, dictionaries), digits=precision) > 0
+    if round(get_concurrence_qp(coords, d, dictionaries), digits=precision) > 0
         return true
     else
         return false
@@ -95,15 +95,15 @@ function concurrenceQpCheck(coordState::CoordState, d, dictionaries, precision=1
 end
 
 """
-    mubCheck(coordState::CoordState, d, stdBasis::StandardBasis, mubSet::Vector{Vector{Vector{ComplexF64}}})
+    mub_check(coordState::CoordState, d, stdBasis::StandardBasis, mubSet::Vector{Vector{Vector{ComplexF64}}})
 
 Return `true` if the sum of mutual predictibilities for a `mubSet` (see `mub.jl`) of dimension `d` exceeds ``2`` for a `coordState` and given `standardBasis`.
 """
-function mubCheck(coordState::CoordState, d, stdBasis::StandardBasis, mubSet::Vector{Vector{Vector{ComplexF64}}})::Bool
+function mub_check(coordState::CoordState, d, stdBasis::StandardBasis, mubSet::Vector{Vector{Vector{ComplexF64}}})::Bool
 
-    ρ = createDensityState(coordState, stdBasis).densityMatrix
+    ρ = create_densitystate(coordState, stdBasis).densityMatrix
 
-    if calculateCorrelation(d, mubSet, ρ) > 2
+    if calculate_mub_correlation(d, mubSet, ρ) > 2
         return true
     else
         return false
@@ -112,13 +112,13 @@ function mubCheck(coordState::CoordState, d, stdBasis::StandardBasis, mubSet::Ve
 end
 
 """
-    spinRepCheck(coordState::CoordState, stdBasis::StandardBasis, bipartiteWeylBasis::Vector{Array{Complex{Float64},2}}, precision=10)
+    spinrep_check(coordState::CoordState, stdBasis::StandardBasis, bipartiteWeylBasis::Vector{Array{Complex{Float64},2}}, precision=10)
 
 Return `true` and detects a `coordState` for a `standardBasis` as separbale, if its coefficiencts in the `bipartiteWeylBasis` have 1-norm smaller than ``2`` in given `precision`.
 """
-function spinRepCheck(coordState::CoordState, stdBasis::StandardBasis, bipartiteWeylBasis::Vector{Array{Complex{Float64},2}}, precision=10)
+function spinrep_check(coordState::CoordState, stdBasis::StandardBasis, bipartiteWeylBasis::Vector{Array{Complex{Float64},2}}, precision=10)
 
-    ρ = createDensityState(coordState, stdBasis).densityMatrix
+    ρ = create_densitystate(coordState, stdBasis).densityMatrix
     spinRepCoefficients = map(x -> tr(ρ * x'), bipartiteWeylBasis)
 
     absCoeffs = map(x -> real(sqrt(x' * x)), spinRepCoefficients)
@@ -127,7 +127,7 @@ function spinRepCheck(coordState::CoordState, stdBasis::StandardBasis, bipartite
 
 end
 """
-    analyseCoordState(
+    analyse_coordstate(
         d,
         coordState::CoordState,
         anaSpec::AnalysisSpecification,
@@ -146,7 +146,7 @@ Return an `AnalysedCoordState` for a `coordState` in `d` dimensions based on the
 If an entanglement check should not be carried out or if an analysis object in not passed as variable, the corresponding property in `anaSpec` needs to be `false`. 
 In this case, return the corresponding property of the `AnalysedCoordState` as `missing`.
 """
-function analyseCoordState(
+function analyse_coordstate(
     d,
     coordState::CoordState,
     anaSpec::AnalysisSpecification,
@@ -172,38 +172,38 @@ function analyseCoordState(
     )
 
     # Kernel check
-    if anaSpec.kernelCheck && !ismissing(kernelPolytope)
-        anaCoordState.kernel = kernelCheck(coordState, kernelPolytope)
+    if anaSpec.kernel_check && !ismissing(kernelPolytope)
+        anaCoordState.kernel = kernel_check(coordState, kernelPolytope)
     end
 
     # Spinrep check
     if anaSpec.spinrepCheck && !ismissing(stdBasis) && !ismissing(bipartiteWeylBasis)
-        anaCoordState.spinrep = spinRepCheck(coordState, stdBasis, bipartiteWeylBasis, precision)
+        anaCoordState.spinrep = spinrep_check(coordState, stdBasis, bipartiteWeylBasis, precision)
     end
 
     # PPT check
-    if anaSpec.pptCheck && !ismissing(stdBasis)
-        anaCoordState.ppt = pptCheck(coordState, stdBasis, precision)
+    if anaSpec.ppt_check && !ismissing(stdBasis)
+        anaCoordState.ppt = ppt_check(coordState, stdBasis, precision)
     end
 
     # Realign check 
-    if anaSpec.realignmentCheck && !ismissing(stdBasis)
-        anaCoordState.realign = realignmentCheck(coordState, stdBasis, precision)
+    if anaSpec.realignment_check && !ismissing(stdBasis)
+        anaCoordState.realign = realignment_check(coordState, stdBasis, precision)
     end
 
     # Concurrence QP check 
-    if anaSpec.concurrenceQpCheck && !ismissing(dictionaries)
-        anaCoordState.concurrence = concurrenceQpCheck(coordState, d, dictionaries, precision)
+    if anaSpec.concurrence_qp_check && !ismissing(dictionaries)
+        anaCoordState.concurrence = concurrence_qp_check(coordState, d, dictionaries, precision)
     end
 
     # Mub check 
-    if anaSpec.mubCheck && !ismissing(stdBasis) && !ismissing(mubSet)
-        anaCoordState.mub = mubCheck(coordState, d, stdBasis, mubSet)
+    if anaSpec.mub_check && !ismissing(stdBasis) && !ismissing(mubSet)
+        anaCoordState.mub = mub_check(coordState, d, stdBasis, mubSet)
     end
 
     # numericEW check 
-    if anaSpec.numericEwCheck && !ismissing(boundedEWs)
-        anaCoordState.numericEW = numericEwCheck(coordState, boundedEWs, relUncertainity)
+    if anaSpec.numeric_ew_check && !ismissing(boundedEWs)
+        anaCoordState.numericEW = numeric_ew_check(coordState, boundedEWs, relUncertainity)
     end
 
     return anaCoordState
@@ -211,7 +211,7 @@ function analyseCoordState(
 end
 
 """
-    symAnalyseCoordState(
+    sym_analyse_coordstate(
         d,
         coordState::CoordState,
         symmetries::Array{Permutation},
@@ -231,7 +231,7 @@ Return an `AnalysedCoordState` for a `coordState` in `d` dimensions based on the
 If an entanglement check should not be carried out or if an analysis object in not passed as variable, the corresponding property in `anaSpec` needs to be `false`. 
 In this case, return the corresponding property of the `AnalysedCoordState` as `missing`.
 """
-function symAnalyseCoordState(
+function sym_analyse_coordstate(
     d,
     coordState::CoordState,
     symmetries::Array{Permutation},
@@ -273,19 +273,19 @@ function symAnalyseCoordState(
     if length(coordState.coords) == length(unique(coordState.coords))
         symCoordStates = unique(map(
             x -> CoordState(x, coordState.eClass),
-            getSymCoords(coordState.coords, symmetries)
+            get_symcoords(coordState.coords, symmetries)
         ))
     else
         symCoordStates = map(
             x -> CoordState(x, coordState.eClass),
-            getSymCoords(coordState.coords, symmetries)
+            get_symcoords(coordState.coords, symmetries)
         )
     end
 
     # Analyse all symmetric states
     for symCoordState in symCoordStates
 
-        analysedSymCoordState = analyseCoordState(
+        analysedSymCoordState = analyse_coordstate(
             d,
             symCoordState,
             copyAnaSpec,
@@ -301,12 +301,12 @@ function symAnalyseCoordState(
 
         # Update copyAnaSpecs for sym group: Skip analysis for other group states if check was successful for state
         # Kernel check implies sep in kernel which is preserved ==> Keep searching if enabled and missing
-        if copyAnaSpec.kernelCheck
+        if copyAnaSpec.kernel_check
             kernelCheckPassed = !ismissing(analysedSymCoordState.kernel)
             if kernelCheckPassed
                 groupKernel = analysedSymCoordState.kernel
             end
-            copyAnaSpec.kernelCheck = !kernelCheckPassed
+            copyAnaSpec.kernel_check = !kernelCheckPassed
         end
 
         # Spinrep check implies SEP ==> Keep searching if enabled and (false or missing)
@@ -322,16 +322,16 @@ function symAnalyseCoordState(
         end
 
         # Ppt check determines PPT/NPT which is preserved under symmetry ==> Keep searching if enabled and missing
-        if copyAnaSpec.pptCheck
+        if copyAnaSpec.ppt_check
             pptCheckPassed = !ismissing(analysedSymCoordState.ppt)
             if pptCheckPassed
                 groupPpt = analysedSymCoordState.ppt
             end
-            copyAnaSpec.pptCheck = !pptCheckPassed
+            copyAnaSpec.ppt_check = !pptCheckPassed
         end
 
         # Realignment check implies entanglement which is preserved under symmetry ==> Keep searching if enabled and (false or missing)
-        if copyAnaSpec.realignmentCheck
+        if copyAnaSpec.realignment_check
             realignmentCheckDone = !ismissing(analysedSymCoordState.realign)
             realignmentCheckPassed = !ismissing(analysedSymCoordState.realign) && analysedSymCoordState.realign
             if realignmentCheckPassed
@@ -339,11 +339,11 @@ function symAnalyseCoordState(
             elseif realignmentCheckDone
                 groupRealign = false
             end
-            copyAnaSpec.realignmentCheck = !realignmentCheckPassed
+            copyAnaSpec.realignment_check = !realignmentCheckPassed
         end
 
         # Concurrence check implies entanglement which is preserved under symmetry ==> Keep searching if enabled and (false or missing)
-        if copyAnaSpec.concurrenceQpCheck
+        if copyAnaSpec.concurrence_qp_check
             concurrenceQpCheckDone = !ismissing(analysedSymCoordState.concurrence)
             concurrenceQpCheckPassed = !ismissing(analysedSymCoordState.concurrence) && analysedSymCoordState.concurrence
             if concurrenceQpCheckPassed
@@ -351,11 +351,11 @@ function symAnalyseCoordState(
             elseif concurrenceQpCheckDone
                 groupConcurrence = false
             end
-            copyAnaSpec.concurrenceQpCheck = !concurrenceQpCheckPassed
+            copyAnaSpec.concurrence_qp_check = !concurrenceQpCheckPassed
         end
 
         # Mub check implies entanglement which is preserved under symmetry ==> Keep searching if enabled and (false or missing)
-        if copyAnaSpec.mubCheck
+        if copyAnaSpec.mub_check
             mubCheckDone = !ismissing(analysedSymCoordState.mub)
             mubCheckPassed = !ismissing(analysedSymCoordState.mub) && analysedSymCoordState.mub
             if mubCheckPassed
@@ -363,12 +363,12 @@ function symAnalyseCoordState(
             elseif mubCheckDone
                 groupMub = false
             end
-            copyAnaSpec.mubCheck = !mubCheckPassed
+            copyAnaSpec.mub_check = !mubCheckPassed
         end
 
 
         # EW check implies entanglement which is preserved under symmetry ==> Keep searching if enabled and (false or missing)
-        if copyAnaSpec.numericEwCheck
+        if copyAnaSpec.numeric_ew_check
             numericEwCheckDone = !ismissing(analysedSymCoordState.numericEW)
             numericEwCheckPassed = !ismissing(analysedSymCoordState.numericEW) && analysedSymCoordState.numericEW
             if numericEwCheckPassed
@@ -376,17 +376,17 @@ function symAnalyseCoordState(
             elseif numericEwCheckDone
                 groupNumericEw = false
             end
-            copyAnaSpec.numericEwCheck = !numericEwCheckPassed
+            copyAnaSpec.numeric_ew_check = !numericEwCheckPassed
         end
 
         allDetermined = !any([
-            copyAnaSpec.kernelCheck,
+            copyAnaSpec.kernel_check,
             copyAnaSpec.spinrepCheck,
-            copyAnaSpec.pptCheck,
-            copyAnaSpec.realignmentCheck,
-            copyAnaSpec.concurrenceQpCheck,
-            copyAnaSpec.mubCheck,
-            copyAnaSpec.numericEwCheck
+            copyAnaSpec.ppt_check,
+            copyAnaSpec.realignment_check,
+            copyAnaSpec.concurrence_qp_check,
+            copyAnaSpec.mub_check,
+            copyAnaSpec.numeric_ew_check
         ])
 
         if allDetermined
@@ -410,13 +410,13 @@ function symAnalyseCoordState(
 
 end
 """
-    classifyEntanglement(analysedCoordState)
+    classify_entanglement(analysedCoordState)
 
 Return entanglement class of `analysedCoordState`. 
 
 Entanglement class can be "UNKNWON", "PPT_UNKNOWN" for PPT states that can be separable or entangled, "SEP" for separable states, "BOUND" for PPT/bound entangled states or "NPT" for NPT/free entangled states.
 """
-function classifyEntanglement(analysedCoordState)
+function classify_entanglement(analysedCoordState)
 
     class = "UNKNOWN"
 
@@ -463,20 +463,20 @@ end
 
 
 """
-    classifyAnalyzedStates!(anaCoordStates::Array{AnalysedCoordState})
+    classify_analyzed_states!(anaCoordStates::Array{AnalysedCoordState})
 
 Set entanglement class for array of `analysedCoordStates`.
 """
-function classifyAnalyzedStates!(analysedCoordStates::Array{AnalysedCoordState})
+function classify_analyzed_states!(analysedCoordStates::Array{AnalysedCoordState})
     for anaCoordState in analysedCoordStates
 
-        derivedClass = classifyEntanglement(anaCoordState)
+        derivedClass = classify_entanglement(anaCoordState)
         if derivedClass != "UNKNOWN"
             if anaCoordState.coordState.eClass == "UNKNOWN"
                 anaCoordState.coordState.eClass = derivedClass
             else
                 if anaCoordState.coordState.eClass != derivedClass
-                    throw(eClassConflictException(anaCoordState))
+                    throw(ClassConflictException(anaCoordState))
                 end
             end
         end

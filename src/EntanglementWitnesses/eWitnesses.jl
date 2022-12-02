@@ -1,9 +1,9 @@
 """
-    createRandomWitnesses(standardBasis::StandardBasis, n)
+    create_random_witnesses(standardBasis::StandardBasis, n)
 
 Return array of `n` uniformly distributed random `EntanglementWitness` represented in Bell basis `standardBasis`.
 """
-function createRandomWitnesses(standardBasis::StandardBasis, n)::Array{EntanglementWitness}
+function create_random_witnesses(standardBasis::StandardBasis, n)::Array{EntanglementWitness}
 
     basisOps = map(x -> x[3], standardBasis.basis)
     D = length(basisOps)
@@ -11,18 +11,18 @@ function createRandomWitnesses(standardBasis::StandardBasis, n)::Array{Entanglem
 
     wits = Array{EntanglementWitness}(undef, 0)
     for i in 1:n
-        push!(wits, EntanglementWitness(randomParams[i, :], Hermitian(genericVectorProduct(randomParams[i, :], basisOps))))
+        push!(wits, EntanglementWitness(randomParams[i, :], Hermitian(generic_vectorproduct(randomParams[i, :], basisOps))))
     end
 
     return wits
 end
 
 """
-    createHalfSphericWitnesses(standardBasis::StandardBasis, n)
+    create_halfspheric_witnesses(standardBasis::StandardBasis, n)
 
 Return array of `n` uniformly distributed random `EntanglementWitness` on unit sphere represented in Bell basis `standardBasis`.
 """
-function createHalfSphericWitnesses(standardBasis::StandardBasis, n)::Array{EntanglementWitness}
+function create_halfspheric_witnesses(standardBasis::StandardBasis, n)::Array{EntanglementWitness}
 
     basisOps = map(x -> x[3], standardBasis.basis)
     D = length(basisOps)
@@ -40,7 +40,7 @@ function createHalfSphericWitnesses(standardBasis::StandardBasis, n)::Array{Enta
 
     wits = Array{EntanglementWitness}(undef, 0)
     for i in 1:n
-        push!(wits, EntanglementWitness(randomParams[i], Hermitian(genericVectorProduct(randomParams[i], basisOps))))
+        push!(wits, EntanglementWitness(randomParams[i], Hermitian(generic_vectorproduct(randomParams[i], basisOps))))
     end
 
     return wits
@@ -48,17 +48,17 @@ function createHalfSphericWitnesses(standardBasis::StandardBasis, n)::Array{Enta
 end
 
 """
-    getDirectFunctionsForWitTraceOptimization(wit::EntanglementWitness, d)
+    get_direct_functions_for_wit_traceoptimization(wit::EntanglementWitness, d)
 
 Return the function and its negative that calculates ``tr \\rho`` `wit.coords`, the trace of the given witness `wit` multiplied by a parameterized seperable state ``\\rho`` in `d` dimensions.
 """
-function getDirectFunctionsForWitTraceOptimization(wit::EntanglementWitness, d)
+function get_direct_functions_for_wit_traceoptimization(wit::EntanglementWitness, d)
 
     function getTrace(λ, witOpM, d)
         λ1 = λ[1:(2*(d-1))]
         λ2 = λ[(2*(d-1)+1):end]
-        U1 = getCompRedParUnitaryFromVector(λ1, d)
-        U2 = getCompRedParUnitaryFromVector(λ2, d)
+        U1 = get_comppar_unitary_from_parvector(λ1, d)
+        U2 = get_comppar_unitary_from_parvector(λ2, d)
         U = U1 ⊗ U2
         b = proj(ket(1, d^2))
         t = real(tr(witOpM * U * b * U'))
@@ -79,11 +79,11 @@ end
 
 
 """
-    getWitnessExtrema(d, wit::EntanglementWitness, iterations, method, useConstrainedOpt=false)
+    get_witness_extrema(d, wit::EntanglementWitness, iterations, method, useConstrainedOpt=false)
 
 Return optimization (see optimization.jl) results for lower and upper bound of `d` dimensional EntanglementWitness `wit` using `iterations` runs and Optim.jl optimization method `method`.
 """
-function getWitnessExtrema(
+function get_witness_extrema(
     d,
     wit::EntanglementWitness,
     iterations,
@@ -91,8 +91,8 @@ function getWitnessExtrema(
     useConstrainedOpt=false
 )::Vector{Tuple{Float64,Vector{Float64}}}
 
-    optFuncs = getDirectFunctionsForWitTraceOptimization(wit, d)
-    optRes = directOptimization(
+    optFuncs = get_direct_functions_for_wit_traceoptimization(wit, d)
+    optRes = direct_optimization(
         optFuncs[1],
         optFuncs[2],
         method,
@@ -106,11 +106,11 @@ function getWitnessExtrema(
 end
 
 """
-    getBoundedEW(d, wit::EntanglementWitness, iterations, method=Optim.NelderMead, useConstrainedOpt=false)
+    get_bounded_ew(d, wit::EntanglementWitness, iterations, method=Optim.NelderMead, useConstrainedOpt=false)
 
 Return BoundedEW in `d` dimensions based on EntanglementWitness `wit` and `iterations` optimization runs of lower and upper bound for separable states.
 """
-function getBoundedEW(
+function get_bounded_ew(
     d,
     wit::EntanglementWitness,
     iterations,
@@ -118,7 +118,7 @@ function getBoundedEW(
     useConstrainedOpt=false
 )::BoundedEW
 
-    witExtremizer = getWitnessExtrema(
+    witExtremizer = get_witness_extrema(
         d,
         wit,
         iterations,
@@ -133,16 +133,16 @@ function getBoundedEW(
     minimizingParams = witExtremizer[1][2]
     minimizingParams1 = minimizingParams[1:(2*(d-1))]
     minimizingParams2 = minimizingParams[(2*(d-1)+1):end]
-    minimizingU1 = getCompRedParUnitaryFromVector(minimizingParams1, d)
-    minimizingU2 = getCompRedParUnitaryFromVector(minimizingParams2, d)
+    minimizingU1 = get_comppar_unitary_from_parvector(minimizingParams1, d)
+    minimizingU2 = get_comppar_unitary_from_parvector(minimizingParams2, d)
     minimizingU = minimizingU1 ⊗ minimizingU2
     minimizingDensityMatrix = Hermitian(minimizingU * b * minimizingU')
 
     maximizingParams = witExtremizer[2][2]
     maximizingParams1 = maximizingParams[1:(2*(d-1))]
     maximizingParams2 = maximizingParams[(2*(d-1)+1):end]
-    maximizingU1 = getCompRedParUnitaryFromVector(maximizingParams1, d)
-    maximizingU2 = getCompRedParUnitaryFromVector(maximizingParams2, d)
+    maximizingU1 = get_comppar_unitary_from_parvector(maximizingParams1, d)
+    maximizingU2 = get_comppar_unitary_from_parvector(maximizingParams2, d)
     maximizingU = maximizingU1 ⊗ maximizingU2
     maximizingDensityMatrix = Hermitian(maximizingU * b * maximizingU')
 
@@ -156,7 +156,7 @@ function getBoundedEW(
 
 end
 """
-    createRandomBoundedWits(
+    create_random_bounded_ews(
         d,
         standardBasis::StandardBasis,
         n,
@@ -170,7 +170,7 @@ Return array of `n` `BoundedEW` with ``d^2`` `standardBasis` coordinates uniform
 
 Use `iterations` runs to improve optimizatio with Optim.jl optimization method `method`.
 """
-function createRandomBoundedWits(
+function create_random_bounded_ews(
     d,
     standardBasis::StandardBasis,
     n,
@@ -185,24 +185,24 @@ function createRandomBoundedWits(
     end
 
     if (sphericalOnly)
-        witnessCreator = createHalfSphericWitnesses
+        witnessCreator = create_halfspheric_witnesses
     else
-        witnessCreator = createRandomWitnesses
+        witnessCreator = create_random_witnesses
     end
 
     randWits = witnessCreator(standardBasis, n)
-    boundedEWs = map(x -> getBoundedEW(d, x, iterations, method, useConstrainedOpt), randWits)
+    boundedEWs = map(x -> get_bounded_ew(d, x, iterations, method, useConstrainedOpt), randWits)
 
     return boundedEWs
 
 end
 
 """
-    getBoundedCoordEw(bEw::BoundedEW)::BoundedCoordEW
+    get_bounded_coordew(bEw::BoundedEW)::BoundedCoordEW
 
 Map BoundedEW `bEw` to corresponding `BoundedCoordEW`.
 """
-function getBoundedCoordEw(bEw::BoundedEW)::BoundedCoordEW
+function get_bounded_coordew(bEw::BoundedEW)::BoundedCoordEW
 
     return BoundedCoordEW(bEw.coords, bEw.upperBound, bEw.lowerBound, bEw.checkedIterations)
 

@@ -1,9 +1,9 @@
 """
-    isPositiveSemiDefinite(M, precision)
+    ispsd(M, precision)
 
 Return `true` if the smallest eingenvalue of matrix `M` rounded to precision `precision` is not negative.
 """
-function isPositiveSemiDefinite(M, precision)
+function ispsd(M, precision)
 
     isPSD = false
 
@@ -17,11 +17,11 @@ function isPositiveSemiDefinite(M, precision)
 end
 
 """
-    genericVectorProduct(A,B)
+    generic_vectorproduct(A,B)
 
 For any vectors of equal length, return ``\\sum_i A[i]B[i]``, the sum of all products of elements with the same index.
 """
-function genericVectorProduct(A, B)
+function generic_vectorproduct(A, B)
 
     @assert length(A) == length(B)
 
@@ -37,11 +37,11 @@ function genericVectorProduct(A, B)
 end
 
 """
-    roundDigits(A, precision)
+    rounddigits(A, precision)
 
 Return `A` with all elemets rounded up to `precision` digits.
 """
-function roundDigits(A, precision)
+function rounddigits(A, precision)
     (x -> round(x, digits=precision)).(A)
 end
 
@@ -50,7 +50,7 @@ end
 
 Return `true` if the partial transposition of the Hermitian matrix based on the upper triangular of `ρ` is positive semi-definite in `precision`.
 """
-function isPPT(ρ, d, precision)
+function isppt(ρ, d, precision)
 
     M = Hermitian(ρ)
     minEigvalPT = real(ppt(M, [d, d], 2))
@@ -60,11 +60,11 @@ function isPPT(ρ, d, precision)
 end
 
 """
-    createDictionaryFromBasis(stdBasis)
+    create_dictionary_from_basis(stdBasis)
 
 Return vector containing a dictionary and it's inverse, relating the ``d^2`` flat indices to the double indices of `stdBasis`.
 """
-function createDictionaryFromBasis(stdBasis::StandardBasis)
+function create_dictionary_from_basis(stdBasis::StandardBasis)
 
     basisDict = Dict()
     for i in stdBasis.basis
@@ -106,11 +106,11 @@ function δ_mod(n, m, x)::Int8
 end
 
 """
-    mapIndicesToNormCoord(indices, D)
+    map_indices_to_normcoords(indices, D)
 
 Return `D` element normalized coordinate vector with equal nonzero values at given `indices`.
 """
-function mapIndicesToNormCoord(indices, D)
+function map_indices_to_normcoords(indices, D)
 
     c = zeros(D)
     for i in indices
@@ -122,11 +122,11 @@ function mapIndicesToNormCoord(indices, D)
 end
 
 """
-    getProperDivisors(k:Int)
+    get_properdivisors(k:Int)
 
 Return vector of proper divisors of `k`.
 """
-function getProperDivisors(k::Int)
+function get_properdivisors(k::Int)
 
     divisors = Array{Int,1}(undef, 0)
 

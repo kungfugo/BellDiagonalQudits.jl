@@ -1,11 +1,11 @@
 """
-    uniformBellSampler(n, d, object="magicSimplex", precision=10)
+    uniform_bell_sampler(n, d, object="magicSimplex", precision=10)
 
 Create array of `n` uniformly distributed ``d^2`` Bell diagonal states represented as `CoordState` rounded to `precision` digits. 
 
 Use `object="enclosurePolytope"` to create CoordStates in the enclosure polytope, having all ``coords \\leq 1/d``.
 """
-function uniformBellSampler(n, d, object="magicSimplex", precision=10)
+function uniform_bell_sampler(n, d, object="magicSimplex", precision=10)
 
     productParams = Array{CoordState}(undef, 0)
     nFound = 0
@@ -31,7 +31,7 @@ end
 
 
 """
-    createRandomCoordStates(nSamples, d, object="magicSimplex", precision=10, roundToSteps::Int=0, nTriesMax=10000000)
+    create_random_coordstates(nSamples, d, object="magicSimplex", precision=10, roundToSteps::Int=0, nTriesMax=10000000)
 
 Return an array of `nSamples` `` d^2 `` dimensional CoordStates. 
 
@@ -39,7 +39,7 @@ Use the `object` to specify the coordinate ranges to [0,1] for 'magicSimplex' or
 If `roundToSteps` > 0, round the coordinates to the vertices that divide the range in `roundToSteps`` equally sized sections.
 Be aware that the resulting distribution of points is generally not uniform.
 """
-function createRandomCoordStates(nSamples, d, object="magicSimplex", precision=10, roundToSteps::Int=0)::Array{CoordState}
+function create_random_coordstates(nSamples, d, object="magicSimplex", precision=10, roundToSteps::Int=0)::Array{CoordState}
 
     productParams = Array{CoordState}(undef, 0)
     nFound = 0
@@ -95,22 +95,22 @@ function createRandomCoordStates(nSamples, d, object="magicSimplex", precision=1
 end
 
 """
-    createBipartiteMaxEntangled(d)
+    create_bipartite_maxentangled(d)
 
 Return maximally entangled pure state of a bipartite system of dimension ``d^2``.
 """
-function createBipartiteMaxEntangled(d)
+function create_bipartite_maxentangled(d)
 
     return proj(max_entangled(d * d))
 
 end
 
 """
-    weylOperator(d, k, l)
+    weyloperator(d, k, l)
 
 Return the ``(d,d)``- dimensional matrix representation of Weyl operator ``W_{k,l}``.
 """
-function weylOperator(d, k, l)
+function weyloperator(d, k, l)
 
     weylKetBra = zeros(Complex{Float64}, d, d)
 
@@ -123,26 +123,26 @@ function weylOperator(d, k, l)
 end
 
 """
-    getIntertwiner(d, k, l)
+    get_intertwiner(d, k, l)
 
 Return the tensor product ``W_{k,l} \\otimes \\mathbb{1}_d``.
 """
-function getIntertwiner(d, k, l)
-    w = weylOperator(d, k, l)
+function get_intertwiner(d, k, l)
+    w = weyloperator(d, k, l)
     Id = I(d)
     return w ⊗ Id
 end
 
 """
-    weylTrf(d, ρ, k, l)
+    weyltrf(d, ρ, k, l)
 
 Apply the ``(k,l)``-th Weyl transformation of dimension `d` to the density matrix `ρ`. Return ``W_{k,l} \\rho W_{k,l}^\\dagger``.
 """
-function weylTrf(d, ρ, k, l)
+function weyltrf(d, ρ, k, l)
 
     @assert size(ρ)[1] == d * d && size(ρ)[2] == d * d
 
-    W = getIntertwiner(d, k, l)
+    W = get_intertwiner(d, k, l)
 
     ρTrf = W * ρ * W'
 
@@ -151,11 +151,11 @@ function weylTrf(d, ρ, k, l)
 end
 
 """
-    createBasisStateOperators(d, bellStateOperator, precision)
+    create_basis_state_operators(d, bellStateOperator, precision)
 
 Use maximally entangled Bell state `bellStateOperator` of dimension `d` to create Bell basis and return with corresponding flat and Weyl indices.
 """
-function createBasisStateOperators(d, bellStateOperator, precision)
+function create_basis_state_operators(d, bellStateOperator, precision)
 
     mIt = Iterators.product(fill(0:(d-1), 2)...)
 
@@ -173,7 +173,7 @@ function createBasisStateOperators(d, bellStateOperator, precision)
         l = value[2]
 
         #Weyl transformation to basis states
-        P_kl = Hermitian(round.(weylTrf(d, bellStateOperator, k, l), digits=precision))
+        P_kl = Hermitian(round.(weyltrf(d, bellStateOperator, k, l), digits=precision))
 
         push!(basisStates, (index, value, P_kl))
 
@@ -182,27 +182,27 @@ function createBasisStateOperators(d, bellStateOperator, precision)
 end
 
 """
-    createStandardIndexBasis(d, precision)
+    create_standard_indexbasis(d, precision)
 
 Return indexed Bell basis for `d` dimensions as `StandardBasis` rounded to `precision` digits.
 """
-function createStandardIndexBasis(d, precision)::StandardBasis
-    maxEntangled = createBipartiteMaxEntangled(d)
-    standardBasis = StandardBasis(createBasisStateOperators(d, maxEntangled, precision))
+function create_standard_indexbasis(d, precision)::StandardBasis
+    maxEntangled = create_bipartite_maxentangled(d)
+    standardBasis = StandardBasis(create_basis_state_operators(d, maxEntangled, precision))
     return standardBasis
 end
 
 """
-    createDensityState(coordState::CoordState, standardBasis::StandardBasis)
+    create_densitystate(coordState::CoordState, standardBasis::StandardBasis)
 
 Return `DensityState`` containing the density matrix in computational basis based on `coordState` coordinates in Bell `standardBasis`.
 """
-function createDensityState(coordState::CoordState, standardBasis::StandardBasis)::DensityState
+function create_densitystate(coordState::CoordState, standardBasis::StandardBasis)::DensityState
 
     basisOps = map(x -> x[3], standardBasis.basis)
     densityState = DensityState(
         coordState.coords,
-        Hermitian(genericVectorProduct(coordState.coords, basisOps)),
+        Hermitian(generic_vectorproduct(coordState.coords, basisOps)),
         coordState.eClass
     )
 
@@ -211,16 +211,16 @@ function createDensityState(coordState::CoordState, standardBasis::StandardBasis
 end
 
 """
-    createWeylOperatorBasis(d)
+    create_weyloperator_basis(d)
 
 Return vector of length ``d^2``, containing the Weyl operator basis for the ``(d,d)`` dimensionalmatrix space. 
 """
-function createWeylOperatorBasis(d)::Vector{Array{Complex{Float64},2}}
+function create_weyloperator_basis(d)::Vector{Array{Complex{Float64},2}}
 
     weylOperatorBasis = []
     for i in (0:(d-1))
         for j in (0:(d-1))
-            push!(weylOperatorBasis, weylOperator(d, i, j))
+            push!(weylOperatorBasis, weyloperator(d, i, j))
         end
     end
 
@@ -229,13 +229,13 @@ function createWeylOperatorBasis(d)::Vector{Array{Complex{Float64},2}}
 end
 
 """
-    createBipartiteWeylOpereatorBasis(d)
+    create_bipartite_weyloperator_basis(d)
 
 Return vector of length ``d^4``, containing the product basis of two Weyl operator bases as basis for the ``(d^2,d^2)`` matrix space. 
 """
-function createBipartiteWeylOpereatorBasis(d)::Vector{Array{Complex{Float64},2}}
+function create_bipartite_weyloperator_basis(d)::Vector{Array{Complex{Float64},2}}
 
-    weylOperatorBasis = createWeylOperatorBasis(d)
+    weylOperatorBasis = create_weyloperator_basis(d)
 
     bipartiteWeylOperatorBasis = []
 
@@ -251,13 +251,13 @@ end
 
 
 """
-    createDimElementSubLattices(d)
+    create_dimelement_sublattices(d)
 
 Return all sublattices with `d` elements represented as vector of tuples in the ``d^2`` elements discrete phase space induced by Weyl operators.
 """
-function createDimElementSubLattices(d)
+function create_dimelement_sublattices(d)
 
-    propDivs = getProperDivisors(d)
+    propDivs = get_properdivisors(d)
 
     allLattices = Array{Array{Tuple{Int,Int},1},1}(undef, 0)
 
@@ -309,11 +309,11 @@ function createDimElementSubLattices(d)
 end
 
 """
-    createIndexSubLatticeState(standardBasis::StandardBasis, subLattice)
+    create_index_sublattice_state(standardBasis::StandardBasis, subLattice)
 
 Return collection of `standardBasis` elements contributing to the state corresponding to the `sublattice`, coordinates in Bell basis and density matrix in computational basis.
 """
-function createIndexSubLatticeState(standardBasis::StandardBasis, subLattice)
+function create_index_sublattice_state(standardBasis::StandardBasis, subLattice)
 
     lengthSub = length(subLattice)
 
@@ -343,7 +343,7 @@ function createIndexSubLatticeState(standardBasis::StandardBasis, subLattice)
     end
 
     #Get corresponding coordinates
-    coordinates = mapIndicesToNormCoord(indices, length(standardBasis.basis))
+    coordinates = map_indices_to_normcoords(indices, length(standardBasis.basis))
 
     # Collection of indices of basis elements which are equally mixed
     indexSubLatticeState = [indices, coordinates, 1 / lengthSub * subLatticeState]

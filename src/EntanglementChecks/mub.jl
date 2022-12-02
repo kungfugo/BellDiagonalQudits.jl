@@ -1,9 +1,9 @@
 """
-    createStandardMub(d)
+    create_standard_mub(d)
 
 Return vector of mutually unbiased bases for dimensions `d` three or four.
 """
-function createStandardMub(d)::Vector{Vector{Vector{ComplexF64}}}
+function create_standard_mub(d)::Vector{Vector{Vector{ComplexF64}}}
 
     mubSet = Vector{Vector{ComplexF64}}[]
 
@@ -86,11 +86,11 @@ function createStandardMub(d)::Vector{Vector{Vector{ComplexF64}}}
 end
 
 """
-    calculateCorrelation(d, mubSet::Vector{Vector{Vector{ComplexF64}}}, ρ, s=-1)
+    calculate_mub_correlation(d, mubSet::Vector{Vector{Vector{ComplexF64}}}, ρ, s=-1)
 
 Based on complete set of mutually unbiased bases `mubSet`, return sum of mutual predictibilities, shifted by `s`, for density matrix `ρ` in `d` dimensions. 
 """
-function calculateCorrelation(d, mubSet::Vector{Vector{Vector{ComplexF64}}}, ρ, s=-1)
+function calculate_mub_correlation(d, mubSet::Vector{Vector{Vector{ComplexF64}}}, ρ, s=-1)
 
     if s == -1
         if d == 3

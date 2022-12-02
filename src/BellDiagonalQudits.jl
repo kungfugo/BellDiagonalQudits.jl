@@ -9,13 +9,13 @@ using Polyhedra
 using Optim
 
 export
-    CoordState, StandardBasis, DensityState, BoundedCoordEW, AnalysisSpecification, eClassConflictException, AnalysedCoordState,
-    uniformBellSampler, createRandomCoordStates, createStandardIndexBasis, createDensityState, createBipartiteWeylOpereatorBasis,
-    createKernelPolytope, extendSepVPolytopeBySepStates,
-    createRandomBoundedWits, getBoundedCoordEw,
-    generateAllSymmetries, getSymCoords,
-    analyseCoordState, symAnalyseCoordState, classifyAnalyzedStates!,
-    createDictionaryFromBasis, createStandardMub
+    CoordState, StandardBasis, DensityState, BoundedCoordEW, AnalysisSpecification, ClassConflictException, AnalysedCoordState,
+    uniform_bell_sampler, create_random_coordstates, create_standard_indexbasis, create_densitystate, create_bipartite_weyloperator_basis,
+    create_kernel_polytope, extend_vpolytope_by_densitystates,
+    create_random_bounded_ews, get_bounded_coordew,
+    generate_symmetries, get_symcoords,
+    analyse_coordstate, sym_analyse_coordstate, classify_analyzed_states!,
+    create_dictionary_from_basis, create_standard_mub
 
 include("structs.jl")
 include("Utils/utils.jl")

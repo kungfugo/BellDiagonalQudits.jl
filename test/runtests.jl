@@ -3,30 +3,30 @@ using Test
 using LazySets: tovrep, vertices_list
 using LinearAlgebra: Diagonal
 
-testStandardBasis3 = createStandardIndexBasis(3, 10)
-testStandardBasis4 = createStandardIndexBasis(4, 10)
-testStandardKernel3 = createKernelPolytope(3, testStandardBasis3)
-testStandardKernel4 = createKernelPolytope(4, testStandardBasis4)
-testExtKernel3 = extendSepVPolytopeBySepStates(tovrep(testStandardKernel3), [createDensityState(CoordState(1 / 9 * ones(9), "SEP"), testStandardBasis3)], 10)
-testBipartiteWeylBasis3 = createBipartiteWeylOpereatorBasis(3)
-testDictionaries3 = createDictionaryFromBasis(testStandardBasis3)
-testMub3 = createStandardMub(3)
-testMub4 = createStandardMub(4)
-testRandomCoordWits = map(x -> getBoundedCoordEw(x), createRandomBoundedWits(3, testStandardBasis3, 2, true, 20))
-testSyms3 = generateAllSymmetries(testStandardBasis3, 3)
+testStandardBasis3 = create_standard_indexbasis(3, 10)
+testStandardBasis4 = create_standard_indexbasis(4, 10)
+testStandardKernel3 = create_kernel_polytope(3, testStandardBasis3)
+testStandardKernel4 = create_kernel_polytope(4, testStandardBasis4)
+testExtKernel3 = extend_vpolytope_by_densitystates(tovrep(testStandardKernel3), [create_densitystate(CoordState(1 / 9 * ones(9), "SEP"), testStandardBasis3)], 10)
+testBipartiteWeylBasis3 = create_bipartite_weyloperator_basis(3)
+testDictionaries3 = create_dictionary_from_basis(testStandardBasis3)
+testMub3 = create_standard_mub(3)
+testMub4 = create_standard_mub(4)
+testRandomCoordWits = map(x -> get_bounded_coordew(x), create_random_bounded_ews(3, testStandardBasis3, 2, true, 20))
+testSyms3 = generate_symmetries(testStandardBasis3, 3)
 testAnaSpec = AnalysisSpecification(true, true, true, true, true, true, true, false)
 testAnaSpecSym = AnalysisSpecification(true, true, true, true, true, true, true, true)
 
 @testset "BellDiagonalQudits.jl" begin
 
     # BellDiagonalQudits/src/BellStates
-    @test length(uniformBellSampler(10, 3)) == 10
-    @test length(uniformBellSampler(10, 3, "enclosurePolytope")) == 10
-    @test length(createRandomCoordStates(10, 3, "magicSimplex")) == 10
-    @test length(createStandardIndexBasis(4, 10).basis) == 16
+    @test length(uniform_bell_sampler(10, 3)) == 10
+    @test length(uniform_bell_sampler(10, 3, "enclosurePolytope")) == 10
+    @test length(create_random_coordstates(10, 3, "magicSimplex")) == 10
+    @test length(create_standard_indexbasis(4, 10).basis) == 16
     @test testDictionaries3[1][2, 1] == 6
-    @test createDensityState(CoordState(1 / 9 * ones(9), "UNKNOWN"), testStandardBasis3).coords ≈ 1 / 9 * ones(9)
-    @test length(createBipartiteWeylOpereatorBasis(3)) == 81
+    @test create_densitystate(CoordState(1 / 9 * ones(9), "UNKNOWN"), testStandardBasis3).coords ≈ 1 / 9 * ones(9)
+    @test length(create_bipartite_weyloperator_basis(3)) == 81
 
     # BellDiagonalQudits/src/EntanglementWitness
     @test length(testRandomCoordWits) == 2
@@ -38,9 +38,9 @@ testAnaSpecSym = AnalysisSpecification(true, true, true, true, true, true, true,
 
     # BellDiagonalQudits/src/Symmetries
     @test length(testSyms3) == 432
-    @test getSymCoords(
+    @test get_symcoords(
         [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0],
-        generateAllSymmetries(testStandardBasis3, 3)[1:2]
+        generate_symmetries(testStandardBasis3, 3)[1:2]
     ) == [
         [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0],
         [7.0, 8.0, 9.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0]
@@ -51,7 +51,7 @@ testAnaSpecSym = AnalysisSpecification(true, true, true, true, true, true, true,
     @test all(
         map(
             i -> getfield(
-                analyseCoordState(
+                analyse_coordstate(
                     3,
                     CoordState(1 / 9 * ones(9), "UNKNOWN"),
                     testAnaSpec,
@@ -90,7 +90,7 @@ testAnaSpecSym = AnalysisSpecification(true, true, true, true, true, true, true,
     @test all(
         map(
             i -> getfield(
-                symAnalyseCoordState(
+                sym_analyse_coordstate(
                     3,
                     CoordState(1 / 9 * ones(9), "UNKNOWN"),
                     testSyms3[1:10],
@@ -129,7 +129,7 @@ testAnaSpecSym = AnalysisSpecification(true, true, true, true, true, true, true,
     )
     @test map(
         x -> x.coordState.eClass,
-        classifyAnalyzedStates!([
+        classify_analyzed_states!([
             AnalysedCoordState(
                 CoordState(ones(9), "UNKNOWN"),
                 true,

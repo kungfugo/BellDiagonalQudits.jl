@@ -79,22 +79,22 @@ end;
 """
 Specification which entanglement checks to use.
 
-- kernelCheck
+- kernel_check
 - spinrepCheck
-- pptCheck
-- realignmentCheck 
-- mubCheck 
-- numericEwCheck
+- ppt_check
+- realignment_check 
+- mub_check 
+- numeric_ew_check
 - useSymmetries
 """
 mutable struct AnalysisSpecification
-    kernelCheck::Bool
+    kernel_check::Bool
     spinrepCheck::Bool
-    pptCheck::Bool
-    realignmentCheck::Bool
-    concurrenceQpCheck::Bool
-    mubCheck::Bool
-    numericEwCheck::Bool
+    ppt_check::Bool
+    realignment_check::Bool
+    concurrence_qp_check::Bool
+    mub_check::Bool
+    numeric_ew_check::Bool
     useSymmetries::Bool
 end
 
@@ -127,6 +127,6 @@ Exception for conflicts in analysis results.
 - state: The `AnalysedCoordState` for which a conflict occurs.
 
 """
-struct eClassConflictException <: Exception
+struct ClassConflictException <: Exception
     state::AnalysedCoordState
 end;

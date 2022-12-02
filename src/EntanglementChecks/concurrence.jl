@@ -1,9 +1,9 @@
 """
-    getConcurrenceQP(coords, d, dictionaries)
+    get_concurrence_qp(coords, d, dictionaries)
 
 Return quasi-pure approximation of the concurrence for a Bell diagonal state represented by coordinates `coords` with respect to a `StandardBasis` and corresponding `dictionaries` in `d` dimensions.
 """
-function getConcurrenceQP(coords, d, dictionaries)::Float64
+function get_concurrence_qp(coords, d, dictionaries)::Float64
 
     S = Float64[]
     D = length(coords)
