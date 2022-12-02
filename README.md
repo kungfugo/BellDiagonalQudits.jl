@@ -1,9 +1,9 @@
 [![CI][ci-img]][ci-url]
-[![codecov][codecov-img]](codecov-url)
+[![codecov][cov-img]][cov-url]
 [![][docs-dev-img]][docs-dev-url]
 
-[ci-img]: https://kungfugo.github.io/BellDiagonalQudits.jl/actions/workflows/CI.yml/badge.svg
-[ci-url]: https://kungfugo.github.io/BellDiagonalQudits.jl/actions/workflows/CI.yml
+[ci-img]: https://github.com/kungfugo/BellDiagonalQudits.jl/actions/workflows/CI.yml/badge.svg
+[ci-url]: https://github.com/kungfugo/BellDiagonalQudits.jl/actions/workflows/CI.yml
 [cov-img]: http://codecov.io/github/kungfugo/BellDiagonalQudits.jl/coverage.svg
 [cov-url]: https://codecov.io/github/kungfugo/BellDiagonalQudits.jl
 [docs-dev-url]: https://kungfugo.github.io/BellDiagonalQudits.jl/dev/
