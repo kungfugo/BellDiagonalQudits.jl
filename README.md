@@ -51,3 +51,12 @@ Documentation is available at [https://kungfugo.github.io/BellDiagonalQudits.jl/
 [2] Baumgartner, B., Hiesmayr, B.C., Narrenhofer, H. _A special simplex in the state space for entangled qudits_, J. Phys. A Math. Theor. 40, 7919 (2007), [https://doi.org/10.1088/1751-8113/40/28/s03] (https://doi.org/10.1088/1751-8113/40/28/s03)
 
 [3] Popp, C., Hiesmayr, B.C., _Bound Entanglement of Bell Diagonal Pairs of Qutrits and Ququarts: A Comparison_, arXiv (2022), [https://arxiv.org/abs/2209.15267] (https://arxiv.org/abs/2209.15267)
+
+
+## Contributions
+
+Any contribution to BellDiagonalQudits.jl is welcome in the following ways:
+
+  * Reporting bugs and suggestions in the issues section of the project's Github.
+  * Modifying the code or documentation with a pull request. To contribute to the package, fork the repository on GitHub, clone it and make modifications on a new branch. Once your changes are made, push them on your fork and create the Pull Request on the main repository.
+
