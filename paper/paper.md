@@ -15,18 +15,18 @@ authors:
 affiliations:
   - name: Faculty of Physics, University of Vienna, Währingerstrasse 17, 1090, Vienna Austria
     index: 1
-date: 20 September 2022
+date: 15 December 2022
 bibliography: paper.bib
 ---
 
 # Summary
 
-In the field of quantum information and technology, entanglement of quantum
-states called qudits is regarded as resource for quantum and classical
-information processing tasks and allows the use of algorithms with better
-performance than any classical algorithm for certain applications like
-superdense coding, teleportation or computing. Despite its theoretical and
-practical relevance, there is no general method to determine whether a given
+In the field of quantum information and technology, entanglement in quantum
+systems called qudits is regarded as resource for quantum-based or quantum-assisted
+information processing tasks. It allows new ways of information processing like
+quantum computation or quantum teleportation and provides possibilities for
+speedups in a variety of algorithms with applications like search or optimization.
+Despite its theoretical and practical relevance, there is no general method to determine whether a given
 quantum state is entangled or not due to a special and hard to detect form of
 entanglement called bound entanglement. Bipartite Bell states are maximally
 entangled states of two qudits and are of high relevance for application in
