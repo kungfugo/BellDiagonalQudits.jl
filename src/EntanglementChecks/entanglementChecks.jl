@@ -177,7 +177,7 @@ function analyse_coordstate(
     end
 
     # Spinrep check
-    if anaSpec.spinrepCheck && !ismissing(stdBasis) && !ismissing(bipartiteWeylBasis)
+    if anaSpec.spinrep_check && !ismissing(stdBasis) && !ismissing(bipartiteWeylBasis)
         anaCoordState.spinrep = spinrep_check(coordState, stdBasis, bipartiteWeylBasis, precision)
     end
 
@@ -310,7 +310,7 @@ function sym_analyse_coordstate(
         end
 
         # Spinrep check implies SEP ==> Keep searching if enabled and (false or missing)
-        if copyAnaSpec.spinrepCheck
+        if copyAnaSpec.spinrep_check
             spinrepCheckDone = !ismissing(analysedSymCoordState.spinrep)
             spinrepCheckPassed = !ismissing(analysedSymCoordState.spinrep) && analysedSymCoordState.spinrep
             if spinrepCheckPassed
@@ -318,7 +318,7 @@ function sym_analyse_coordstate(
             elseif spinrepCheckDone
                 groupSpinrep = false
             end
-            copyAnaSpec.spinrepCheck = !spinrepCheckPassed
+            copyAnaSpec.spinrep_check = !spinrepCheckPassed
         end
 
         # Ppt check determines PPT/NPT which is preserved under symmetry ==> Keep searching if enabled and missing
@@ -381,7 +381,7 @@ function sym_analyse_coordstate(
 
         allDetermined = !any([
             copyAnaSpec.kernel_check,
-            copyAnaSpec.spinrepCheck,
+            copyAnaSpec.spinrep_check,
             copyAnaSpec.ppt_check,
             copyAnaSpec.realignment_check,
             copyAnaSpec.concurrence_qp_check,

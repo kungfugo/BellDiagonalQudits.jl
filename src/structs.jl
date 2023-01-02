@@ -80,16 +80,17 @@ end;
 Specification which entanglement checks to use.
 
 - kernel_check
-- spinrepCheck
+- spinrep_check
 - ppt_check
 - realignment_check 
+- concurrence_qp_check
 - mub_check 
 - numeric_ew_check
 - useSymmetries
 """
 mutable struct AnalysisSpecification
     kernel_check::Bool
-    spinrepCheck::Bool
+    spinrep_check::Bool
     ppt_check::Bool
     realignment_check::Bool
     concurrence_qp_check::Bool
