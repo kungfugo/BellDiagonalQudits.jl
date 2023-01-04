@@ -37,7 +37,7 @@ myBasisDict = create_dictionary_from_basis(myBasis)
 Create uniformly distributed random representations of quantum states by specifying the coordinates of the state in the created Bell basis. The coordinates represent the mixing probabilities of the Bell basis states. Here, we create only states with Bell coordinates within the "enclosure polytope", which is defined by the limitation of all coordinates (mixing probabilities) to be smaller than or equal to `1/d`. This subset is known to contain all (but not only) states with positive partial transposition (PPT), which can be separable or bound entangled.
 
 ```julia
-myCoordStates = uniform_bell_sampler(100, d, "enclosurePolytope")
+myCoordStates = uniform_bell_sampler(100, d, :enclosurePolytope)
 ```
 
 Create `DensityState`s including the density matrix of each state in the computational basis, created by mixing the Bell states of `myBasis` according to the `coords` of `myCoordStates`.
@@ -57,12 +57,18 @@ The kernel polytope is known to contain only Bell coordinates that represent sep
 
 ```julia
 mySepKernel = create_kernel_polytope(d, myBasis)
+
 ```
 
 If additional separable states `newSepDensityStates` are known, the kernel polytope can be exteded to a larger convex hull in order to improve the kernel check for separability.
+For a (trivial) example, consider the separable, maximally mixed state having all Bell states mixed equally with probability `1/d^2`. First,specify the coordinates in the Bell basis and set the `eClass` of the corresponding `CoordState` to "SEP". Then, calculate the density matrix and create the `DensityState`. Finally, extend the kernel polytope `mySepKernel` by the array containing this separable state.
 
 ```julia
-myExtendedKernel = extend_vpolytope_by_densitystates(tovrep(mySepKernel), newSepDensityStates)
+maxMixedCoordState = CoordState(1/d^2*ones(d^2), "SEP")
+maxMixedDensityState = create_densitystate(maxMixedCoordState, myBasis)
+newSepDensityStates = [maxMixedDensityState]
+myExtendedKernel = extend_vpolytope_by_densitystates(tovrep(mySepKernel), newSepDensityStates, 10)
+
 ```
 
 \
@@ -98,12 +104,13 @@ mySyms = generate_symmetries(myBasis, d)
 Generate `n` numerical entanglement witnesses by numerical optimization over the set of separable states. Here, the entanglement witnesses are represented by their coordinates in the Bell basis, an upper, and a lower bound. For all separable states, the inner product of the state and witness coordinates obeys these bounds. A violation of the inner product of an unknown state and the witness thus indicates entanglement. Use `iterations` runs to improve the determined upper and lower bounds. Other optimization methods than the default `NelderMead` can be used.
 
 ```julia
+n = 2
 myOptimizedEWs = create_random_bounded_ews(
     d,
     myBasis,
     n,
     true,
-    50
+    20
     )
 ```
 

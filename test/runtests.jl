@@ -21,8 +21,8 @@ testAnaSpecSym = AnalysisSpecification(true, true, true, true, true, true, true,
 
     # BellDiagonalQudits/src/BellStates
     @test length(uniform_bell_sampler(10, 3)) == 10
-    @test length(uniform_bell_sampler(10, 3, "enclosurePolytope")) == 10
-    @test length(create_random_coordstates(10, 3, "magicSimplex")) == 10
+    @test length(uniform_bell_sampler(10, 3, :enclosurePolytope)) == 10
+    @test length(create_random_coordstates(10, 3, :magicSimplex)) == 10
     @test length(create_standard_indexbasis(4, 10).basis) == 16
     @test testDictionaries3[1][2, 1] == 6
     @test create_densitystate(CoordState(1 / 9 * ones(9), "UNKNOWN"), testStandardBasis3).coords ≈ 1 / 9 * ones(9)

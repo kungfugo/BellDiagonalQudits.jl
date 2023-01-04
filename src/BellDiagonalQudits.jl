@@ -15,7 +15,8 @@ export
     create_random_bounded_ews, get_bounded_coordew,
     generate_symmetries, get_symcoords,
     analyse_coordstate, sym_analyse_coordstate, classify_analyzed_states!,
-    create_dictionary_from_basis, create_standard_mub
+    create_dictionary_from_basis, create_standard_mub,
+    tovrep
 
 include("structs.jl")
 include("Utils/utils.jl")

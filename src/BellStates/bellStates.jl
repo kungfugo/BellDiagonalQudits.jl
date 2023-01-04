@@ -1,11 +1,11 @@
 """
-    uniform_bell_sampler(n, d, object="magicSimplex", precision=10)
+    uniform_bell_sampler(n, d, object=:magicSimplex, precision=10)
 
 Create array of `n` uniformly distributed ``d^2`` Bell diagonal states represented as `CoordState` rounded to `precision` digits. 
 
-Use `object="enclosurePolytope"` to create CoordStates in the enclosure polytope, having all ``coords \\leq 1/d``.
+Use `object=:enclosurePolytope` to create CoordStates in the enclosure polytope, having all ``coords \\leq 1/d``.
 """
-function uniform_bell_sampler(n, d, object="magicSimplex", precision=10)
+function uniform_bell_sampler(n, d, object=:magicSimplex, precision=10)
 
     productParams = Array{CoordState}(undef, 0)
     nFound = 0
@@ -18,7 +18,7 @@ function uniform_bell_sampler(n, d, object="magicSimplex", precision=10)
 
         coords = round.(diff(u), digits=precision)
 
-        if object != "enclosurePolytope" || all(x -> x <= 1 / d, coords)
+        if object != :enclosurePolytope || all(x -> x <= 1 / d, coords)
             push!(productParams, CoordState(coords, "UNKNOWN"))
             nFound += 1
         end
@@ -31,7 +31,7 @@ end
 
 
 """
-    create_random_coordstates(nSamples, d, object="magicSimplex", precision=10, roundToSteps::Int=0, nTriesMax=10000000)
+    create_random_coordstates(nSamples, d, object=:magicSimplex, precision=10, roundToSteps::Int=0, nTriesMax=10000000)
 
 Return an array of `nSamples` `` d^2 `` dimensional CoordStates. 
 
@@ -39,12 +39,12 @@ Use the `object` to specify the coordinate ranges to [0,1] for 'magicSimplex' or
 If `roundToSteps` > 0, round the coordinates to the vertices that divide the range in `roundToSteps`` equally sized sections.
 Be aware that the resulting distribution of points is generally not uniform.
 """
-function create_random_coordstates(nSamples, d, object="magicSimplex", precision=10, roundToSteps::Int=0)::Array{CoordState}
+function create_random_coordstates(nSamples, d, object=:magicSimplex, precision=10, roundToSteps::Int=0)::Array{CoordState}
 
     productParams = Array{CoordState}(undef, 0)
     nFound = 0
 
-    if object != "enclosurePolytope"
+    if object != :enclosurePolytope
 
         while (nFound < nSamples)
 
