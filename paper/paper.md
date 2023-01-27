@@ -89,10 +89,8 @@ separable states in dimension three and four.
 
 # Package information
 
-`BellDiagonalQudits` is available on Github at [Link
-repository](https://github.com/kungfugo/BellDiagonalQudits.jl). The package
-documentation is available at [Link
-documentation](https://kungfugo.github.io/BellDiagonalQudits.jl/dev/) and
+`BellDiagonalQudits` is available on Github at [https://github.com/kungfugo/BellDiagonalQudits.jl](https://github.com/kungfugo/BellDiagonalQudits.jl). The package
+documentation is available at [https://kungfugo.github.io/BellDiagonalQudits.jl/dev/](https://kungfugo.github.io/BellDiagonalQudits.jl/dev/) and
 provides examples of usage.
 
 # Acknowledgments
