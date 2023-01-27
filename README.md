@@ -1,6 +1,9 @@
 [![CI][ci-img]][ci-url]
 [![codecov][cov-img]][cov-url]
 [![][docs-dev-img]][docs-dev-url]
+[![DOI](https://zenodo.org/badge/506929284.svg)](https://zenodo.org/badge/latestdoi/506929284)
+
+
 
 [ci-img]: https://github.com/kungfugo/BellDiagonalQudits.jl/actions/workflows/CI.yml/badge.svg
 [ci-url]: https://github.com/kungfugo/BellDiagonalQudits.jl/actions/workflows/CI.yml
