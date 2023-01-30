@@ -4,7 +4,6 @@
 [![DOI](https://zenodo.org/badge/506929284.svg)](https://zenodo.org/badge/latestdoi/506929284)
 
 
-
 [ci-img]: https://github.com/kungfugo/BellDiagonalQudits.jl/actions/workflows/CI.yml/badge.svg
 [ci-url]: https://github.com/kungfugo/BellDiagonalQudits.jl/actions/workflows/CI.yml
 [cov-img]: http://codecov.io/github/kungfugo/BellDiagonalQudits.jl/coverage.svg
