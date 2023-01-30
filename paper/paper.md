@@ -43,14 +43,14 @@ to generate representations of Bell diagonal quantum states and to analyze their
 entanglement properties with various general or specialized criteria to detect
 entanglement or separability. Leveraging geometric properties of a certain class
 of mixed Bell states that are related by Weyl transformations,
-`BellDiagonalQudits` combines known analytical results by @baumgartner:2007 and
+`BellDiagonalQudits` combines known analytical results by @baumgartner and
 numerical methods for quantum state representation and analysis. It leverages
 and depends on the Julia package `QuantumInformation`, the convex sets of
 `LazySets` [@lazysets] and the optimization methods of `Optim` [@optim].
 
 `BellDiagonalQudits` was designed to be used by researchers in quantum science
 and quantum information theory. It has already been used in multiple scientific
-publications, e.g. in @PoppACS:2022 and @PoppBoundEntComparison:2022 in the context of entanglement
+publications, e.g. in @PoppACS [@PoppACS:2022] and @PoppBoundEntComparison:2022 in the context of entanglement
 classification and detection of bipartite qudits in dimension three and
 four. The combination of efficient state generation via random sampling or
 deterministic procedures and implementation of both frequently used and
