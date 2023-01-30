@@ -50,7 +50,7 @@ and depends on the Julia package `QuantumInformation`, the convex sets of
 
 `BellDiagonalQudits` was designed to be used by researchers in quantum science
 and quantum information theory. It has already been used in multiple scientific
-publications, e.g. in @PoppACS [@PoppACS:2022] and @PoppBoundEntComparison:2022 in the context of entanglement
+publications, e.g. in @PoppACS and @PoppBoundEntComparison in the context of entanglement
 classification and detection of bipartite qudits in dimension three and
 four. The combination of efficient state generation via random sampling or
 deterministic procedures and implementation of both frequently used and
@@ -76,12 +76,12 @@ states in the context of quantum channels, entanglement measures or entropy.
 
 The methods of `BellDiagonalQudits` to generate and analyze Bell diagonal states
 in general dimension are based on analytical properties summarized by
-@baumgartner:2007. Extensions of those methods and efficient implementation in
-`BellDiagonalQudits` enabled the detailed analysis by @PoppACS:2022 of Bell diagonal
+@baumgartner. Extensions of those methods and efficient implementation in
+`BellDiagonalQudits` enabled the detailed analysis by @PoppACS of Bell diagonal
 qudits in three dimensions (qutrits), providing an operational solution to the
 separability problem for those states. Additionally the relative shares of
 separable and (bound) entangled states were precisely determined among the Bell
-diagonal states. In @PoppBoundEntComparison:2022, higher dimensions were
+diagonal states. In @PoppBoundEntComparison, higher dimensions were
 considered, focusing on a detailed comparison and geometric properties of
 separable states in dimension three and four.
 
