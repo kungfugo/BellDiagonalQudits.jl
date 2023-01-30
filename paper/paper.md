@@ -10,7 +10,6 @@ tags:
 authors:
   - name: Christopher Popp
     orcid: 0000-0002-2352-3731
-    equal-contrib: true
     affiliation: 1
 affiliations:
   - name: Faculty of Physics, University of Vienna, Währingerstrasse 17, 1090, Vienna Austria
@@ -44,14 +43,14 @@ to generate representations of Bell diagonal quantum states and to analyze their
 entanglement properties with various general or specialized criteria to detect
 entanglement or separability. Leveraging geometric properties of a certain class
 of mixed Bell states that are related by Weyl transformations,
-`BellDiagonalQudits` combines known analytical results [@baumgartner] and
+`BellDiagonalQudits` combines known analytical results by @baumgartner:2007 and
 numerical methods for quantum state representation and analysis. It leverages
 and depends on the Julia package `QuantumInformation`, the convex sets of
 `LazySets` [@lazysets] and the optimization methods of `Optim` [@optim].
 
 `BellDiagonalQudits` was designed to be used by researchers in quantum science
 and quantum information theory. It has already been used in multiple scientific
-publications [@PoppACS; @PoppBoundEntComparison] in the context of entanglement
+publications, e.g. in @PoppACS:2022 and @PoppBoundEntComparison:2022 in the context of entanglement
 classification and detection of bipartite qudits in dimension three and
 four. The combination of efficient state generation via random sampling or
 deterministic procedures and implementation of both frequently used and
@@ -59,9 +58,8 @@ specialized entanglement and separability detectors supports the research of
 entanglement in several ways. From a general point of view, entangled Bell
 states are well accessible for powerful methods of entanglement and
 separability detection, leveraging their symmetries and geometric properties. It
-was shown in [@PoppACS; @PoppBoundEntComparison; @hiesmayr] that a significant
-share of the group of mixed Bell states related by Weyl transformations
-are bound entangled, offering a systematic way to generate and investigate
+was shown in that a significant share of the group of mixed Bell states related by Weyl transformations
+are bound entangled [@PoppACS;@PoppBoundEntComparison;@hiesmayr], offering a systematic way to generate and investigate
 those states with respect to the separability problem in different
 dimensions. In addition to general methods applicable to any Bell diagonal state,
 `BellDiagonalQudits` provides features to generate the special symmetries of Bell
@@ -77,13 +75,13 @@ states in the context of quantum channels, entanglement measures or entropy.
 # Relation to research projects
 
 The methods of `BellDiagonalQudits` to generate and analyze Bell diagonal states
-in general dimension are based on analytical properties summarized in
-[@baumgartner]. Extensions of those methods and efficient implementation in
-`BellDiagonalQudits` enabled the detailed analysis [@PoppACS] of Bell diagonal
+in general dimension are based on analytical properties summarized by
+@baumgartner:2007. Extensions of those methods and efficient implementation in
+`BellDiagonalQudits` enabled the detailed analysis by @PoppACS:2022 of Bell diagonal
 qudits in three dimensions (qutrits), providing an operational solution to the
 separability problem for those states. Additionally the relative shares of
 separable and (bound) entangled states were precisely determined among the Bell
-diagonal states. In [@PoppBoundEntComparison], higher dimensions were
+diagonal states. In @PoppBoundEntComparison:2022, higher dimensions were
 considered, focusing on a detailed comparison and geometric properties of
 separable states in dimension three and four.
 

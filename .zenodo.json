@@ -1,0 +1,27 @@
+{
+    "description": "No description provided.", 
+    "license": "other-open", 
+    "title": "kungfugo/BellDiagonalQudits.jl: JOSS, Zenodo publish", 
+    "version": "v0.1.5", 
+    "upload_type": "software", 
+    "publication_date": "2023-01-27", 
+    "creators": [
+        {
+            "affiliation": "Faculty of Physics, University of Vienna", 
+            "name": "Christopher Popp"
+        }
+    ], 
+    "access_right": "open", 
+    "related_identifiers": [
+        {
+            "scheme": "url", 
+            "identifier": "https://github.com/kungfugo/BellDiagonalQudits.jl/tree/v0.1.5", 
+            "relation": "isSupplementTo"
+        }, 
+        {
+            "scheme": "doi", 
+            "identifier": "10.5281/zenodo.7575766", 
+            "relation": "isVersionOf"
+        }
+    ]
+}
