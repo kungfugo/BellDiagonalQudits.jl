@@ -2,6 +2,7 @@
 [![codecov][cov-img]][cov-url]
 [![][docs-dev-img]][docs-dev-url]
 [![DOI](https://zenodo.org/badge/506929284.svg)](https://zenodo.org/badge/latestdoi/506929284)
+[![DOI](https://joss.theoj.org/papers/10.21105/joss.04924/status.svg)](https://doi.org/10.21105/joss.04924)
 
 
 [ci-img]: https://github.com/kungfugo/BellDiagonalQudits.jl/actions/workflows/CI.yml/badge.svg
