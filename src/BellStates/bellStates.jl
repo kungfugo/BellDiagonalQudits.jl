@@ -351,3 +351,75 @@ function create_index_sublattice_state(standardBasis::StandardBasis, subLattice)
     return indexSubLatticeState
 
 end
+
+"""
+    altbell_creatingoperator(d, k, l, α)
+
+Return the ``(d,d)``- dimensional matrix representation of an alternative operator that is used to create Bell states ``V_{k,l}``.
+``V_{k,l} ⊗ Id Ω_00`` creates ``1/√d * ∑ω^(ks)*α_(s,l) ket{s-l} ⊗ ket{s}``
+"""
+function altbell_creatingoperator(d, k, l, α::Matrix{Complex{Float64}})
+
+    operatorKetBra = zeros(Complex{Float64}, d, d)
+
+    @assert size(α) == (d, d)
+    #Normalize
+    α = map(x -> x / abs(x), α)
+
+
+    for j in (0:d-1)
+        operatorKetBra = operatorKetBra + (
+            exp((2 / d * π * im) * (j + l) * k)
+            * α[mod(j + l, d)+1, l+1]
+            * ketbra(j + 1, mod(j + l, d) + 1, d, d)
+        )
+    end
+
+    return operatorKetBra
+
+end
+
+"""
+    create_altbellstate(state(d,k,l,α, returnDensity)
+
+Return an alternative Bell state in the computational basis. 
+Return denisty matrix unless returnDensity=false, in which case return state vector.
+"""
+function create_altbellstate(d, k, l, α::Matrix{Complex{Float64}}, returnDensity::Bool=true)
+
+    V_kl = altbell_creatingoperator(d, k, l, α)
+    IV_kl = V_kl ⊗ I(d)
+    me = max_entangled(d * d)
+    if returnDensity
+        return (proj(IV_kl * me))
+    else
+        return (IV_kl * me)
+    end
+end
+
+"""
+    create_alt_indexbasis(d, l, α, precision)
+
+Return alternative indexed Bell basis for `d` dimensions as `StandardBasis` rounded to `precision` digits.
+Elements of secondary index `l` are replaced by alternative Bell state defined by `d`-element vector of phases `α`.
+"""
+function create_alt_indexbasis(d, α::Matrix{Complex{Float64}}, precision)::StandardBasis
+
+    altIndexbasis = create_standard_indexbasis(d, precision)
+
+    for (k, l) in Iterators.product(fill(0:(d-1), 2)...)
+
+        #Weyl transformation to basis states
+        P_alt_kl = rounddigits(Hermitian(create_altbellstate(d, k, l, α)), precision)
+
+        #Find corresponding standard basis element
+        elIndex = findfirst(x -> x[2] == (k, l), altIndexbasis.basis)
+
+        #Replace element 
+        altIndexbasis.basis[elIndex] = (elIndex, (k, l), P_alt_kl)
+
+    end
+
+    return (altIndexbasis)
+
+end

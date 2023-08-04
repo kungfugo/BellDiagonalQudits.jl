@@ -95,6 +95,22 @@ function concurrence_qp_check(coordState::CoordState, d, dictionaries, precision
 end
 
 """
+    concurrence_qp_gendiagonal_check(coordState, d, basisStates, precision=10)
+
+Return `true` if the quasi-pure concurrence (see `concurrence.jl`) is positive for a `coordState` and given basis states `basisStates` in the given `precision`.
+"""
+function concurrence_qp_gendiagonal_check(coordState::CoordState, d, basisStates::Array{Vector{ComplexF64}}, precision=10)::Bool
+
+    coords = coordState.coords
+    if round(get_concurrence_qp_gendiagonal(coords, d, basisStates), digits=precision) > 0
+        return true
+    else
+        return false
+    end
+
+end
+
+"""
     mub_check(coordState::CoordState, d, stdBasis::StandardBasis, mubSet::Vector{Vector{Vector{ComplexF64}}})
 
 Return `true` if the sum of mutual predictibilities for a `mubSet` (see `mub.jl`) of dimension `d` exceeds ``2`` for a `coordState` and given `standardBasis`.

@@ -1,9 +1,15 @@
 using BellDiagonalQudits
 using Test
 using LazySets: tovrep, vertices_list
-using LinearAlgebra: Diagonal
+using LinearAlgebra: Diagonal, I
 
 testStandardBasis3 = create_standard_indexbasis(3, 10)
+testAltBasisStates3 = Vector{ComplexF64}[]
+for (k, l) in Iterators.product(fill(0:(2), 2)...)
+    #Weyl transformation to basis states
+    state_alt_kl = create_altbellstate(3, k, l, complex(ones(3,3)), false)
+    push!(testAltBasisStates3, state_alt_kl)
+end
 testStandardBasis4 = create_standard_indexbasis(4, 10)
 testStandardKernel3 = create_kernel_polytope(3, testStandardBasis3)
 testStandardKernel4 = create_kernel_polytope(4, testStandardBasis4)
@@ -24,6 +30,7 @@ testAnaSpecSym = AnalysisSpecification(true, true, true, true, true, true, true,
     @test length(uniform_bell_sampler(10, 3, :enclosurePolytope)) == 10
     @test length(create_random_coordstates(10, 3, :magicSimplex)) == 10
     @test length(create_standard_indexbasis(4, 10).basis) == 16
+    @test length(create_alt_indexbasis(3, complex(ones(3,3)), 10).basis) == 9
     @test testDictionaries3[1][2, 1] == 6
     @test create_densitystate(CoordState(1 / 9 * ones(9), "UNKNOWN"), testStandardBasis3).coords ≈ 1 / 9 * ones(9)
     @test length(create_bipartite_weyloperator_basis(3)) == 81
@@ -171,4 +178,9 @@ testAnaSpecSym = AnalysisSpecification(true, true, true, true, true, true, true,
                 false
             )])
     ) == ["SEP", "PPT_UNKNOWN", "BOUND", "NPT"]
+    @test concurrence_qp_gendiagonal_check(
+        CoordState([0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0], "UNKNOWN"),
+        3,
+        testAltBasisStates3
+    ) 
 end

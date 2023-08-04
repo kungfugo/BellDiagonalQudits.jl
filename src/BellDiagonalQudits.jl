@@ -1,6 +1,6 @@
 module BellDiagonalQudits
 
-using LinearAlgebra: eigvals, I, Hermitian, tr, dot, normalize, Diagonal
+using LinearAlgebra: eigvals, I, Hermitian, tr, dot, normalize, Diagonal, norm, svd
 using QuantumInformation: proj, ket, ketbra, max_entangled, ⊗, reshuffle, norm_trace, ppt
 using Distributions: Uniform, Normal
 using Permutations: Permutation
@@ -10,11 +10,11 @@ using Optim
 
 export
     CoordState, StandardBasis, DensityState, BoundedCoordEW, AnalysisSpecification, ClassConflictException, AnalysedCoordState,
-    uniform_bell_sampler, create_random_coordstates, create_standard_indexbasis, create_densitystate, create_bipartite_weyloperator_basis,
+    uniform_bell_sampler, create_random_coordstates, create_standard_indexbasis, create_densitystate, create_bipartite_weyloperator_basis, create_alt_indexbasis, create_altbellstate,
     create_kernel_polytope, extend_vpolytope_by_densitystates,
     create_random_bounded_ews, get_bounded_coordew,
     generate_symmetries, get_symcoords,
-    analyse_coordstate, sym_analyse_coordstate, classify_analyzed_states!,
+    analyse_coordstate, sym_analyse_coordstate, classify_analyzed_states!, concurrence_qp_gendiagonal_check,
     create_dictionary_from_basis, create_standard_mub,
     tovrep
 
