@@ -28,6 +28,7 @@ This package provides methods to sample states, to numerically generate entangle
 - Classify Bell diagonal states as separable, PPT/bound entangled or NPT/free entangled
 - Generate numerical entanglement witnesses for Bell diagonal states
 - Generate entanglement conserving symmetries and use them for entanglement classification
+- Execute recurrence-based entanglement distillation.
 
 ## Installation
 
@@ -55,6 +56,7 @@ Documentation is available at [https://kungfugo.github.io/BellDiagonalQudits.jl/
 
 [3] Popp, C., Hiesmayr, B.C., _Bound Entanglement of Bell Diagonal Pairs of Qutrits and Ququarts: A Comparison_, arXiv (2022), [https://arxiv.org/abs/2209.15267] (https://arxiv.org/abs/2209.15267)
 
+[4] Popp, C., Sutter, T.C., Hiesmayr, B.C., _A Novel Stabilizer-based Entanglement Distillation Protocol for Qudits_, arXiv (2024), [https://arxiv.org/abs/2408.02383] (https://arxiv.org/abs/2408.02383)
 
 ## Contributions
 
