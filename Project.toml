@@ -15,6 +15,7 @@ QuantumInformation = "3c0b384b-479c-5684-b2ef-9d7a46dd931e"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [compat]
+AbstractAlgebra = "0.42.0"
 Distributions = "0.25.70"
 LazySets = "2.2.1"
 Optim = "1.7.2"
