@@ -189,5 +189,5 @@ FIMAX_routine_results = FIMAX_routine(testBDS, 2, d, myBasis)
 To iterate this procedure until a target fidelity of 0.99 with the maximally entangled state is achieved, execute:
 
 ```julia
-FIMAX_protocol_results = iterative_FIMAX_protocol(testBDS, 0.99, 2, d, testStandardBasis3, 100)
+FIMAX_protocol_results = iterative_FIMAX_protocol(testBDS, 0.99, 2, d, myBasis, 100)
 ```
