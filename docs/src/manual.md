@@ -169,3 +169,25 @@ Identify e.g. bound entangled states as
 ```julia
 myBoundStates = filter(x->x.coordState.eClass == "BOUND", myAnalysedCoordStates)
 ```
+
+## Entanglement distillation
+
+Create and distill a Bell-diagonal state with the FIMAX protocol. First, create a test state.
+
+```julia
+d=3
+testBDS = create_densitystate(CoordState([0.5, 0.5 / 8, 0.5 / 8, 0.5 / 8, 0.5 / 8, 0.5 / 8, 0.5 / 8, 0.5 / 8, 0.5 / 8], "UNKNOWN"), myBasis).densityMatrix
+
+```
+
+To execute one iteration of the FIMAX routine, run:
+
+```julia
+FIMAX_routine_results = FIMAX_routine(testBDS, 2, d, myBasis)
+```
+
+To iterate this procedure until a target fidelity of 0.99 with the maximally entangled state is achieved, execute:
+
+```julia
+FIMAX_protocol_results = iterative_FIMAX_protocol(testBDS, 0.99, 2, d, testStandardBasis3, 100)
+```

@@ -53,7 +53,7 @@ function create_random_coordstates(nSamples, d, object=:magicSimplex, precision=
 
             # If wanted, move random point to nearest step-point
             if roundToSteps > 0
-                c = round.(roundToSteps * c) // roundToSteps
+                c = round.(roundToSteps * c) / roundToSteps
             end
 
             c = round.(c, digits=precision)
@@ -74,12 +74,12 @@ function create_random_coordstates(nSamples, d, object=:magicSimplex, precision=
             c = vec(rand(Uniform(0, 1 / d), 1, (d^2 - 1)))
 
             if roundToSteps > 0
-                c = round.(roundToSteps * d * c) // (roundToSteps * d)
+                c = round.(roundToSteps * d * c) / (roundToSteps * d)
             end
 
             c = round.(c, digits=precision)
 
-            if (1 - 1 // d) <= sum(c) <= 1
+            if (1 - 1 / d) <= sum(c) <= 1
                 push!(c, round(1 - sum(c), digits=precision))
                 paramState = CoordState(c, "UNKNOWN")
                 push!(productParams, paramState)

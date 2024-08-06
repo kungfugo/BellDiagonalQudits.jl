@@ -6,7 +6,7 @@ A package for generation and entanglement classification of Bell diagonal quantu
 
 Bell diagonal states are generated as mixtures maximally entangled Bell states, which are related by Weyl transformations. The special propterties of these states, e.g. symmetries, allow efficient methods to be leveraged for the detection of entanglement, including its generally hard to detect form of PPT/bound entanglement.
 
-This package provides methods to sample states, to numerically generate entanglement witnesses and to apply and extend further criteria to detect entanglement or separability in general dimension. For a precise description of implemented methods and related research results see [1] and [2] and the references therein.
+This package provides methods to sample states, to numerically generate entanglement witnesses and to apply and extend further criteria to detect entanglement or separability in general dimension. Furthermore, it provides methods for entanglement distillation. For a precise description of implemented methods and related research results see [1] and [2] and the references therein.
 
 ## Package Features
 
@@ -14,6 +14,7 @@ This package provides methods to sample states, to numerically generate entangle
 - Classify Bell diagonal states as separable, PPT/bound entangled or NPT/free entangled
 - Generate numerical entanglement witnesses for Bell diagonal states
 - Generate entanglement conserving symmetries and use them for entanglement classification
+- Execute recurrence-based entanglement distillation protocols.
 
 ## References
 
@@ -22,3 +23,5 @@ This package provides methods to sample states, to numerically generate entangle
 [2] Baumgartner, B., Hiesmayr, B.C., Narrenhofer, H. _A special simplex in the state space for entangled qudits_, J. Phys. A Math. Theor. 40, 7919 (2007), [https://doi.org/10.1088/1751-8113/40/28/s03] (https://doi.org/10.1088/1751-8113/40/28/s03)
 
 [3] Popp, C., Hiesmayr, B.C., _Bound Entanglement of Bell Diagonal Pairs of Qutrits and Ququarts: A Comparison_, arXiv (2022), [https://arxiv.org/abs/2209.15267] (https://arxiv.org/abs/2209.15267)
+
+[4] Popp, C., Sutter, T.C., Hiesmayr, B.C., _A Novel Stabilizer-based Entanglement Distillation Protocol for Qudits_, arXiv (2024), [https://arxiv.org/abs/2408.02383] (https://arxiv.org/abs/2408.02383)
