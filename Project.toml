@@ -1,7 +1,7 @@
 name = "BellDiagonalQudits"
 uuid = "33287015-dcc4-41a7-aecb-0a84b862e0d8"
 authors = ["Christopher Popp <poppchristopher@pm.me>"]
-version = "0.1.7"
+version = "0.1.8"
 
 [deps]
 AbstractAlgebra = "c3fe647b-3220-5bb0-a1ea-a7954cac585d"

@@ -15,7 +15,7 @@ function canonic_eigenbasis_weylprime(d, E::Tuple{Int,Int})
                 ev_n = (modket(n, 2), λ)
             elseif b == 0
                 λ = n
-                ev_n = (modket(n * b, 2), λ)
+                ev_n = (modket(n * a, 2), λ)
             else
                 λ = n + 1 / 2 * (mod(a * b, 2))
                 ev_n = (1 / sqrt(2) * (modket(0, 2) + exp(2 / d * π * im*λ) * modket(1, 2)), λ)
