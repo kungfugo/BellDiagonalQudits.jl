@@ -192,14 +192,16 @@ testDistillationState3 = create_densitystate(CoordState([0.5, 0.5 / 8, 0.5 / 8, 
     @test FIMAX_routine(testDistillationState2, 2, 2, testStandardBasis2)[2] > 0
     @test FIMAX_routine(testDistillationState3, 2, 3, testStandardBasis3)[2] > 0
     @test P1_P2_routine(testDistillationState3, 2, 3, testStandardBasis3)[2] > 0
-    @test DEJMPS_routine(testDistillationState3, 2, 3, testStandardBasis3)[2] > 0
+    @test DEJMPS_routine(testDistillationState2, 2, 2, testStandardBasis2)[2] > 0
     @test BBPSSW_routine(testDistillationState3, 2, 3, testStandardBasis3)[2] > 0
+    @test ADGJ_routine(testDistillationState3, 2, 3, testStandardBasis3)[2] > 0
 
     @test iterative_FIMAX_protocol(testDistillationState2, 0.9, 2, 2, testStandardBasis2, 100)[1]
     @test iterative_FIMAX_protocol(testDistillationState3, 0.9, 2, 3, testStandardBasis3, 100)[1]
     @test iterative_P1_P2_protocol(testDistillationState3, 0.9, 2, 3, testStandardBasis3, 100)[1]
-    @test iterative_DEJMPS_protocol(testDistillationState3, 0.9, 2, 3, testStandardBasis3, 100)[1]
+    @test iterative_DEJMPS_protocol(testDistillationState2, 0.9, 2, 2, testStandardBasis2, 100)[1]
     @test iterative_BBPSSW_protocol(testDistillationState3, 0.9, 2, 3, testStandardBasis3, 100)[1]
+    @test iterative_ADGJ_protocol(testDistillationState3, 0.9, 2, 3, testStandardBasis3, 100)[1]
 
     @test efficiency(true, [1, 2, 3], [0.5, 0.7, 0.9], 2) > 0
 

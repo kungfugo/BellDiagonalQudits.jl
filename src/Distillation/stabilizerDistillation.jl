@@ -667,13 +667,13 @@ function BBPSSW_routine(ρ, n, d, stdbasis::StandardBasis)
 end
 
 """
-    DEJMPS_routine(ρ, n, d, stdbasis)
+    ADGJ_routine(ρ, n, d, stdbasis)
 
-Applies one iteration of DEJMPS routine to the `n`-copy input state `'rho` in `d` dimensions. Returns the output state and the probabilies of success with respect to the `stdbasis`.
+Applies one iteration of ADGJ routine to the `n`-copy input state `'rho` in `d` dimensions. Returns the output state and the probabilies of success with respect to the `stdbasis`.
 """
-function DEJMPS_routine(ρ, n, d, stdbasis::StandardBasis)
+function ADGJ_routine(ρ, n, d, stdbasis::StandardBasis)
 
-    g = [(1, 0), (d - 1, 0)]
+    g = [(1, 0), (d - 1, 0)] 
 
     gVec = [g]
     aVec = [0]
@@ -685,6 +685,29 @@ function DEJMPS_routine(ρ, n, d, stdbasis::StandardBasis)
 
     (ρ, succProb) = stabilizer_routine(ρ, gVec, aVec, bVec, U, n, d, stdbasis)
     ρ = bFT * ρ * bFT'
+
+    return (ρ, real(succProb))
+
+end
+
+"""
+    DEJMPS_routine(ρ, n, d, stdbasis)
+
+Applies one iteration of DEJMPS routine to the `n`-copy input state `'rho` in `d=2` dimensions. Returns the output state and the probabilies of success with respect to the `stdbasis`.
+"""
+function DEJMPS_routine(ρ, n, d, stdbasis::StandardBasis)
+
+    @assert d == 2
+
+    g = [(1, 1), (1, 1)] 
+
+    gVec = [g]
+    aVec = [0]
+    bVec = [0]
+
+    U = create_canonic_enconding(g, d)
+
+    (ρ, succProb) = stabilizer_routine(ρ, gVec, aVec, bVec, U, n, d, stdbasis)
 
     return (ρ, real(succProb))
 
@@ -863,11 +886,14 @@ end
 """
     iterative_DEJMPS_protocol(ρ, targetFid, n, d, stdBasis, maxIts)
 
-Applies iterations of the DEJMPS routine to the `n`-copy input state `ρ` in `d` dimensions. 
+Applies iterations of the DEJMPS routine to the `n`-copy input state `ρ` in `d=2` dimensions. 
 Iterates until `targetFid` or maximal number of iterations `maxIts` is reached. 
 Returns `distillable=true` if `targetFid` could be reached and fidelities and success probabilies with respect to the `stdbasis` for each iteration.
 """
 function iterative_DEJMPS_protocol(ρ, targetFid, n, d, stdbasis, maxIts=100)
+
+    @assert d == 2
+
     P_00 = stdbasis.basis[1][3]
     isPpt = isppt(ρ, d, 10)
     F_00 = fidelity(ρ, P_00)
@@ -902,6 +928,50 @@ function iterative_DEJMPS_protocol(ρ, targetFid, n, d, stdbasis, maxIts=100)
     return (distillable, iterations, fidelities, successProbs)
 
 end
+
+"""
+    iterative_ADGJ_protocol(ρ, targetFid, n, d, stdBasis, maxIts)
+
+Applies iterations of the ADGJ routine to the `n`-copy input state `ρ` in `d` dimensions. 
+Iterates until `targetFid` or maximal number of iterations `maxIts` is reached. 
+Returns `distillable=true` if `targetFid` could be reached and fidelities and success probabilies with respect to the `stdbasis` for each iteration.
+"""
+function iterative_ADGJ_protocol(ρ, targetFid, n, d, stdbasis, maxIts=100)
+    P_00 = stdbasis.basis[1][3]
+    isPpt = isppt(ρ, d, 10)
+    F_00 = fidelity(ρ, P_00)
+
+    i = 0
+    iterations = [i]
+    fidelities = [F_00]
+    successProbs = [0.0]
+
+    while (F_00 <= targetFid) && !isPpt && (i < maxIts)
+
+        i += 1
+
+        (ρ, succProb) = ADGJ_routine(ρ, n, d, stdbasis)
+        isPpt = isppt(ρ, d, 10)
+
+        F_00 = fidelity(ρ, P_00)
+
+        push!(iterations, i)
+        push!(fidelities, F_00)
+        push!(successProbs, succProb)
+
+    end
+
+    distillable = false
+    if F_00 > targetFid && i < maxIts
+        distillable = true
+    elseif isPpt || i >= maxIts
+        distillable = false
+    end
+
+    return (distillable, iterations, fidelities, successProbs)
+
+end
+
 
 """
     efficiency(distillable, iterations, successProbs, n)

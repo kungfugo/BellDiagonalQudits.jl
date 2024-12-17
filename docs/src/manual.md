@@ -191,3 +191,9 @@ To iterate this procedure until a target fidelity of 0.99 with the maximally ent
 ```julia
 FIMAX_protocol_results = iterative_FIMAX_protocol(testBDS, 0.99, 2, d, myBasis, 100)
 ```
+
+Other protocols are implemented:
+- [BBPSSW](http://arxiv.org/abs/quant-ph/9708015)
+- [DEJMPS](https://link.aps.org/doi/10.1103/PhysRevLett.77.2818)
+- [P12](https://link.aps.org/doi/10.1103/PhysRevA.98.042309)
+- [ADGJ](https://dx.doi.org/10.1088/0305-4470/34/42/307)

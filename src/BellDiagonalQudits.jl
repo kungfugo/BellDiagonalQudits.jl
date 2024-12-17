@@ -18,8 +18,8 @@ export
     analyse_coordstate, sym_analyse_coordstate, classify_analyzed_states!, concurrence_qp_gendiagonal_check,
     create_dictionary_from_basis, create_standard_mub,
     tovrep,
-    FIMAX_routine, P1_P2_routine, DEJMPS_routine, BBPSSW_routine,
-    iterative_FIMAX_protocol, iterative_P1_P2_protocol, iterative_DEJMPS_protocol, iterative_BBPSSW_protocol,
+    FIMAX_routine, P1_P2_routine, DEJMPS_routine, BBPSSW_routine, ADGJ_routine,
+    iterative_FIMAX_protocol, iterative_P1_P2_protocol, iterative_DEJMPS_protocol, iterative_BBPSSW_protocol, iterative_ADGJ_protocol,
     efficiency
 
 include("structs.jl")

@@ -1,7 +1,7 @@
 name = "BellDiagonalQudits"
 uuid = "33287015-dcc4-41a7-aecb-0a84b862e0d8"
 authors = ["Christopher Popp <poppchristopher@pm.me>"]
-version = "0.1.8"
+version = "0.1.9"
 
 [deps]
 AbstractAlgebra = "c3fe647b-3220-5bb0-a1ea-a7954cac585d"
@@ -17,12 +17,11 @@ Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 [compat]
 AbstractAlgebra = "0.42.0"
 Distributions = "0.25.70"
-LazySets = "2.2.1"
 Optim = "1.7.2"
 Permutations = "0.4.15"
 Polyhedra = "0.7.5"
 QuantumInformation = "0.4.9"
-julia = "1.10"
+julia = "1.11"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
