@@ -197,3 +197,34 @@ Other protocols are implemented:
 - [DEJMPS](https://link.aps.org/doi/10.1103/PhysRevLett.77.2818)
 - [P12](https://link.aps.org/doi/10.1103/PhysRevA.98.042309)
 - [ADGJ](https://dx.doi.org/10.1088/0305-4470/34/42/307)
+- [gFIMAX]
+
+## Resource state distillation
+Distill states that have a high resource as specified by some optimization function. In this example, we use the coherent information. First, define the optimization function related to the information measure.
+
+```julia
+ciOptFunction(ρ, n, d) = coherent_information(ρ, [d,d], 1)
+```
+
+We use the created test state and apply the XIMAX method, taking the optimization function and optimizing it via stabilizer channels.
+To execute one iteration of the XIMAX routine for the coherent information, run:
+
+```julia
+d=3
+n=2
+CI_IMAX_routine_results = XIMAX_routine(testBDS, 2, d, ciOptFunction)
+```
+
+To iterate this procedure until a target value, say 0.9, is achieved, execute:
+
+```julia
+CI_IMAX_protocol_results = iterative_XIMAX_protocol(testBDS, ciOptFunction, 0.9, 2, 3, 100)
+```
+
+Other protocols can be applied by using different information measures, such as:
+ - `mutual_information`
+ - `max_mutual_information`
+ - `smooth_conditional_max_entropy`
+ - `smooth_max_mutual_information_approximation`
+ - `hypothesis_testing_mutual_information`
+ - `smooth_private_information`

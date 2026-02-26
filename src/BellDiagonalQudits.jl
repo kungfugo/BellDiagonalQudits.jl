@@ -1,13 +1,17 @@
 module BellDiagonalQudits
 
-using LinearAlgebra: eigvals, I, Hermitian, tr, dot, normalize, Diagonal, norm, svd
-using QuantumInformation: proj, ket, bra, ketbra, max_entangled, ⊗, reshuffle, norm_trace, ppt, fidelity
+using LinearAlgebra: eigvals, I, Hermitian, tr, dot, normalize, Diagonal, norm, svd, eigen
+using QuantumInformation: proj, ket, bra, ketbra, max_entangled, ⊗, reshuffle, norm_trace, ppt, fidelity, ptrace, vonneumann_entropy, KrausOperators, permutesystems
 using Distributions: Uniform, Normal
 using Permutations: Permutation
 using LazySets: VPolytope, HPolytope, tohrep, tovrep, vertices_list, ∈
 using Polyhedra
 using Optim
 using AbstractAlgebra: inv, residue_ring, ZZ
+using JuMP 
+using SCS
+using Convex: partialtrace
+
 
 export
     CoordState, StandardBasis, DensityState, BoundedCoordEW, AnalysisSpecification, ClassConflictException, AnalysedCoordState,
@@ -20,21 +24,27 @@ export
     tovrep,
     FIMAX_routine, P1_P2_routine, DEJMPS_routine, BBPSSW_routine, ADGJ_routine,
     iterative_FIMAX_protocol, iterative_P1_P2_protocol, iterative_DEJMPS_protocol, iterative_BBPSSW_protocol, iterative_ADGJ_protocol,
-    efficiency
+    efficiency,
+    gFIMAX_routine, XIMAX_routine,
+    iterative_gFIMAX_protocol, iterative_XIMAX_protocol,
+    coherent_information, mutual_information, max_mutual_information, smooth_conditional_max_entropy,
+    smooth_max_mutual_information_approximation, hypothesis_testing_mutual_information, smooth_private_information
 
-include("structs.jl")
-include("Utils/utils.jl")
-include("BellStates/bellStates.jl")
-include("Parameterization/parameterization.jl")
-include("Optimization/optimization.jl")
-include("EntanglementWitnesses/eWitnesses.jl")
-include("Symmetries/symmetries.jl")
-include("EntanglementChecks/concurrence.jl")
-include("EntanglementChecks/mub.jl")
-include("EntanglementChecks/entanglementChecks.jl")
-include("SeparableStates/separableStates.jl")
-include("Distillation/stabilizerDistillation.jl")
+
+    include("structs.jl")
+    include("Utils/utils.jl")
+    include("BellStates/bellStates.jl")
+    include("Parameterization/parameterization.jl")
+    include("Optimization/optimization.jl")
+    include("EntanglementWitnesses/eWitnesses.jl")
+    include("Symmetries/symmetries.jl")
+    include("EntanglementChecks/concurrence.jl")
+    include("EntanglementChecks/mub.jl")
+    include("EntanglementChecks/entanglementChecks.jl")
+    include("SeparableStates/separableStates.jl")
+    include("Distillation/stabilizerDistillation.jl")
+    include("Channels/channels.jl")
+    include("InformationMeasures/informationMeasures.jl")
 
 end
-
 

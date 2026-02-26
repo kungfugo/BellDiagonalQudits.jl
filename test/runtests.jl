@@ -25,6 +25,8 @@ testAnaSpec = AnalysisSpecification(true, true, true, true, true, true, true, fa
 testAnaSpecSym = AnalysisSpecification(true, true, true, true, true, true, true, true)
 testDistillationState2 = create_densitystate(CoordState([0.6, 0.4 / 3, 0.4 / 3, 0.4 / 3], "UNKNOWN"), testStandardBasis2).densityMatrix
 testDistillationState3 = create_densitystate(CoordState([0.5, 0.5 / 8, 0.5 / 8, 0.5 / 8, 0.5 / 8, 0.5 / 8, 0.5 / 8, 0.5 / 8, 0.5 / 8], "UNKNOWN"), testStandardBasis3).densityMatrix
+ciOptFunction(ρ, n, d) = coherent_information(ρ, [d,d], 1)
+maxEntangled3 = testStandardBasis3.basis[1][3]
 
 @testset "BellDiagonalQudits.jl" begin
 
@@ -195,6 +197,10 @@ testDistillationState3 = create_densitystate(CoordState([0.5, 0.5 / 8, 0.5 / 8, 
     @test DEJMPS_routine(testDistillationState2, 2, 2, testStandardBasis2)[2] > 0
     @test BBPSSW_routine(testDistillationState3, 2, 3, testStandardBasis3)[2] > 0
     @test ADGJ_routine(testDistillationState3, 2, 3, testStandardBasis3)[2] > 0
+    @test gFIMAX_routine(testDistillationState2, 2, 2, testStandardBasis2)[2] > 0
+    @test gFIMAX_routine(testDistillationState3, 2, 3, testStandardBasis3)[2] > 0 
+    @test XIMAX_routine(testDistillationState2, 2, 2, ciOptFunction)[2] > -2
+    @test XIMAX_routine(testDistillationState3, 2, 3, ciOptFunction)[2] > -2 
 
     @test iterative_FIMAX_protocol(testDistillationState2, 0.9, 2, 2, testStandardBasis2, 100)[1]
     @test iterative_FIMAX_protocol(testDistillationState3, 0.9, 2, 3, testStandardBasis3, 100)[1]
@@ -202,7 +208,20 @@ testDistillationState3 = create_densitystate(CoordState([0.5, 0.5 / 8, 0.5 / 8, 
     @test iterative_DEJMPS_protocol(testDistillationState2, 0.9, 2, 2, testStandardBasis2, 100)[1]
     @test iterative_BBPSSW_protocol(testDistillationState3, 0.9, 2, 3, testStandardBasis3, 100)[1]
     @test iterative_ADGJ_protocol(testDistillationState3, 0.9, 2, 3, testStandardBasis3, 100)[1]
+    iterative_gFIMAX_protocol(testDistillationState2, 0.9, 2, 2, testStandardBasis2, 100)[1]
+    iterative_gFIMAX_protocol(testDistillationState3, 0.9, 2, 3, testStandardBasis3, 100)[1]
+    iterative_XIMAX_protocol(testDistillationState2, ciOptFunction, 0.9, 2, 2, 100)[1]
+    iterative_XIMAX_protocol(testDistillationState3, ciOptFunction, 0.9, 2, 3, 100)[1]
 
     @test efficiency(true, [1, 2, 3], [0.5, 0.7, 0.9], 2) > 0
+
+    #BellDiagonalQudits/src/InformationMeasures
+    @test 0.9*log2(3) < coherent_information(maxEntangled3, [3,3], 1) < 1.1*log2(3)
+    @test 0.9*log2(3) < 0.5*mutual_information(maxEntangled3, [3,3])  < 1.1*log2(3)
+    @test 0.9*log2(3) < 0.5*max_mutual_information(maxEntangled3, [3,3]) < 1.1*log2(3)
+    @test 0.9*log2(3) < -smooth_conditional_max_entropy(maxEntangled3, [3,3], 0.01 ) < 1.1*log2(3)
+    @test 0.9*log2(3) < 0.5*smooth_max_mutual_information_approximation(maxEntangled3, [3,3], 0.01, 2, 2)[1] < 1.1*log2(3)
+    @test 0.9*log2(3) < 0.5*hypothesis_testing_mutual_information(maxEntangled3, [3,3], 0.01) < 1.1*log2(3)
+    @test 0.9*log2(3) < smooth_private_information(maxEntangled3, 3, 0.1, 0.1, 5, 2) < 1.1*log2(3)
 
 end

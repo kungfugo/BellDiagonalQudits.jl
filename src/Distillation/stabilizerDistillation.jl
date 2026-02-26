@@ -995,3 +995,346 @@ function efficiency(distillable, iterations, successProbs, n)
     end
 
 end
+
+""" 
+    get_bipartite_stabkrausops_from_encoding(U, d, n, p)
+
+Return the bipartite stabilization Kraus operators derived from an encoding unitary `U`.
+
+# Arguments
+- `U`: The encoding unitary matrix.
+- `d`: The dimension of the single-particle Hilbert space.
+- `n`: The number of copies of the input state.
+- `p`: The order of the stabilizer group.
+"""
+function get_bipartite_stabkrausops_from_encoding(U, d, n, p)
+    @assert n == 2 "Function is designed for n=2 copies."
+    
+    D = d^n
+    dp = d^p
+    dnp = d^(n-p)
+
+    M_list = [complex(zeros(d^2, D)) for _ in 1:dp]
+    
+    for x in 0:(dp-1)
+        for k in 0:(dnp-1)
+            # Column index maps the logical/syndrome space to the full Hilbert space
+            col_idx = dnp * x + k + 1
+            M_list[x+1] += (modket(x, dp) ⊗ modket(k, dnp)) * (U[:, col_idx])'
+        end
+    end
+
+    krausOps = Array{Complex{Float64}, 2}[]
+
+    # Generate the bipartite Kraus operators K_{x,y} = M_x ⊗ conj(M_y)
+    for x in 1:dp, y in 1:dp
+        Mx = M_list[x]
+        My_cc = conj.(M_list[y]) 
+        
+        # Initial dimensions: [d_A1, d_A2, d_B1, d_B2]
+        K_xy_permuted = Mx ⊗ My_cc
+
+        # Permute systems to match the two-copy state ordering: [d_A1, d_B1, d_A2, d_B2]
+        dims = [d, d, d, d]
+        K_xy = permutesystems(K_xy_permuted, dims, [1, 3, 2, 4])
+        push!(krausOps, K_xy)
+    end
+
+    return KrausOperators(krausOps)
+end
+
+""" 
+    general_bipartite_stab_routine(ρ_in, gVec, xVec, yVec, U, n, d, precision=10, warn=false)
+
+Perform a bipartite stabilization routine on two copies of the state `ρ_in`.
+
+# Arguments
+- `ρ_in`: The input density matrix of dimension (d^2, d^2).
+- `gVec, xVec, yVec`: Vectors defining the stabilizer group and observed syndromes.
+- `U`: The encoding unitary.
+- `n`: The number of copies of the input state (assumed n=2).
+- `d`: The dimension of the single-particle Hilbert space.
+- `precision`: Number of digits for rounding the probability check.
+- `warn`: Boolean to toggle warnings for zero-probability outcomes.
+"""
+function general_bipartite_stab_routine(ρ_in, gVec, xVec, yVec, U, n, d, precision=10, warn=false)
+    # Generate Kraus operators for n=2 copies, p=1 stabilizer order
+    ch = get_bipartite_stabkrausops_from_encoding(U, d, n, 1) 
+
+    # Select the specific Kraus operator based on the first syndromes in xVec and yVec
+    x = first(xVec)
+    y = first(yVec)
+    i = d*x + y + 1
+
+    K = ch.matrices[i]
+    
+    # Apply the Kraus map: ρ_out = K (ρ_in ⊗ ρ_in) K'
+    out = K * (ρ_in ⊗ ρ_in) * K' 
+    
+    prob_out = real(tr(out))
+    
+    # Check if the syndrome outcome is physically possible
+    if round(prob_out, digits=precision) == 0
+        if warn
+            @warn "x=$(x) and y=$(y) have zero probability. Returning input state."
+        end
+        return (ρ_in, 0.0)
+    else
+        # Normalize the state
+        out = out / prob_out
+        
+        # Trace out the redundant systems to return a d^2 x d^2 state
+        out = ptrace(out, [d, d, d, d], 1) 
+        out = ptrace(out, [d, d, d], 1) 
+
+        return (out, prob_out)
+    end
+end
+
+
+""" 
+    gFIMAX_routine(ρ, n, d, stdbasis)
+Identify the stabilizer generator and syndrome that maximize the output fidelity for state `ρ`.
+
+# Arguments
+- `ρ`: Input density matrix (dimension (d^2,d^2).
+- `n`: Number of copies (fixed to 2).
+- `d`: Dimension of the single-particle Hilbert space (2 or 3).
+- `stdbasis`: A `StandardBasis` object used for fidelity calculations.
+
+Returns a `NamedTuple` containing the corrected optimal state, the maximum fidelity, 
+the variables used (generator, syndromes, and Weyl indices), and the outcome probability.
+"""
+function gFIMAX_routine(ρ, n, d, stdbasis::StandardBasis)
+
+    @assert n==2 && d ∈ (2,3)
+
+    allStabilizerGenerators = get_abelian_subgroup_generators(d, n)
+
+    fidMax = get_maxfidelity(ρ, stdbasis)
+    
+    res = []
+
+    for g in allStabilizerGenerators
+
+        U_canonic = create_canonic_enconding(g, d)
+
+        for x in 0:(d-1), y in 0:(d-1)
+
+            ρ_gxy, prob_gxy = general_bipartite_stab_routine(ρ, [g], [x], [y], U_canonic, n, d, 10)
+
+            if (rounddigits(real(prob_gxy),10) > 0)
+            
+                maxfid_gxy = get_maxfidelity_tuple(ρ_gxy, stdbasis)            
+                push!(
+                    res,                     
+                    (
+                        state=ρ_gxy, 
+                        optres=maxfid_gxy.fidelity, 
+                        vars=([g], [x], [y], maxfid_gxy.weylindices), 
+                        prob = real(prob_gxy)
+                    )
+                )            
+            end
+        end
+
+    end
+    
+    # Handle case where no outcomes have non-zero probability
+    if isempty(res)
+        return nothing
+    end
+
+    maxres = first(sort(res, by=z->(z.optres,z.vars), rev=true))
+
+    intertw = get_intertwiner(d, maxres.vars[4]...)
+    ρ_out_corrected = intertw'*maxres.state*intertw
+
+    return(
+        (state=ρ_out_corrected, optres=maxres.optres, vars=maxres.vars, prob=maxres.prob)
+    )
+
+end
+
+""" 
+    iterative_gFIMAX_protocol(ρ, optTarget, n, d, stdbasis, maxIts=100, returnAdditionalObjects=false)
+
+Repeatedly apply the `gFIMAX_routine` to state `ρ` to reach a target fidelity `optTarget`.
+
+# Arguments
+- `ρ`: Initial bipartite density matrix of dimension (d^2,d^2).
+- `optTarget`: The target fidelity value to stop the iteration.
+- `n`: Number of copies used in each step (fixed at 2).
+- `d`: Dimension of the single-particle Hilbert space.
+- `stdbasis`: The `StandardBasis` object for fidelity calculations.
+- `maxIts`: Maximum number of iterations allowed.
+- `returnAdditionalObjects`: If `true`, returns the history of states and variables.
+
+Returns a tuple starting with a boolean `distillable`, followed by iteration history and results.
+"""
+function iterative_gFIMAX_protocol(ρ, optTarget, n, d, stdbasis, maxIts=100, returnAdditionalObjects=false)
+
+    optres= get_maxfidelity(ρ, stdbasis)
+    i = 0
+    iterations = [0]
+    optResults =  [optres]
+    successProbs = [0.0]
+    states = [ρ]
+    variables = []
+    
+    fixpointReached = false
+
+    
+    while (optres <= optTarget) && (i < maxIts) && (!fixpointReached)
+    
+        i += 1 
+        ρ_old = ρ
+
+        (ρ, optres, vars, prob) = gFIMAX_routine(ρ, n, d, stdbasis)
+
+        push!(iterations, i)
+        push!(optResults, optres)
+        push!(successProbs, prob)
+
+        if returnAdditionalObjects
+            push!(states, Hermitian(ρ))
+            push!(variables, vars)
+        end
+
+        if norm(ρ - ρ_old) < 1e-12
+            fixpointReached = true
+        end
+
+    end
+
+    distillable = false
+    if optres > optTarget
+        distillable = true
+    elseif i >= maxIts
+        distillable = false
+    end
+
+    if returnAdditionalObjects
+        return(distillable, iterations, optResults, successProbs, states, variables)
+    else
+        return(distillable, iterations, optResults, successProbs)
+    end    
+
+end
+
+
+""" 
+    XIMAX_routine(ρ, n, d, optFunction, precision=10)
+
+Identify the stabilizer generator and syndrome that maximize a custom objective 
+provided by `optFunction` for the state `ρ`.
+
+# Arguments
+- `ρ`: Input density matrix of dimension (d^2 ,d^2).
+- `n`: Number of copies of the input state (fixed to 2).
+- `d`: Dimension of the single-particle Hilbert space (2 or 3).
+- `optFunction`: A function `f(ρ, n, d)` that returns a scalar value to be maximized.
+- `precision`: Rounding precision for the probability check.
+"""
+function XIMAX_routine(ρ, n, d, optFunction, precision=10)
+    @assert n == 2
+    @assert d ∈ (2, 3)
+
+    allStabilizerGenerators = get_abelian_subgroup_generators(d, n)
+    
+    res = []
+
+    for g in allStabilizerGenerators
+
+        U_canonic = create_canonic_enconding(g, d)
+
+        for x in 0:(d-1), y in 0:(d-1)
+
+            ρ_gxy, prob_gxy = general_bipartite_stab_routine(ρ, [g], [x], [y], U_canonic, n, d, precision)
+
+            if (rounddigits(real(prob_gxy),precision) > 0)
+            
+                optres_gxy = optFunction(ρ_gxy, n, d)            
+                push!(
+                    res, 
+                    (state=ρ_gxy, optres=optres_gxy, vars=([g], [x], [y]), prob = prob_gxy)
+                )            
+            end
+        end
+
+    end
+
+    if isempty(res)
+        return nothing
+    end
+
+    return(
+        first(sort(res, by=z->(z.optres,z.vars), rev=true))
+    )
+
+end
+
+""" 
+    iterative_XIMAX_protocol(ρ, optFunction, optTarget, n, d, maxIts=100, returnAdditionalObjects=false)
+
+Repeatedly apply the `XIMAX_routine` to state `ρ` using a custom `optFunction` until `optTarget` is reached.
+
+# Arguments
+- `ρ`: Initial density matrix.
+- `optFunction`: Function `f(ρ, n, d)` used to calculate the optimization metric.
+- `optTarget`: The target value of the metric to stop the iteration.
+- `n`: Number of copies used (fixed at 2).
+- `d`: Dimension of the single-particle Hilbert space.
+- `maxIts`: Maximum number of iterations.
+- `returnAdditionalObjects`: If `true`, returns state and variable history.
+
+Returns a tuple with the success boolean `distillable` and the iteration history.
+"""
+function iterative_XIMAX_protocol(ρ, optFunction, optTarget, n, d, maxIts=100, returnAdditionalObjects=false)
+    
+    optres= optFunction(ρ, n, d)
+    i = 0
+    iterations = [0]
+    optResults =  [optres]
+    successProbs = [0.0]
+    states = [ρ]
+    variables = []
+    
+    fixpointReached = false
+
+    while ((optres <= optTarget) && (i < maxIts) && !fixpointReached)
+    
+        i += 1 
+        ρ_old = ρ
+
+        (ρ, optres, vars, prob) = XIMAX_routine(ρ, n, d, optFunction)
+
+        push!(iterations, i)
+        push!(optResults, optres)
+        push!(successProbs, prob)
+
+        if returnAdditionalObjects
+            push!(states, Hermitian(ρ))
+            push!(variables, vars)
+        end
+
+        if rounddigits(norm(ρ - ρ_old),10) < 1e-12
+            fixpointReached = true
+        end
+
+    end
+
+    distillable = false
+    if optres > optTarget
+        distillable = true
+    elseif i >= maxIts
+        distillable = false
+    end
+
+    if returnAdditionalObjects
+        return(distillable, iterations, optResults, successProbs, states, variables)
+    else
+        return(distillable, iterations, optResults, successProbs)
+    end    
+
+end

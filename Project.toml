@@ -1,28 +1,34 @@
 name = "BellDiagonalQudits"
 uuid = "33287015-dcc4-41a7-aecb-0a84b862e0d8"
+version = "0.2.0"
 authors = ["Christopher Popp <poppchristopher@pm.me>"]
-version = "0.1.9"
 
 [deps]
 AbstractAlgebra = "c3fe647b-3220-5bb0-a1ea-a7954cac585d"
+Convex = "f65535da-76fb-5f13-bab9-19810c17039a"
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
+JuMP = "4076af6c-e467-56ae-b986-b466b2749572"
 LazySets = "b4f0291d-fe17-52bc-9479-3d1a343d9043"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 Optim = "429524aa-4258-5aef-a3af-852621145aeb"
 Permutations = "2ae35dd2-176d-5d53-8349-f30d82d94d4f"
 Polyhedra = "67491407-f73d-577b-9b50-8179a7c68029"
 QuantumInformation = "3c0b384b-479c-5684-b2ef-9d7a46dd931e"
+SCS = "c946c3f1-0d1f-5ce8-9dea-7daa1f7e2d13"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [compat]
 AbstractAlgebra = "0.42.0"
+Convex = "0.16.5"
 Distributions = "0.25.70"
+JuMP = "1.29.4"
+LazySets = "3.0.0"
 Optim = "1.7.2"
 Permutations = "0.4.15"
 Polyhedra = "0.7.5"
 QuantumInformation = "0.4.9"
-LazySets = "3.0.0"
-julia = "1.11"
+SCS = "2.6.2"
+julia = "1.10"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"

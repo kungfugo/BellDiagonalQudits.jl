@@ -247,3 +247,38 @@ function modbra(k, d)
     return (bra(mod(k, d) + 1, d))
 end
 
+
+""" 
+    get_maxfidelity_tuple(ρ, stdbasis)
+Return a `NamedTuple` containing the index and fidelity of the basis state most similar to `ρ`.
+"""
+function get_maxfidelity_tuple(ρ, stdbasis::StandardBasis)
+    basisProbs = get_stdbasis_probabilities(ρ, stdbasis)
+    maxtuple = NamedTuple{(:basisindex, :weylindices, :fidelity)}(argmax(x -> x[3], basisProbs))
+    return maxtuple
+end
+
+""" 
+    get_maxfidelity(ρ_in, stdbasis)
+Return the maximum fidelity value found for state `ρ_in` across the given `stdbasis`.
+"""
+function get_maxfidelity(ρ_in, stdbasis)
+    return get_maxfidelity_tuple(ρ_in, stdbasis).fidelity
+end
+
+""" 
+    purify_density_matrix(ρ, precision=10)
+Return the purified state vector `Ψ` in a doubled Hilbert space such that `tr_2(|Ψ⟩⟨Ψ|) = ρ`.
+"""
+function purify_density_matrix(ρ::Hermitian{Complex{Float64}}, precision=10) 
+
+    eigvals, eigvecs = eigen(ρ)
+    
+    n = size(ρ, 1)
+    Ψ = zeros(Complex{Float64}, n^2)
+    for i in 1:n
+        Ψ += sqrt(rounddigits(abs(eigvals[i]),precision)) * (eigvecs[:, i] ⊗ ket(i,n))
+    end
+    
+    return Ψ
+end
