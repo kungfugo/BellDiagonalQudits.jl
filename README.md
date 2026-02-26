@@ -20,7 +20,7 @@ A package for generation and entanglement classification of Bell diagonal quantu
 
 Bell diagonal states are generated as mixtures maximally entangled Bell states, which are related by Weyl transformations. The special propterties of these states, e.g. symmetries, allow efficient methods to be leveraged for the detection of entanglement, including its generally hard to detect form of PPT/bound entanglement.
 
-This package provides methods to sample states, to numerically generate entanglement witnesses and to apply and extend further criteria to detect entanglement or separability in general dimension. For a precise description of implemented methods and related research results see [1], [2], [3] and the references therein.
+This package provides methods to sample states, to numerically generate entanglement witnesses and to apply and extend further criteria to detect entanglement or separability in general dimension. Furthermore, it provides methods for entanglement distillation. For a precise description of implemented methods and related research results see [1] - [6] and the references therein.
 
 ## Package Features
 
@@ -29,6 +29,7 @@ This package provides methods to sample states, to numerically generate entangle
 - Generate numerical entanglement witnesses for Bell diagonal states
 - Generate entanglement conserving symmetries and use them for entanglement classification
 - Execute recurrence-based entanglement distillation.
+- Evaluate information measures and execute stabilizer-based resource distillation protocols.
 
 ## Installation
 
@@ -49,14 +50,18 @@ julia> using BellDiagonalQudits
 Documentation is available at [https://kungfugo.github.io/BellDiagonalQudits.jl/dev/](https://kungfugo.github.io/BellDiagonalQudits.jl/dev/)
 
 ## References
-
 [1] Popp, C., Hiesmayr, B.C., _Almost complete solution for the NP-hard separability problem of Bell diagonal qutrits_, Sci Rep 12, 12472 (2022), [https://doi.org/10.1038/s41598-022-16225-z](https://doi.org/10.1038/s41598-022-16225-z)
 
-[2] Baumgartner, B., Hiesmayr, B.C., Narrenhofer, H. _A special simplex in the state space for entangled qudits_, J. Phys. A Math. Theor. 40, 7919 (2007), [https://doi.org/10.1088/1751-8113/40/28/s03] (https://doi.org/10.1088/1751-8113/40/28/s03)
+[2] Baumgartner, B., Hiesmayr, B.C., Narrenhofer, H. _A special simplex in the state space for entangled qudits_, J. Phys. A Math. Theor. 40, 7919 (2007), [https://doi.org/10.1088/1751-8113/40/28/s03](https://doi.org/10.1088/1751-8113/40/28/s03)
 
-[3] Popp, C., Hiesmayr, B.C., _Bound Entanglement of Bell Diagonal Pairs of Qutrits and Ququarts: A Comparison_, arXiv (2022), [https://arxiv.org/abs/2209.15267] (https://arxiv.org/abs/2209.15267)
+[3] Popp, C., Hiesmayr, B.C., _Bound Entanglement of Bell Diagonal Pairs of Qutrits and Ququarts: A Comparison_, arXiv (2022), [https://arxiv.org/abs/2209.15267](https://arxiv.org/abs/2209.15267)
 
-[4] Popp, C., Sutter, T.C., Hiesmayr, B.C., _A Novel Stabilizer-based Entanglement Distillation Protocol for Qudits_, arXiv (2024), [https://arxiv.org/abs/2408.02383] (https://arxiv.org/abs/2408.02383)
+[4] Popp, C., Sutter, T. C. & Hiesmayr, B. C. _A Novel Stabilizer-based Entanglement Distillation Protocol for Qudits._, Quantum 9., [https://quantum-journal.org/papers/q-2025-12-15-1945/](https://quantum-journal.org/papers/q-2025-12-15-1945/)
+
+[5] Popp, C., Sutter, T. C. & Hiesmayr, B. C., _Local Invariance of Divergence-Based Quantum Information Measures_, Entropy 27, [https://www.mdpi.com/1099-4300/27/10/1051](https://www.mdpi.com/1099-4300/27/10/1051)
+
+[6] Popp, C., Sutter, T. C. & Hiesmayr, B. C. _Computation of the smooth max-mutual information via semidefinite programming_, Quantum Information Processing 25, [https://doi.org/10.1007/s11128-026-05101-8](https://doi.org/10.1007/s11128-026-05101-8)
+
 
 ## Contributions
 
